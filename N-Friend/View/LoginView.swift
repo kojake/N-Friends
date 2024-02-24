@@ -20,7 +20,7 @@ struct LoginView: View {
                     
                 }){
                     HStack{
-                        Image("Google").resizable().scaledToFit().frame(width: 45, height: 45)
+                        Image("Google").resizable().scaledToFit().frame(width: 45, height: 45).padding()
                         Text("Googleでログインする").fontWeight(.bold).foregroundColor(Color.black)
                     }.frame(width: 280, height: 60).background(Color.white).cornerRadius(10)
                 }

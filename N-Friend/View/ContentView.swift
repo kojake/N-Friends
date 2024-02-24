@@ -8,21 +8,22 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    init() {
+        UITabBar.appearance().backgroundColor = .white
+    }
+    
     var body: some View {
         TabView {
-            Text("")
+            CardSwipeView()
                 .tabItem {
-                    Image(systemName: "menucard.fill")
+                    Image(systemName: "magazine.fill")
                 }
-            Text("")
+            StarView()
                 .tabItem {
-                    Image(systemName: "tray.fill")
+                    Image(systemName: "star.fill")
                 }
-            Text("")
-                .tabItem {
-                    Image(systemName: "heart")
-                }
-            Text("")
+            ProfileView()
                 .tabItem {
                     Image(systemName: "person")
                 }

@@ -13,6 +13,10 @@
 		97532FD02B8985B700BA04F9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97532FCF2B8985B700BA04F9 /* Preview Assets.xcassets */; };
 		97532FD92B89867A00BA04F9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FD82B89867A00BA04F9 /* LoginView.swift */; };
 		97532FDB2B89896E00BA04F9 /* InterestedSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FDA2B89896E00BA04F9 /* InterestedSelectionView.swift */; };
+		97532FDD2B89BC8B00BA04F9 /* CardSwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FDC2B89BC8B00BA04F9 /* CardSwipeView.swift */; };
+		97532FDF2B89CDD500BA04F9 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FDE2B89CDD500BA04F9 /* CardView.swift */; };
+		97532FE22B89D2EB00BA04F9 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FE12B89D2EB00BA04F9 /* ProfileView.swift */; };
+		97532FE62B8A2DD700BA04F9 /* StarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FE52B8A2DD700BA04F9 /* StarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +27,10 @@
 		97532FCF2B8985B700BA04F9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		97532FD82B89867A00BA04F9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		97532FDA2B89896E00BA04F9 /* InterestedSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestedSelectionView.swift; sourceTree = "<group>"; };
+		97532FDC2B89BC8B00BA04F9 /* CardSwipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSwipeView.swift; sourceTree = "<group>"; };
+		97532FDE2B89CDD500BA04F9 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		97532FE12B89D2EB00BA04F9 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		97532FE52B8A2DD700BA04F9 /* StarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +86,9 @@
 				97532FD82B89867A00BA04F9 /* LoginView.swift */,
 				97532FDA2B89896E00BA04F9 /* InterestedSelectionView.swift */,
 				97532FCA2B8985B200BA04F9 /* ContentView.swift */,
+				97532FE02B89D0EF00BA04F9 /* Card */,
+				97532FE42B8A2DB600BA04F9 /* Star */,
+				97532FE32B89DDF900BA04F9 /* Profile */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -87,6 +98,32 @@
 			children = (
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		97532FE02B89D0EF00BA04F9 /* Card */ = {
+			isa = PBXGroup;
+			children = (
+				97532FDE2B89CDD500BA04F9 /* CardView.swift */,
+				97532FDC2B89BC8B00BA04F9 /* CardSwipeView.swift */,
+			);
+			path = Card;
+			sourceTree = "<group>";
+		};
+		97532FE32B89DDF900BA04F9 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				97532FE12B89D2EB00BA04F9 /* ProfileView.swift */,
+			);
+			name = Profile;
+			path = "N-Friend/View/Profile";
+			sourceTree = SOURCE_ROOT;
+		};
+		97532FE42B8A2DB600BA04F9 /* Star */ = {
+			isa = PBXGroup;
+			children = (
+				97532FE52B8A2DD700BA04F9 /* StarView.swift */,
+			);
+			path = Star;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -159,9 +196,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97532FDD2B89BC8B00BA04F9 /* CardSwipeView.swift in Sources */,
 				97532FDB2B89896E00BA04F9 /* InterestedSelectionView.swift in Sources */,
 				97532FD92B89867A00BA04F9 /* LoginView.swift in Sources */,
 				97532FCB2B8985B200BA04F9 /* ContentView.swift in Sources */,
+				97532FDF2B89CDD500BA04F9 /* CardView.swift in Sources */,
+				97532FE22B89D2EB00BA04F9 /* ProfileView.swift in Sources */,
+				97532FE62B8A2DD700BA04F9 /* StarView.swift in Sources */,
 				97532FC92B8985B200BA04F9 /* N_FriendApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
