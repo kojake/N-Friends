@@ -17,6 +17,7 @@
 		97532FDF2B89CDD500BA04F9 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FDE2B89CDD500BA04F9 /* CardView.swift */; };
 		97532FE22B89D2EB00BA04F9 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FE12B89D2EB00BA04F9 /* ProfileView.swift */; };
 		97532FE62B8A2DD700BA04F9 /* StarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FE52B8A2DD700BA04F9 /* StarView.swift */; };
+		97532FEA2B8ADC4300BA04F9 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FE92B8ADC4300BA04F9 /* UserModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		97532FDE2B89CDD500BA04F9 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		97532FE12B89D2EB00BA04F9 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		97532FE52B8A2DD700BA04F9 /* StarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarView.swift; sourceTree = "<group>"; };
+		97532FE92B8ADC4300BA04F9 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 		97532FD72B89862A00BA04F9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				97532FE92B8ADC4300BA04F9 /* UserModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -203,6 +206,7 @@
 				97532FDF2B89CDD500BA04F9 /* CardView.swift in Sources */,
 				97532FE22B89D2EB00BA04F9 /* ProfileView.swift in Sources */,
 				97532FE62B8A2DD700BA04F9 /* StarView.swift in Sources */,
+				97532FEA2B8ADC4300BA04F9 /* UserModel.swift in Sources */,
 				97532FC92B8985B200BA04F9 /* N_FriendApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
