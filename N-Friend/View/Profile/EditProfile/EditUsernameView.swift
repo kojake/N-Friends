@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
 
 struct EditUsernameView: View {
-    @State var Username: String = "aaaaa"
+    var Realname: String
+    @State var Username: String
     
     var body: some View {
         VStack(alignment: .trailing){
@@ -23,9 +25,22 @@ struct EditUsernameView: View {
                 }
             }
         }
+        .onDisappear{
+            UsernameUpdate()
+        }
     }
-}
-
-#Preview {
-    EditUsernameView()
+    private func UsernameUpdate(){
+        let db = Firestore.firestore()
+        
+        // フィールドの値を更新
+        db.collection("UserList").document(Realname).updateData([
+            "Username": Username
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
 }

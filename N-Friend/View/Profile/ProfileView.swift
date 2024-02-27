@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
 
 struct ProfileView: View {
-    @State var Username: String = "Username"
+    @State var Username: String = ""
     var Realname: String
     
     @State private var Showshould_EditProfileView = false
@@ -25,7 +26,7 @@ struct ProfileView: View {
                 Spacer()
             }
             VStack{
-                NavigationLink(destination: EditProfileView(), isActive: $Showshould_EditProfileView){
+                NavigationLink(destination: EditProfileView(Username: Username, Realname: Realname), isActive: $Showshould_EditProfileView){
                     EmptyView()
                 }
                 Spacer()
@@ -80,6 +81,9 @@ struct ProfileView: View {
                 }.frame(maxWidth: .infinity, maxHeight: 400).background(Color.gray.opacity(0.4))
             }
         }
+        .onAppear{
+            UsernameGet()
+        }
         .alert(isPresented: $Signoutalert) {
             Alert(title: Text("確認"),
                   message: Text("本当にサインアウトしますか？"),
@@ -91,6 +95,21 @@ struct ProfileView: View {
         }
         .navigationDestination(isPresented: $Showshould_LoginView) {
             LoginView()
+        }
+    }
+    private func UsernameGet(){
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(Realname).getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let fieldValue = document.data()?["Username"] as? String {
+                    Username = fieldValue
+                } else {
+                    print("Field not found or cannot be converted to String.")
+                }
+            } else {
+                print("Document does not exist.")
+            }
         }
     }
 }

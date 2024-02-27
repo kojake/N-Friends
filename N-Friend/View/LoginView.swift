@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
 import FirebaseCore
 import FirebaseAuth
 import GoogleSignIn
@@ -52,6 +53,7 @@ struct LoginView: View {
             if let user = authResult?.user {
                 // ユーザー名を取得
                 Realname = user.displayName!
+                CreateUserData()
             }
         }
     }
@@ -85,6 +87,17 @@ struct LoginView: View {
                 }
             }
         }.navigationBarBackButtonHidden(true)
+    }
+    private func CreateUserData(){
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(Realname).setData([
+            "Username": Realname
+        ]) { err in
+            if let err = err {
+                print("Error adding document: \(err)")
+            }
+        }
     }
 }
 

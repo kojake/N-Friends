@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct EditProfileView: View {
+    var Username: String
+    var Realname: String
     
     var body: some View {
         NavigationView{
             List{
-                NavigationLink(destination: EditUsernameView()){
+                NavigationLink(destination: EditUsernameView(Realname: Realname, Username: Username)){
                     VStack{
                         Image(systemName: "person.text.rectangle").resizable().scaledToFit().frame(width: 45, height: 45).foregroundColor(Color.white)
                     }.frame(width: 60, height: 60).background(Color.blue).cornerRadius(10)
@@ -33,8 +35,4 @@ struct EditProfileView: View {
             }.navigationTitle("Edit Profile")
         }
     }
-}
-
-#Preview {
-    EditProfileView()
 }
