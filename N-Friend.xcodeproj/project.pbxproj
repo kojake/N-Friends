@@ -47,9 +47,11 @@
 		975330252B8C57E000BA04F9 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 975330242B8C57E000BA04F9 /* FirebaseStorageCombine-Community */; };
 		975330272B8C598D00BA04F9 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975330262B8C598D00BA04F9 /* EditProfileView.swift */; };
 		9753302A2B8C5A9800BA04F9 /* EditUsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975330292B8C5A9800BA04F9 /* EditUsernameView.swift */; };
-		9753302C2B8CC5D800BA04F9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9753302B2B8CC5D800BA04F9 /* GoogleService-Info.plist */; };
 		975330302B8CC6AE00BA04F9 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 9753302F2B8CC6AE00BA04F9 /* GoogleSignIn */; };
 		975330322B8CC6AE00BA04F9 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 975330312B8CC6AE00BA04F9 /* GoogleSignInSwift */; };
+		975330342B8D8F1E00BA04F9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 975330332B8D8F1E00BA04F9 /* GoogleService-Info.plist */; };
+		975330362B8DC0B900BA04F9 /* EditCampusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975330352B8DC0B900BA04F9 /* EditCampusView.swift */; };
+		975330382B8DC34A00BA04F9 /* EditInterestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975330372B8DC34A00BA04F9 /* EditInterestView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,8 +69,10 @@
 		97532FE92B8ADC4300BA04F9 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		975330262B8C598D00BA04F9 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		975330292B8C5A9800BA04F9 /* EditUsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUsernameView.swift; sourceTree = "<group>"; };
-		9753302B2B8CC5D800BA04F9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9753302D2B8CC62100BA04F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		975330332B8D8F1E00BA04F9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		975330352B8DC0B900BA04F9 /* EditCampusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCampusView.swift; sourceTree = "<group>"; };
+		975330372B8DC34A00BA04F9 /* EditInterestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditInterestView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,7 +138,7 @@
 				97532FD72B89862A00BA04F9 /* Model */,
 				97532FD62B89862500BA04F9 /* View */,
 				97532FCC2B8985B700BA04F9 /* Assets.xcassets */,
-				9753302B2B8CC5D800BA04F9 /* GoogleService-Info.plist */,
+				975330332B8D8F1E00BA04F9 /* GoogleService-Info.plist */,
 				9753302D2B8CC62100BA04F9 /* Info.plist */,
 				97532FCE2B8985B700BA04F9 /* Preview Content */,
 			);
@@ -202,6 +206,8 @@
 			isa = PBXGroup;
 			children = (
 				975330292B8C5A9800BA04F9 /* EditUsernameView.swift */,
+				975330352B8DC0B900BA04F9 /* EditCampusView.swift */,
+				975330372B8DC34A00BA04F9 /* EditInterestView.swift */,
 			);
 			path = EditProfile;
 			sourceTree = "<group>";
@@ -301,7 +307,7 @@
 			files = (
 				97532FD02B8985B700BA04F9 /* Preview Assets.xcassets in Resources */,
 				97532FCD2B8985B700BA04F9 /* Assets.xcassets in Resources */,
-				9753302C2B8CC5D800BA04F9 /* GoogleService-Info.plist in Resources */,
+				975330342B8D8F1E00BA04F9 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -317,10 +323,12 @@
 				97532FDD2B89BC8B00BA04F9 /* CardSwipeView.swift in Sources */,
 				97532FDB2B89896E00BA04F9 /* InterestedSelectionView.swift in Sources */,
 				97532FD92B89867A00BA04F9 /* LoginView.swift in Sources */,
+				975330382B8DC34A00BA04F9 /* EditInterestView.swift in Sources */,
 				97532FCB2B8985B200BA04F9 /* ContentView.swift in Sources */,
 				97532FDF2B89CDD500BA04F9 /* CardView.swift in Sources */,
 				97532FE22B89D2EB00BA04F9 /* ProfileView.swift in Sources */,
 				97532FE62B8A2DD700BA04F9 /* StarView.swift in Sources */,
+				975330362B8DC0B900BA04F9 /* EditCampusView.swift in Sources */,
 				97532FEA2B8ADC4300BA04F9 /* UserModel.swift in Sources */,
 				97532FC92B8985B200BA04F9 /* N_FriendApp.swift in Sources */,
 			);

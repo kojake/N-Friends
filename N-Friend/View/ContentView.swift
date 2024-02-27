@@ -8,10 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    
-    init() {
-        UITabBar.appearance().backgroundColor = .white
-    }
+    var Realname: String
     
     var body: some View {
         TabView {
@@ -23,14 +20,10 @@ struct ContentView: View {
                 .tabItem {
                     Image(systemName: "star.fill")
                 }
-            ProfileView()
+            ProfileView(Realname: Realname)
                 .tabItem {
                     Image(systemName: "person")
                 }
         }.navigationBarBackButtonHidden(true)
     }
-}
-
-#Preview {
-    ContentView()
 }

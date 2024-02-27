@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ProfileView: View {
     @State var Username: String = "Username"
+    var Realname: String
     
     @State private var Showshould_EditProfileView = false
     
@@ -29,7 +30,19 @@ struct ProfileView: View {
                 }
                 Spacer()
                 VStack{
-                    Text(Username).font(.title).fontWeight(.bold).frame(width: 200, height: 60).background(Color.white)
+                    ZStack{
+                        HStack(spacing: 0){
+                            Rectangle().frame(width: 200, height: 1).foregroundColor(.clear)
+                            VStack{
+                                Rectangle().frame(width: 1, height: 10).foregroundColor(.clear)
+                                Text(Realname).fontWeight(.bold).frame(width: 150, height: 40).background(Color.white).cornerRadius(30)
+                            }
+                        }
+                        HStack(spacing: 0){
+                            Text(Username).font(.title).fontWeight(.bold).frame(width: 200, height: 60).background(Color.blue).foregroundColor(Color.white).cornerRadius(8)
+                            Rectangle().frame(width: 100, height: 1).foregroundColor(.clear)
+                        }
+                    }
                     Spacer()
                     HStack{
                         Button(action: {
@@ -80,8 +93,4 @@ struct ProfileView: View {
             LoginView()
         }
     }
-}
-
-#Preview {
-    ProfileView()
 }

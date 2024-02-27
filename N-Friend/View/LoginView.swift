@@ -11,6 +11,8 @@ import FirebaseAuth
 import GoogleSignIn
 
 struct LoginView: View {
+    @State var Realname: String = ""
+    
     private func googleAuth() {
         
         guard let clientID:String = FirebaseApp.app()?.options.clientID else { return }
@@ -45,6 +47,12 @@ struct LoginView: View {
                 print("SignInError: \(error.localizedDescription)")
                 return
             }
+            
+            // Firebaseにログイン成功したらユーザー情報を取得
+            if let user = authResult?.user {
+                // ユーザー名を取得
+                Realname = user.displayName!
+            }
         }
     }
     
@@ -53,7 +61,7 @@ struct LoginView: View {
     var body: some View {
         NavigationStack{
             ZStack{
-                NavigationLink(destination: ContentView(), isActive: $Showshould_ContentView){
+                NavigationLink(destination: ContentView(Realname: Realname), isActive: $Showshould_ContentView){
                     EmptyView()
                 }
                 Color.blue.opacity(0.7).ignoresSafeArea()
