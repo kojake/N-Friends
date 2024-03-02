@@ -54,11 +54,17 @@ struct ProfileView: View {
                     Form{
                         Section{
                             HStack {
+                                VStack{
+                                    Image(systemName: "person.text.rectangle").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.blue)
+                                }.frame(width: 50, height: 50).background(Color.gray.opacity(0.3)).cornerRadius(50)
                                 Text("ユーザーネーム")
                                     .fontWeight(.semibold)
                                 TextField(Username, text: $Username)
                             }
                             HStack{
+                                VStack{
+                                    Image(systemName: "mappin.and.ellipse").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.green)
+                                }.frame(width: 50, height: 50).background(Color.gray.opacity(0.3)).cornerRadius(50)
                                 Picker("所属キャンパス", selection: $SelectionIndexValue) {
                                     ForEach(0..<CurrentAllCampus.count, id: \.self){ index in
                                         Text(CurrentAllCampus[index]).tag(index)
@@ -66,6 +72,9 @@ struct ProfileView: View {
                                 }.fontWeight(.semibold)
                             }
                             HStack {
+                                VStack{
+                                    Image(systemName: "gamecontroller").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.pink)
+                                }.frame(width: 50, height: 50).background(Color.gray.opacity(0.3)).cornerRadius(50)
                                 Text("趣味")
                                     .fontWeight(.semibold)
                                 ScrollView(.horizontal){
@@ -108,7 +117,7 @@ struct ProfileView: View {
         .navigationDestination(isPresented: $Showshould_LoginView) {
             LoginView()
         }
-        .navigationDestination(isPresented: $Showshould_TastesEditView) {
+        .sheet(isPresented: $Showshould_TastesEditView){
             TastesEditView()
         }
     }
