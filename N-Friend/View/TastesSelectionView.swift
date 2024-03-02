@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct InterestedSelectionView: View {
-    @State var InterestList: [String] = []
+struct TastesSelectionView: View {
+    @State var TastesList: [String] = []
     
     var body: some View {
         VStack{
@@ -34,5 +34,5 @@ struct InterestedSelectionView: View {
 }
 
 #Preview {
-    InterestedSelectionView()
+    TastesSelectionView()
 }

@@ -9,92 +9,107 @@ import SwiftUI
 import FirebaseFirestore
 
 struct ProfileView: View {
-    @State var Username: String = ""
     var Realname: String
     
-    @State private var Showshould_EditProfileView = false
+    //Profile
+    @State var Username: String = ""
+    @State var Campus: String = "秋葉原"
+    
+    @State var Tastes: [String] = ["サッカー", "バスケ", "プログラミング"]
+    @State private var Showshould_TastesEditView = false
+    
+    //Picker
+    @State var CurrentAllCampus: [String] = ["秋葉原", "代々木", "新宿"]
+    @State var SelectionIndexValue: Int = 0
     
     //Signout
     @State private var Signoutalert = false
     @State private var Showshould_LoginView = false
     
     var body: some View {
-        ZStack{
-            Color.gray.opacity(0.3).shadow(radius: 20).ignoresSafeArea()
+        NavigationView{
             VStack{
-                Image("Person1").resizable().scaledToFit().ignoresSafeArea()
-                Spacer()
-            }
-            VStack{
-                NavigationLink(destination: EditProfileView(Username: Username, Realname: Realname), isActive: $Showshould_EditProfileView){
-                    EmptyView()
-                }
-                Spacer()
-                VStack{
-                    ZStack{
-                        HStack(spacing: 0){
-                            Rectangle().frame(width: 200, height: 1).foregroundColor(.clear)
-                            VStack{
-                                Rectangle().frame(width: 1, height: 10).foregroundColor(.clear)
-                                Text(Realname).fontWeight(.bold).frame(width: 150, height: 40).background(Color.white).cornerRadius(30)
+                ZStack{
+                    Image("Person1")
+                        .resizable()
+                        .frame(width: 100, height: 100)
+                        .cornerRadius(75)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 75).stroke(Color.black, lineWidth: 2))
+                    HStack{
+                        Rectangle().frame(width: 50, height: 1).foregroundColor(.clear)
+                        VStack{
+                            Rectangle().frame(width: 1, height: 50).foregroundColor(.clear)
+                            Button(action: {
+                                
+                            }){
+                                ZStack{
+                                    Image(systemName: "plus").foregroundColor(Color.white)
+                                }.frame(width: 30, height: 30).background(Color.blue).cornerRadius(50)
                             }
                         }
-                        HStack(spacing: 0){
-                            Text(Username).font(.title).fontWeight(.bold).frame(width: 200, height: 60).background(Color.blue).foregroundColor(Color.white).cornerRadius(8)
-                            Rectangle().frame(width: 100, height: 1).foregroundColor(.clear)
+                    }
+                }
+                NavigationView{
+                    Form{
+                        Section{
+                            HStack {
+                                Text("ユーザーネーム")
+                                    .fontWeight(.semibold)
+                                TextField(Username, text: $Username)
+                            }
+                            HStack{
+                                Picker("所属キャンパス", selection: $SelectionIndexValue) {
+                                    ForEach(0..<CurrentAllCampus.count, id: \.self){ index in
+                                        Text(CurrentAllCampus[index]).tag(index)
+                                    }
+                                }.fontWeight(.semibold)
+                            }
+                            HStack {
+                                Text("趣味")
+                                    .fontWeight(.semibold)
+                                ScrollView(.horizontal){
+                                    HStack{
+                                        ForEach(0..<Tastes.count, id: \.self) { index in
+                                            Text(Tastes[index]).fontWeight(.semibold).frame(width: 130, height: 30).background(Color.blue).foregroundColor(Color.white).cornerRadius(5)
+                                        }
+                                    }
+                                }
+                            }.onTapGesture {
+                                Showshould_TastesEditView = true
+                            }
                         }
                     }
-                    Spacer()
-                    HStack{
-                        Button(action: {
-                            
-                        }){
-                            VStack{
-                                ZStack{
-                                    Image(systemName: "photo.badge.plus").resizable().scaledToFit().frame(width: 40, height: 40).foregroundColor(Color.black)
-                                }.frame(width: 70, height: 70).background(Color.white).cornerRadius(50)
-                                Text("ADD Photos").font(.title3).fontWeight(.black).foregroundColor(Color.white)
-                            }.shadow(radius: 10)
-                        }
-                        Button(action: {
-                            Showshould_EditProfileView = true
-                        }){
-                            VStack{
-                                ZStack{
-                                    Image(systemName: "pencil").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.black)
-                                }.frame(width: 70, height: 70).background(Color.white).cornerRadius(50)
-                                Text("Edit Profile").font(.title3).fontWeight(.black).foregroundColor(Color.white)
-                            }.shadow(radius: 10)
-                        }.padding()
-                        Button(action: {
-                            Signoutalert = true
-                        }){
-                            VStack{
-                                ZStack{
-                                    Image(systemName: "person.crop.circle.fill.badge.xmark").resizable().scaledToFit().frame(width: 40, height: 40).foregroundColor(Color.white)
-                                }.frame(width: 70, height: 70).background(Color.red).cornerRadius(50)
-                                Text("Sign out").font(.title3).fontWeight(.black).foregroundColor(Color.white)
-                            }.shadow(radius: 10)
-                        }
-                    }
-                    Spacer()
-                }.frame(maxWidth: .infinity, maxHeight: 400).background(Color.gray.opacity(0.4))
+                }
+            }
+        }
+        .toolbar{
+            ToolbarItem(placement: .keyboard) {
+                Button("閉じる") {
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                }
             }
         }
         .onAppear{
             UsernameGet()
+        }
+        .onDisappear{
+            UsernameUpdate()
         }
         .alert(isPresented: $Signoutalert) {
             Alert(title: Text("確認"),
                   message: Text("本当にサインアウトしますか？"),
                   primaryButton: .cancel(Text("キャンセル")),
                   secondaryButton: .default(Text("サインアウト"),
-                                          action: {
+                                            action: {
                 Showshould_LoginView = true
             }))
         }
         .navigationDestination(isPresented: $Showshould_LoginView) {
             LoginView()
+        }
+        .navigationDestination(isPresented: $Showshould_TastesEditView) {
+            TastesEditView()
         }
     }
     private func UsernameGet(){
@@ -112,4 +127,18 @@ struct ProfileView: View {
             }
         }
     }
+    private func UsernameUpdate(){
+         let db = Firestore.firestore()
+         
+         // フィールドの値を更新
+         db.collection("UserList").document(Realname).updateData([
+             "Username": Username
+         ]) { err in
+             if let err = err {
+                 print("Error updating document: \(err)")
+             } else {
+                 print("Document successfully updated")
+             }
+         }
+     }
 }

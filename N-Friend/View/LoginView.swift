@@ -92,7 +92,9 @@ struct LoginView: View {
         let db = Firestore.firestore()
         
         db.collection("UserList").document(Realname).setData([
-            "Username": Realname
+            "Username": Realname,
+            "Campus": "",
+            "Tastes": [String]()
         ]) { err in
             if let err = err {
                 print("Error adding document: \(err)")
