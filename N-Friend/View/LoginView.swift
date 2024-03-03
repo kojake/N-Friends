@@ -49,11 +49,15 @@ struct LoginView: View {
                 return
             }
             
-            // Firebaseにログイン成功したらユーザー情報を取得
             if let user = authResult?.user {
-                // ユーザー名を取得
                 Realname = user.displayName!
-                UploadUserData()
+
+                let isNewUser = authResult?.additionalUserInfo?.isNewUser ?? true
+                if isNewUser {
+                    UploadUserData()
+                } else {
+                    Showshould_ContentView = true
+                }
             }
         }
     }
