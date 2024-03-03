@@ -13,13 +13,13 @@ struct ProfileView: View {
     
     //Profile
     @State var Username: String = ""
-    @State var Campus: String = "秋葉原"
+    @State var EnrollmentCampus: String = "秋葉原"
     
-    @State var Tastes: [String] = ["サッカー", "バスケ", "プログラミング"]
+    @State var UserTastesList: [String] = ["サッカー", "バスケ", "プログラミング"]
     @State private var Showshould_TastesEditView = false
     
     //Picker
-    @State var CurrentAllCampus: [String] = ["秋葉原", "代々木", "新宿"]
+    @State var AllCampus: [String] = ["秋葉原", "代々木", "新宿"]
     @State var SelectionIndexValue: Int = 0
     
     //Signout
@@ -66,8 +66,8 @@ struct ProfileView: View {
                                     Image(systemName: "mappin.and.ellipse").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.green)
                                 }.frame(width: 50, height: 50).background(Color.gray.opacity(0.3)).cornerRadius(50)
                                 Picker("所属キャンパス", selection: $SelectionIndexValue) {
-                                    ForEach(0..<CurrentAllCampus.count, id: \.self){ index in
-                                        Text(CurrentAllCampus[index]).tag(index)
+                                    ForEach(0..<AllCampus.count, id: \.self){ index in
+                                        Text(AllCampus[index]).tag(index)
                                     }
                                 }.fontWeight(.semibold)
                             }
@@ -79,8 +79,8 @@ struct ProfileView: View {
                                     .fontWeight(.semibold)
                                 ScrollView(.horizontal){
                                     HStack{
-                                        ForEach(0..<Tastes.count, id: \.self) { index in
-                                            Text(Tastes[index]).fontWeight(.semibold).frame(width: 130, height: 30).background(Color.blue).foregroundColor(Color.white).cornerRadius(5)
+                                        ForEach(0..<UserTastesList.count, id: \.self) { index in
+                                            Text(UserTastesList[index]).fontWeight(.semibold).frame(width: 130, height: 30).background(Color.blue).foregroundColor(Color.white).cornerRadius(5)
                                         }
                                     }
                                 }
@@ -100,10 +100,11 @@ struct ProfileView: View {
             }
         }
         .onAppear{
-            UsernameGet()
+            FetchUsername()
+            FetchUserTastes()
         }
         .onDisappear{
-            UsernameUpdate()
+            UpdateUsername()
         }
         .alert(isPresented: $Signoutalert) {
             Alert(title: Text("確認"),
@@ -118,10 +119,10 @@ struct ProfileView: View {
             LoginView()
         }
         .sheet(isPresented: $Showshould_TastesEditView){
-            TastesEditView()
+            TastesEditView(Realname: Realname, UserTastesList: $UserTastesList)
         }
     }
-    private func UsernameGet(){
+    private func FetchUsername(){
         let db = Firestore.firestore()
         
         db.collection("UserList").document(Realname).getDocument { (document, error) in
@@ -136,18 +137,32 @@ struct ProfileView: View {
             }
         }
     }
-    private func UsernameUpdate(){
-         let db = Firestore.firestore()
-         
-         // フィールドの値を更新
-         db.collection("UserList").document(Realname).updateData([
-             "Username": Username
-         ]) { err in
-             if let err = err {
-                 print("Error updating document: \(err)")
-             } else {
-                 print("Document successfully updated")
-             }
-         }
-     }
+    private func UpdateUsername(){
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(Realname).updateData([
+            "Username": Username
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
+    private func FetchUserTastes(){
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(Realname).getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let fieldValue = document.data()?["Tastes"] as? [String] {
+                    UserTastesList = fieldValue
+                } else {
+                    print("Field not found or cannot be converted to String.")
+                }
+            } else {
+                print("Document does not exist.")
+            }
+        }
+    }
 }

@@ -53,7 +53,7 @@ struct LoginView: View {
             if let user = authResult?.user {
                 // ユーザー名を取得
                 Realname = user.displayName!
-                CreateUserData()
+                UploadUserData()
             }
         }
     }
@@ -88,12 +88,12 @@ struct LoginView: View {
             }
         }.navigationBarBackButtonHidden(true)
     }
-    private func CreateUserData(){
+    private func UploadUserData(){
         let db = Firestore.firestore()
         
         db.collection("UserList").document(Realname).setData([
             "Username": Realname,
-            "Campus": "",
+            "EnrollmentCampus": "",
             "Tastes": [String]()
         ]) { err in
             if let err = err {
