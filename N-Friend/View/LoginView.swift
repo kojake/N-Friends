@@ -7,12 +7,16 @@
 
 import SwiftUI
 import FirebaseFirestore
+import FirebaseStorage
 import FirebaseCore
 import FirebaseAuth
 import GoogleSignIn
 
 struct LoginView: View {
     @State var Realname: String = ""
+    @State private var UserImage: UIImage?
+    @State private var Showshould_ContentView = false
+    @State private var Showshould_ImagePickerView = false
     
     private func googleAuth() {
         
@@ -38,7 +42,6 @@ struct LoginView: View {
             
             let credential = GoogleAuthProvider.credential(withIDToken: idToken,accessToken: user.accessToken.tokenString)
             self.login(credential: credential)
-            Showshould_ContentView = true
         }
     }
     
@@ -50,9 +53,8 @@ struct LoginView: View {
             }
             
             if let user = authResult?.user {
-                Realname = user.displayName!
-
                 let isNewUser = authResult?.additionalUserInfo?.isNewUser ?? true
+                Realname = user.displayName!
                 if isNewUser {
                     UploadUserData()
                 } else {
@@ -61,8 +63,6 @@ struct LoginView: View {
             }
         }
     }
-    
-    @State private var Showshould_ContentView = false
     
     var body: some View {
         NavigationStack{

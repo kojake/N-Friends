@@ -49,6 +49,7 @@
 		975330302B8CC6AE00BA04F9 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 9753302F2B8CC6AE00BA04F9 /* GoogleSignIn */; };
 		975330322B8CC6AE00BA04F9 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 975330312B8CC6AE00BA04F9 /* GoogleSignInSwift */; };
 		975330342B8D8F1E00BA04F9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 975330332B8D8F1E00BA04F9 /* GoogleService-Info.plist */; };
+		97BE23372B96E19100027B05 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BE23362B96E19100027B05 /* ImagePickerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +68,7 @@
 		97532FE92B8ADC4300BA04F9 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		9753302D2B8CC62100BA04F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		975330332B8D8F1E00BA04F9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		97BE23362B96E19100027B05 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +158,7 @@
 				97532FE02B89D0EF00BA04F9 /* Card */,
 				97532FE42B8A2DB600BA04F9 /* Star */,
 				97532FE32B89DDF900BA04F9 /* Profile */,
+				97BE23362B96E19100027B05 /* ImagePickerView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -304,6 +307,7 @@
 				97532FDD2B89BC8B00BA04F9 /* CardSwipeView.swift in Sources */,
 				97532FDB2B89896E00BA04F9 /* TastesSelectionView.swift in Sources */,
 				97532FD92B89867A00BA04F9 /* LoginView.swift in Sources */,
+				97BE23372B96E19100027B05 /* ImagePickerView.swift in Sources */,
 				97532FCB2B8985B200BA04F9 /* ContentView.swift in Sources */,
 				970A152B2B92C5C8000CDE36 /* TastesEditView.swift in Sources */,
 				97532FDF2B89CDD500BA04F9 /* CardView.swift in Sources */,

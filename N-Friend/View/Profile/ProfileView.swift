@@ -9,9 +9,9 @@ import SwiftUI
 import FirebaseFirestore
 
 struct ProfileView: View {
-    var Realname: String
-    
     //Profile
+    @State private var UserImage: UIImage?
+    @State var Realname: String
     @State var Username: String = ""
     @State var EnrollmentCampus: String = "秋葉原"
     
@@ -26,22 +26,33 @@ struct ProfileView: View {
     @State private var Signoutalert = false
     @State private var Showshould_LoginView = false
     
+    //ImagePickerView
+    @State private var Showshould_ImagePickerView = false
+    
     var body: some View {
         NavigationView{
             VStack{
                 ZStack{
-                    Image("Person1")
-                        .resizable()
-                        .frame(width: 100, height: 100)
-                        .cornerRadius(75)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 75).stroke(Color.black, lineWidth: 2))
+                    if let userimage = UserImage {
+                        Image(uiImage: userimage)
+                            .resizable()
+                            .frame(width: 100, height: 100)
+                            .cornerRadius(75)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 75).stroke(Color.black, lineWidth: 2))
+                    } else {
+                        Image(systemName: "person.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 80, height: 80)
+                            .foregroundColor(Color.blue)
+                    }
                     HStack{
                         Rectangle().frame(width: 50, height: 1).foregroundColor(.clear)
                         VStack{
                             Rectangle().frame(width: 1, height: 50).foregroundColor(.clear)
                             Button(action: {
-                                
+                                Showshould_ImagePickerView = true
                             }){
                                 ZStack{
                                     Image(systemName: "plus").foregroundColor(Color.white)
@@ -121,6 +132,15 @@ struct ProfileView: View {
         .sheet(isPresented: $Showshould_TastesEditView){
             TastesEditView(Realname: Realname, UserTastesList: $UserTastesList)
         }
+        .sheet(isPresented: $Showshould_ImagePickerView){
+            ImagePicker(UserImage: $UserImage, Showshould_ImagePickerView: $Showshould_ImagePickerView)
+        }
+    }
+    private func FetchUserImage(){
+        
+    }
+    private func UpdateUserImage(){
+        
     }
     private func FetchUsername(){
         let db = Firestore.firestore()
