@@ -7,10 +7,11 @@
 
 import SwiftUI
 import FirebaseFirestore
+import FirebaseStorage
 
 struct ProfileView: View {
     //Profile
-    @State private var UserImage: UIImage?
+    @State var UserImage: UIImage?
     @State var Realname: String
     @State var Username: String = ""
     @State var EnrollmentCampus: String = "秋葉原"
@@ -38,8 +39,7 @@ struct ProfileView: View {
                             .resizable()
                             .frame(width: 100, height: 100)
                             .cornerRadius(75)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 75).stroke(Color.black, lineWidth: 2))
+                            .overlay(RoundedRectangle(cornerRadius: 75).stroke(Color.black, lineWidth: 2))
                     } else {
                         Image(systemName: "person.fill")
                             .resizable()
@@ -116,6 +116,7 @@ struct ProfileView: View {
         }
         .onDisappear{
             UpdateUsername()
+            UpdateUserImage()
         }
         .alert(isPresented: $Signoutalert) {
             Alert(title: Text("確認"),
@@ -137,10 +138,28 @@ struct ProfileView: View {
         }
     }
     private func FetchUserImage(){
+        let storageref = Storage.storage().reference(forURL: "gs://n-friends.appspot.com").child(Username)
         
+        storageref.getData(maxSize: 10 * 1024 * 1024) { data, error in
+            if let error = error{
+                print("Error downloading image: \(error.localizedDescription)")
+            } else if let data = data {
+                UserImage = UIImage(data: data)
+            }
+        }
     }
     private func UpdateUserImage(){
+        let storageref = Storage.storage().reference(forURL: "gs://n-friends.appspot.com").child(Username)
         
+        let image = UserImage
+        
+        let data = image!.jpegData(compressionQuality: 1.0)! as NSData
+        
+        storageref.putData(data as Data, metadata: nil) { (data, error) in
+            if error != nil {
+                return
+            }
+        }
     }
     private func FetchUsername(){
         let db = Firestore.firestore()
@@ -149,6 +168,7 @@ struct ProfileView: View {
             if let document = document, document.exists {
                 if let fieldValue = document.data()?["Username"] as? String {
                     Username = fieldValue
+                    FetchUserImage()
                 } else {
                     print("Field not found or cannot be converted to String.")
                 }
