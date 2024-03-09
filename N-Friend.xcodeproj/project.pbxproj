@@ -13,6 +13,7 @@
 		974B17DC2B9BFEBD0012351D /* AppAuthTV in Frameworks */ = {isa = PBXBuildFile; productRef = 974B17DB2B9BFEBD0012351D /* AppAuthTV */; };
 		974B17DF2B9BFECA0012351D /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 974B17DE2B9BFECA0012351D /* GoogleSignIn */; };
 		974B17E12B9BFECA0012351D /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 974B17E02B9BFECA0012351D /* GoogleSignInSwift */; };
+		974B17E32B9C4CF20012351D /* Progressview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974B17E22B9C4CF20012351D /* Progressview.swift */; };
 		97532FC92B8985B200BA04F9 /* N_FriendApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FC82B8985B200BA04F9 /* N_FriendApp.swift */; };
 		97532FCB2B8985B200BA04F9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FCA2B8985B200BA04F9 /* ContentView.swift */; };
 		97532FCD2B8985B700BA04F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97532FCC2B8985B700BA04F9 /* Assets.xcassets */; };
@@ -54,6 +55,7 @@
 
 /* Begin PBXFileReference section */
 		970A152A2B92C5C8000CDE36 /* TastesEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TastesEditView.swift; sourceTree = "<group>"; };
+		974B17E22B9C4CF20012351D /* Progressview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progressview.swift; sourceTree = "<group>"; };
 		97532FC52B8985B200BA04F9 /* N-Friend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "N-Friend.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		97532FC82B8985B200BA04F9 /* N_FriendApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = N_FriendApp.swift; sourceTree = "<group>"; };
 		97532FCA2B8985B200BA04F9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -157,10 +159,10 @@
 				97532FD82B89867A00BA04F9 /* LoginView.swift */,
 				97532FDA2B89896E00BA04F9 /* TastesSelectionView.swift */,
 				97532FCA2B8985B200BA04F9 /* ContentView.swift */,
+				974B17E22B9C4CF20012351D /* Progressview.swift */,
 				97532FE02B89D0EF00BA04F9 /* Card */,
 				97532FE42B8A2DB600BA04F9 /* Star */,
 				97532FE32B89DDF900BA04F9 /* Profile */,
-				97BE23362B96E19100027B05 /* ImagePickerView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -186,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				97532FE12B89D2EB00BA04F9 /* ProfileView.swift */,
+				97BE23362B96E19100027B05 /* ImagePickerView.swift */,
 				970A152A2B92C5C8000CDE36 /* TastesEditView.swift */,
 			);
 			name = Profile;
@@ -320,6 +323,7 @@
 				97532FD92B89867A00BA04F9 /* LoginView.swift in Sources */,
 				97BE23372B96E19100027B05 /* ImagePickerView.swift in Sources */,
 				97532FCB2B8985B200BA04F9 /* ContentView.swift in Sources */,
+				974B17E32B9C4CF20012351D /* Progressview.swift in Sources */,
 				970A152B2B92C5C8000CDE36 /* TastesEditView.swift in Sources */,
 				97532FDF2B89CDD500BA04F9 /* CardView.swift in Sources */,
 				97532FE22B89D2EB00BA04F9 /* ProfileView.swift in Sources */,
@@ -473,7 +477,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "kaito.N-Friend";
+				PRODUCT_BUNDLE_IDENTIFIER = "kaito.N-Friend20240309";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -503,7 +507,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "kaito.N-Friend";
+				PRODUCT_BUNDLE_IDENTIFIER = "kaito.N-Friend20240309";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
