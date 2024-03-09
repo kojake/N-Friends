@@ -18,6 +18,7 @@ struct LoginView: View {
     @State private var Showshould_ContentView = false
     @State private var Showshould_ImagePickerView = false
     
+    //GoogleAuthを使ってログインする
     private func googleAuth() {
         
         guard let clientID:String = FirebaseApp.app()?.options.clientID else { return }
@@ -53,8 +54,10 @@ struct LoginView: View {
             }
             
             if let user = authResult?.user {
+                //ユーザーが既に登録されているかを取得する
                 let isNewUser = authResult?.additionalUserInfo?.isNewUser ?? true
                 Realname = user.displayName!
+                //いない場合はユーザー情報をデータベースにアップロードする
                 if isNewUser {
                     UploadUserData()
                 } else {

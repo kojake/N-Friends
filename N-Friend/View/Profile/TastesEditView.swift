@@ -55,7 +55,7 @@ struct TastesEditView: View {
                                         UserTastesList.append(TastesList[y][x])
                                     }
                                 }){
-                                    Text(TastesList[y][x]).fontWeight(.semibold).frame(width: 110, height: 50).background(MatchingTaste(index: TastesList[y][x]) ? Color.gray : Color.blue).foregroundColor(Color.white).cornerRadius(10)
+                                    Text(TastesList[y][x]).fontWeight(.semibold).frame(width: 110, height: 50).background(FindAlreadyTaste(index: TastesList[y][x]) ? Color.gray : Color.blue).foregroundColor(Color.white).cornerRadius(10)
                                 }
                             }
                         }
@@ -66,7 +66,8 @@ struct TastesEditView: View {
             UpdateUserTastes()
         }
     }
-    private func MatchingTaste(index: String) -> Bool {
+    private func FindAlreadyTaste(index: String) -> Bool {
+        //引数の趣味が既に登録されているかを自分の登録されている趣味と照合する
         for i in 0..<UserTastesList.count {
             if index == UserTastesList[i]{
                 return true
