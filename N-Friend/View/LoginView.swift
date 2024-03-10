@@ -16,7 +16,7 @@ struct LoginView: View {
     @State var Realname: String = ""
     @State private var UserImage: UIImage?
     @State private var Showshould_ContentView = false
-    @State private var Showshould_ImagePickerView = false
+    @State private var isLoading: Bool = false
     
     //GoogleAuthを使ってログインする
     private func googleAuth() {
@@ -42,6 +42,7 @@ struct LoginView: View {
             }
             
             let credential = GoogleAuthProvider.credential(withIDToken: idToken,accessToken: user.accessToken.tokenString)
+            isLoading = true
             self.login(credential: credential)
         }
     }
@@ -60,7 +61,10 @@ struct LoginView: View {
                 //いない場合はユーザー情報をデータベースにアップロードする
                 if isNewUser {
                     UploadUserData()
+                    isLoading = false
+                    Showshould_ContentView = true
                 } else {
+                    isLoading = false
                     Showshould_ContentView = true
                 }
             }
@@ -91,6 +95,9 @@ struct LoginView: View {
                     }){
                         Text("ログインできませんか？").font(.title2).foregroundColor(Color.white)
                     }
+                }
+                if isLoading{
+                    Progressview(Progressmessage: "ログイン中")
                 }
             }
         }.navigationBarBackButtonHidden(true)

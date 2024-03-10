@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct Progressview: View {
+    var Progressmessage: String
+    
     var body: some View {
         ZStack{
             Color.black.opacity(0.3).ignoresSafeArea()
             VStack{
-                ProgressView("ユーザー情報取得中")
+                ProgressView(Progressmessage)
                     .frame(width: 210, height: 100)
                     .background(Color.blue.opacity(0.9))
                     .foregroundColor(Color.white)
