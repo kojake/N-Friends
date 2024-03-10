@@ -14,7 +14,7 @@ struct ProfileView: View {
     @State var UserImage: UIImage?
     @State var Realname: String
     @State var Username: String = ""
-    @State var EnrollmentCampus: String = "秋葉原"
+    @State var CampusSelectionIndexValue: Int = 0
     
     //Progressview
     @State private var isLoading: Bool = false
@@ -25,7 +25,6 @@ struct ProfileView: View {
     
     //Picker
     @State var AllCampus: [String] = ["秋葉原", "代々木", "新宿"]
-    @State var SelectionIndexValue: Int = 0
     
     //Signout
     @State private var Signoutalert = false
@@ -81,7 +80,7 @@ struct ProfileView: View {
                                     VStack{
                                         Image(systemName: "mappin.and.ellipse").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.green)
                                     }.frame(width: 50, height: 50).background(Color.gray.opacity(0.3)).cornerRadius(50)
-                                    Picker("所属キャンパス", selection: $SelectionIndexValue) {
+                                    Picker("所属キャンパス", selection: $CampusSelectionIndexValue) {
                                         ForEach(0..<AllCampus.count, id: \.self){ index in
                                             Text(AllCampus[index]).tag(index)
                                         }
@@ -123,13 +122,14 @@ struct ProfileView: View {
             if !isDisappearLoading{
                 isLoading = true
                 FetchUsername()
+                FetchEnrollmentCampus()
                 FetchUserTastes()
             }
         }
         .onDisappear{
             if !isLoading{
                 isDisappearLoading = true
-                UpdateUsername()
+                UpdateUserData()
                 DeleteUserImage()
                 UpdateUserImage()
             }
@@ -153,6 +153,7 @@ struct ProfileView: View {
             ImagePicker(UserImage: $UserImage, Showshould_ImagePickerView: $Showshould_ImagePickerView)
         }
     }
+    //UserImage
     private func FetchUserImage(){
         let storageref = Storage.storage().reference(forURL: "gs://n-friends.appspot.com").child(Username)
         
@@ -193,6 +194,8 @@ struct ProfileView: View {
             }
         }
     }
+    
+    //Username
     private func FetchUsername(){
         let db = Firestore.firestore()
         
@@ -211,19 +214,6 @@ struct ProfileView: View {
             }
         }
     }
-    private func UpdateUsername(){
-        let db = Firestore.firestore()
-        
-        db.collection("UserList").document(Realname).updateData([
-            "Username": Username
-        ]) { err in
-            if let err = err {
-                print("Error updating document: \(err)")
-            } else {
-                print("Document successfully updated")
-            }
-        }
-    }
     private func FetchUserTastes(){
         let db = Firestore.firestore()
         
@@ -236,6 +226,43 @@ struct ProfileView: View {
                 }
             } else {
                 print("Document does not exist.")
+            }
+        }
+    }
+    //EnrollmentCampus
+    private func FetchEnrollmentCampus(){
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(Realname).getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let fieldValue = document.data()?["EnrollmentCampus"] as? String{
+                    for i in 0..<AllCampus.count{
+                        if fieldValue == AllCampus[i]{
+                            CampusSelectionIndexValue = i
+                            break
+                        }
+                    }
+                } else {
+                    print("Field not found or cannot be converted to String.")
+                }
+            } else {
+                print("Document does not exits.")
+            }
+        }
+    }
+    
+    //UserData
+    private func UpdateUserData(){
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(Realname).updateData([
+            "Username": Username,
+            "EnrollmentCampus": AllCampus[CampusSelectionIndexValue]
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
             }
         }
     }

@@ -107,7 +107,7 @@ struct LoginView: View {
         
         db.collection("UserList").document(Realname).setData([
             "Username": Realname,
-            "EnrollmentCampus": "",
+            "EnrollmentCampus": "秋葉原キャンパス",
             "Tastes": [String]()
         ]) { err in
             if let err = err {
