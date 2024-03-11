@@ -14,6 +14,7 @@ struct ProfileView: View {
     @State var UserImage: UIImage?
     @State var Realname: String
     @State var Username: String = ""
+    @State var Previousname: String = ""
     @State var CampusSelectionIndexValue: Int = 0
     
     //Progressview
@@ -160,6 +161,7 @@ struct ProfileView: View {
         storageref.getData(maxSize: 10 * 1024 * 1024) { data, error in
             if let error = error{
                 print("Error downloading image: \(error.localizedDescription)")
+                isLoading = false
             } else if let data = data {
                 UserImage = UIImage(data: data)
                 //画像取得の関数が最後に実行されるので画像が取得できたらローディング画面を解除する
@@ -184,13 +186,14 @@ struct ProfileView: View {
     private func DeleteUserImage(){
         let storage = Storage.storage()
 
-        let desertRef = storage.reference(forURL: "gs://n-friends.appspot.com").child(Username)
+        let desertRef = storage.reference(forURL: "gs://n-friends.appspot.com").child(Previousname)
 
         desertRef.delete { error in
             if let error = error {
-            print("Error \(error.localizedDescription)")
+                print("Error \(error.localizedDescription)")
             } else {
-            print("Image success deleted")
+                print("Image success deleted")
+                Previousname = Username
             }
         }
     }
@@ -203,6 +206,7 @@ struct ProfileView: View {
             if let document = document, document.exists {
                 if let fieldValue = document.data()?["Username"] as? String {
                     Username = fieldValue
+                    Previousname = fieldValue
                     //同時に名前の取得と画像取得の関数を実行するとバグるので
                     //名前を取得できたことを確認してから画像を取得します。
                     FetchUserImage()
