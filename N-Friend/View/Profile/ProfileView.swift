@@ -169,20 +169,31 @@ struct ProfileView: View {
             }
         }
     }
-    private func UpdateUserImage(){
+    
+    //UserImageがnilの状態をチェックし、nilでない場合にデータ変換をする処理を実装
+    private func UpdateUserImage() {
+        guard let image = UserImage else {
+            print("No image to update.")
+            return
+        }
+
         let storageref = Storage.storage().reference(forURL: "gs://n-friends.appspot.com").child(Username)
         
-        let image = UserImage
+        guard let data = image.jpegData(compressionQuality: 1.0) else {
+            print("Could not get JPEG representation of UIImage")
+            return
+        }
         
-        let data = image!.jpegData(compressionQuality: 1.0)! as NSData
-        
-        storageref.putData(data as Data, metadata: nil) { (data, error) in
-            if error != nil {
+        storageref.putData(data, metadata: nil) { (metadata, error) in
+            if let error = error {
+                print("Error uploading image: \(error.localizedDescription)")
                 isDisappearLoading = false
-                return
+            } else {
+                print("Image successfully updated")
             }
         }
     }
+
     private func DeleteUserImage(){
         let storage = Storage.storage()
 
