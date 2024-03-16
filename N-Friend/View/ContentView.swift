@@ -16,9 +16,9 @@ struct ContentView: View {
                 .tabItem {
                     Image(systemName: "magazine.fill")
                 }
-            StarView()
+            LikedView()
                 .tabItem {
-                    Image(systemName: "star.fill")
+                    Image(systemName: "heart.fill")
                 }
             ProfileView(Realname: Realname)
                 .tabItem {

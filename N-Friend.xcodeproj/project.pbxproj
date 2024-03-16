@@ -23,7 +23,7 @@
 		97532FDD2B89BC8B00BA04F9 /* CardSwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FDC2B89BC8B00BA04F9 /* CardSwipeView.swift */; };
 		97532FDF2B89CDD500BA04F9 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FDE2B89CDD500BA04F9 /* CardView.swift */; };
 		97532FE22B89D2EB00BA04F9 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FE12B89D2EB00BA04F9 /* ProfileView.swift */; };
-		97532FE62B8A2DD700BA04F9 /* StarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FE52B8A2DD700BA04F9 /* StarView.swift */; };
+		97532FE62B8A2DD700BA04F9 /* LikedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FE52B8A2DD700BA04F9 /* LikedView.swift */; };
 		97532FEA2B8ADC4300BA04F9 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FE92B8ADC4300BA04F9 /* UserModel.swift */; };
 		976933F82B9BFC380017BE97 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 976933F72B9BFC380017BE97 /* FirebaseAnalytics */; };
 		976933FA2B9BFC380017BE97 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 976933F92B9BFC380017BE97 /* FirebaseAnalyticsOnDeviceConversion */; };
@@ -66,7 +66,7 @@
 		97532FDC2B89BC8B00BA04F9 /* CardSwipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSwipeView.swift; sourceTree = "<group>"; };
 		97532FDE2B89CDD500BA04F9 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		97532FE12B89D2EB00BA04F9 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
-		97532FE52B8A2DD700BA04F9 /* StarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarView.swift; sourceTree = "<group>"; };
+		97532FE52B8A2DD700BA04F9 /* LikedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedView.swift; sourceTree = "<group>"; };
 		97532FE92B8ADC4300BA04F9 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		9753302D2B8CC62100BA04F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		97BE23362B96E19100027B05 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
@@ -161,7 +161,7 @@
 				97532FCA2B8985B200BA04F9 /* ContentView.swift */,
 				974B17E22B9C4CF20012351D /* Progressview.swift */,
 				97532FE02B89D0EF00BA04F9 /* Card */,
-				97532FE42B8A2DB600BA04F9 /* Star */,
+				97532FE42B8A2DB600BA04F9 /* Liked */,
 				97532FE32B89DDF900BA04F9 /* Profile */,
 			);
 			path = View;
@@ -195,12 +195,12 @@
 			path = "N-Friend/View/Profile";
 			sourceTree = SOURCE_ROOT;
 		};
-		97532FE42B8A2DB600BA04F9 /* Star */ = {
+		97532FE42B8A2DB600BA04F9 /* Liked */ = {
 			isa = PBXGroup;
 			children = (
-				97532FE52B8A2DD700BA04F9 /* StarView.swift */,
+				97532FE52B8A2DD700BA04F9 /* LikedView.swift */,
 			);
-			path = Star;
+			path = Liked;
 			sourceTree = "<group>";
 		};
 		97ED582E2B9BEA7700E8BD3E /* Frameworks */ = {
@@ -327,7 +327,7 @@
 				970A152B2B92C5C8000CDE36 /* TastesEditView.swift in Sources */,
 				97532FDF2B89CDD500BA04F9 /* CardView.swift in Sources */,
 				97532FE22B89D2EB00BA04F9 /* ProfileView.swift in Sources */,
-				97532FE62B8A2DD700BA04F9 /* StarView.swift in Sources */,
+				97532FE62B8A2DD700BA04F9 /* LikedView.swift in Sources */,
 				97532FEA2B8ADC4300BA04F9 /* UserModel.swift in Sources */,
 				97532FC92B8985B200BA04F9 /* N_FriendApp.swift in Sources */,
 			);
