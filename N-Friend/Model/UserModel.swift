@@ -15,4 +15,6 @@ struct UserModel: Identifiable{
     var EnrollmentCampus: String
     var Tastes: [String]
     var Status: String
+    var Swipe: CGFloat
+    var degrees: Double
 }

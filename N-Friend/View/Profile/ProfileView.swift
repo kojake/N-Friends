@@ -13,7 +13,11 @@ struct ProfileView: View {
     //Profile
     @State var UserImage: UIImage?
     @State var Realname: String
-    @State var Username: String = ""
+    @State var Username: String {
+        didSet {
+            print("a")
+        }
+    }
     @State var Previousname: String = ""
     @State var CampusSelectionIndexValue: Int = 0
     

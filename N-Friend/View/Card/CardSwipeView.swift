@@ -9,9 +9,9 @@ import SwiftUI
 
 struct CardSwipeView: View {
     @State var CardUserList: [UserModel] = [
-        UserModel(Username: "a", EnrollmentCampus: "秋葉原", Tastes: ["スポーツ"], Status: ""),
-        UserModel(Username: "b", EnrollmentCampus: "新宿", Tastes: ["スポーツ"], Status: ""),
-        UserModel(Username: "c", EnrollmentCampus: "代々木", Tastes: ["スポーツ"], Status: "")
+        UserModel(Username: "a", EnrollmentCampus: "秋葉原", Tastes: ["スポーツ"], Status: "", Swipe: 0, degrees: 0),
+        UserModel(Username: "b", EnrollmentCampus: "新宿", Tastes: ["スポーツ"], Status: "", Swipe: 0, degrees: 0),
+        UserModel(Username: "c", EnrollmentCampus: "代々木", Tastes: ["スポーツ"], Status: "", Swipe: 0, degrees: 0)
     ]
     
     var body: some View {
@@ -40,7 +40,51 @@ struct CardSwipeView: View {
                                         }.padding()
                                     }
                                 }.frame(width: geo.size.width - 32, height: geo.size.height - 250).background(Color.black.opacity(0.2)).foregroundColor(Color.white)
-                            }
+                            }.gesture(DragGesture() 
+                                .onChanged({ (value) in
+                                    if value.translation.width > 0 {
+                                        if let cardindex = CardUserList.indices.last{
+                                            CardUserList[cardindex].Swipe = value.translation.width
+                                            CardUserList[cardindex].degrees = 8
+                                        }
+                                    } else {
+                                        if let cardindex = CardUserList.indices.last{
+                                            CardUserList[cardindex].Swipe = value.translation.width
+                                            CardUserList[cardindex].degrees = -8
+                                        }
+                                    }
+                                }).onEnded({ (value) in
+                                    if model.Swipe > 0 {
+                                        if model.Swipe > geo.size.width / 2 - 80{
+                                            if let cardindex = CardUserList.indices.last{
+                                                CardUserList[cardindex].Swipe = 500
+                                                CardUserList[cardindex].degrees = 8
+                                            }
+                                        } else {
+                                            if let cardindex = CardUserList.indices.last{
+                                                CardUserList[cardindex].Swipe = 0
+                                                CardUserList[cardindex].degrees = 0
+                                                CardUserList.remove(at: cardindex)
+                                            }
+                                        }
+                                    } else {
+                                        if -model.Swipe > geo.size.width / 2 - 80{
+                                            if let cardindex = CardUserList.indices.last{
+                                                CardUserList[cardindex].Swipe = -500
+                                                CardUserList[cardindex].degrees = 8
+                                            }
+                                        } else {
+                                            if let cardindex = CardUserList.indices.last{
+                                                CardUserList[cardindex].Swipe = 0
+                                                CardUserList[cardindex].degrees = 0
+                                                CardUserList.remove(at: cardindex)
+                                            }
+                                        }
+                                    }
+                                })
+                            ).offset(x: model.Swipe)
+                                .rotationEffect(.init(degrees: model.degrees))
+                                .animation(.spring())
                         }
                     }
                     if CardUserList.isEmpty{
