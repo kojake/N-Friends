@@ -44,29 +44,15 @@ struct LikedView: View {
     private func FetchLikedUser(){
         let db = Firestore.firestore()
         
-        print("Run✅")
-        db.collection("髙橋海斗").getDocuments { snapshot, error in
-            print("Test1✅")
+        db.collection("LikedUser").getDocuments { (querySnapshot, error) in
             if let error = error {
-                print("Error getting documents: \(error.localizedDescription)")
-            } else if let snapshot = snapshot {
-                print("Test2✅")
-                for document in snapshot.documents {
-                    print("Test3✅")
-                    db.collection("髙橋海斗").document(document.documentID).collection("LikedUser").getDocuments { subSnapshot, subError in
-                        print("Test4✅")
-                        if let subError = subError {
-                            print("Error getting subdocuments: \(subError.localizedDescription)")
-                        } else if let subSnapshot = subSnapshot {
-                            print("Test5✅")
-                            for subDocument in subSnapshot.documents {
-                                print("Test6✅")
-                                LikedUserList.append(subDocument.documentID)
-                            }
-                            print("Complete!")
-                        }
-                    }
+                print("Error getting documents: \(error)")
+            } else {
+                guard let documents = querySnapshot?.documents else {
+                    print("No documents found.")
+                    return
                 }
+                LikedUserList = documents.map { $0.documentID }
             }
         }
     }

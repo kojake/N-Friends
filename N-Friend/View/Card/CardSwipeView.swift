@@ -17,7 +17,11 @@ struct CardSwipeView: View {
     var body: some View {
         GeometryReader{ geo in
             VStack{
-                Text("N-Friends").font(.largeTitle).fontWeight(.black)
+                HStack{
+                    Spacer()
+                    Text("N-Friends").font(.largeTitle).fontWeight(.black)
+                    Spacer()
+                }
                 Spacer()
                 ZStack{
                     ForEach(CardUserList) { model in
@@ -59,25 +63,27 @@ struct CardSwipeView: View {
                                             if let cardindex = CardUserList.indices.last{
                                                 CardUserList[cardindex].Swipe = 500
                                                 CardUserList[cardindex].degrees = 8
+                                                
+                                                CardUserList.remove(at: cardindex)
                                             }
                                         } else {
                                             if let cardindex = CardUserList.indices.last{
                                                 CardUserList[cardindex].Swipe = 0
                                                 CardUserList[cardindex].degrees = 0
-                                                CardUserList.remove(at: cardindex)
                                             }
                                         }
                                     } else {
                                         if -model.Swipe > geo.size.width / 2 - 80{
                                             if let cardindex = CardUserList.indices.last{
-                                                CardUserList[cardindex].Swipe = -500
+                                                CardUserList[cardindex].Swipe = -700
                                                 CardUserList[cardindex].degrees = 8
+                                                
+                                                CardUserList.remove(at: cardindex)
                                             }
                                         } else {
                                             if let cardindex = CardUserList.indices.last{
                                                 CardUserList[cardindex].Swipe = 0
                                                 CardUserList[cardindex].degrees = 0
-                                                CardUserList.remove(at: cardindex)
                                             }
                                         }
                                     }
@@ -85,12 +91,6 @@ struct CardSwipeView: View {
                             ).offset(x: model.Swipe)
                                 .rotationEffect(.init(degrees: model.degrees))
                                 .animation(.spring())
-                        }
-                    }
-                    if CardUserList.isEmpty{
-                        VStack{
-                            Image(systemName: "person.fill.questionmark").resizable().scaledToFit().frame(width: 150, height: 150).foregroundColor(Color.blue)
-                            Text("カードを全て見終わりました。").font(.title).fontWeight(.bold)
                         }
                     }
                 }

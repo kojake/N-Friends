@@ -108,8 +108,7 @@ struct LoginView: View {
         db.collection("UserList").document(Realname).setData([
             "Username": Realname,
             "EnrollmentCampus": "秋葉原",
-            "Tastes": [String](),
-            "LikeUser": [String]()
+            "Tastes": [String]()
         ]) { err in
             if let err = err {
                 print("Error adding document: \(err)")

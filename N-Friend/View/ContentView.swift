@@ -20,7 +20,7 @@ struct ContentView: View {
                 .tabItem {
                     Image(systemName: "heart.fill")
                 }
-            ProfileView(Realname: Realname, Username: "")
+            ProfileView(Realname: Realname)
                 .tabItem {
                     Image(systemName: "person")
                 }

@@ -13,11 +13,7 @@ struct ProfileView: View {
     //Profile
     @State var UserImage: UIImage?
     @State var Realname: String
-    @State var Username: String {
-        didSet {
-            print("a")
-        }
-    }
+    @State var Username: String = ""
     @State var Previousname: String = ""
     @State var CampusSelectionIndexValue: Int = 0
     
@@ -80,6 +76,9 @@ struct ProfileView: View {
                                     Text("ユーザーネーム")
                                         .fontWeight(.semibold)
                                     TextField(Username, text: $Username)
+                                        .onChange(of: Username) { _ in
+                                            UpdateUsername()
+                                        }
                                 }
                                 HStack{
                                     VStack{
@@ -90,6 +89,9 @@ struct ProfileView: View {
                                             Text(AllCampus[index]).tag(index)
                                         }
                                     }.fontWeight(.semibold)
+                                        .onChange(of: CampusSelectionIndexValue) { NewValue in
+                                            UpdateUserTastes()
+                                        }
                                 }
                                 HStack {
                                     VStack{
@@ -134,7 +136,6 @@ struct ProfileView: View {
         .onDisappear{
             if !isLoading{
                 isDisappearLoading = true
-                UpdateUserData()
                 DeleteUserImage()
                 UpdateUserImage()
             }
@@ -173,8 +174,6 @@ struct ProfileView: View {
             }
         }
     }
-    
-    //UserImageがnilの状態をチェックし、nilでない場合にデータ変換をする処理を実装
     private func UpdateUserImage() {
         guard let image = UserImage else {
             print("No image to update.")
@@ -183,6 +182,7 @@ struct ProfileView: View {
 
         let storageref = Storage.storage().reference(forURL: "gs://n-friends.appspot.com").child(Username)
         
+        //UserImageがnilの状態をチェックし、nilでない場合にデータ変換をする処理を実装
         guard let data = image.jpegData(compressionQuality: 1.0) else {
             print("Could not get JPEG representation of UIImage")
             return
@@ -197,7 +197,6 @@ struct ProfileView: View {
             }
         }
     }
-
     private func DeleteUserImage(){
         let storage = Storage.storage()
 
@@ -233,6 +232,20 @@ struct ProfileView: View {
             }
         }
     }
+    private func UpdateUsername(){
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(Realname).updateData([
+            "Username": Username
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
+    //Tastes
     private func FetchUserTastes(){
         let db = Firestore.firestore()
         
@@ -245,6 +258,19 @@ struct ProfileView: View {
                 }
             } else {
                 print("Document does not exist.")
+            }
+        }
+    }
+    private func UpdateUserTastes(){
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(Realname).updateData([
+            "EnrollmentCampus": AllCampus[CampusSelectionIndexValue]
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
             }
         }
     }
@@ -266,22 +292,6 @@ struct ProfileView: View {
                 }
             } else {
                 print("Document does not exits.")
-            }
-        }
-    }
-    
-    //UserData
-    private func UpdateUserData(){
-        let db = Firestore.firestore()
-        
-        db.collection("UserList").document(Realname).updateData([
-            "Username": Username,
-            "EnrollmentCampus": AllCampus[CampusSelectionIndexValue]
-        ]) { err in
-            if let err = err {
-                print("Error updating document: \(err)")
-            } else {
-                print("Document successfully updated")
             }
         }
     }
