@@ -19,7 +19,6 @@ struct ProfileView: View {
     
     //Progressview
     @State private var isLoading: Bool = false
-    @State private var isDisappearLoading: Bool = false
     
     @State var UserTastesList: [String] = ["サッカー", "バスケ", "プログラミング"]
     @State private var Showshould_TastesEditView = false
@@ -126,19 +125,10 @@ struct ProfileView: View {
             }
         }
         .onAppear{
-            if !isDisappearLoading{
-                isLoading = true
-                FetchUsername()
-                FetchEnrollmentCampus()
-                FetchUserTastes()
-            }
-        }
-        .onDisappear{
-            if !isLoading{
-                isDisappearLoading = true
-                DeleteUserImage()
-                UpdateUserImage()
-            }
+            isLoading = true
+            FetchUsername()
+            FetchEnrollmentCampus()
+            FetchUserTastes()
         }
         .alert(isPresented: $Signoutalert) {
             Alert(title: Text("確認"),
@@ -157,6 +147,10 @@ struct ProfileView: View {
         }
         .sheet(isPresented: $Showshould_ImagePickerView){
             ImagePicker(UserImage: $UserImage, Showshould_ImagePickerView: $Showshould_ImagePickerView)
+                .onDisappear{
+                    DeleteUserImage()
+                    UpdateUserImage()
+                }
         }
     }
     //UserImage
@@ -191,7 +185,6 @@ struct ProfileView: View {
         storageref.putData(data, metadata: nil) { (metadata, error) in
             if let error = error {
                 print("Error uploading image: \(error.localizedDescription)")
-                isDisappearLoading = false
             } else {
                 print("Image successfully updated")
             }

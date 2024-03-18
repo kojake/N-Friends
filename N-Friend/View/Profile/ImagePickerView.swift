@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SwiftUI
+import FirebaseFirestore
 
 struct ImagePicker: UIViewControllerRepresentable {
     @Binding var UserImage: UIImage?
@@ -42,5 +43,5 @@ struct ImagePicker: UIViewControllerRepresentable {
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
             parent.Showshould_ImagePickerView = false
         }
-    }
+    }    
 }
