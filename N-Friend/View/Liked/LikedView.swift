@@ -44,14 +44,18 @@ struct LikedView: View {
     private func FetchLikedUser(){
         let db = Firestore.firestore()
         
-        db.collection("LikedUser").getDocuments { (querySnapshot, error) in
+        print("1")
+        db.collection("UserList/髙橋海斗/LikedUser").getDocuments { (querySnapshot, error) in
+            print("2")
             if let error = error {
                 print("Error getting documents: \(error)")
             } else {
+                print("3")
                 guard let documents = querySnapshot?.documents else {
                     print("No documents found.")
                     return
                 }
+                print(documents)
                 LikedUserList = documents.map { $0.documentID }
             }
         }
