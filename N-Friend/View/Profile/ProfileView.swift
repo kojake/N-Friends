@@ -13,7 +13,7 @@ struct ProfileView: View {
     //Profile
     @State var UserImage: UIImage?
     @State var Realname: String
-    @State var Username: String = ""
+    @State var Username: String = "???"
     @State var Previousname: String = ""
     @State var CampusSelectionIndexValue: Int = 0
     
@@ -76,7 +76,11 @@ struct ProfileView: View {
                                         .fontWeight(.semibold)
                                     TextField(Username, text: $Username)
                                         .onChange(of: Username) { _ in
-                                            UpdateUsername()
+                                            if !isLoading{
+                                                DeleteUserImage()
+                                                UpdateUsername()
+                                                UpdateUserImage()
+                                            }
                                         }
                                 }
                                 HStack{
