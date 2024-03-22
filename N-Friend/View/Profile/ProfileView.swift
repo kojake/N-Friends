@@ -76,11 +76,7 @@ struct ProfileView: View {
                                         .fontWeight(.semibold)
                                     TextField(Username, text: $Username)
                                         .onChange(of: Username) { _ in
-                                            if !isLoading{
-                                                DeleteUserImage()
-                                                UpdateUsername()
-                                                UpdateUserImage()
-                                            }
+                                            UpdateUsername()
                                         }
                                 }
                                 HStack{
@@ -133,6 +129,10 @@ struct ProfileView: View {
             FetchUsername()
             FetchEnrollmentCampus()
             FetchUserTastes()
+        }
+        .onDisappear{
+            DeleteUserImage()
+            UpdateUserImage()
         }
         .alert(isPresented: $Signoutalert) {
             Alert(title: Text("確認"),

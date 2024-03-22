@@ -10,7 +10,7 @@ import SwiftUI
 
 struct UserModel: Identifiable{
     var id = UUID()
-    //var UserImage: Image
+    var UserImage: UIImage
     var Username: String
     var EnrollmentCampus: String
     var Tastes: [String]

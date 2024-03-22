@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseFirestore
+import FirebaseStorage
 
 struct CardSwipeView: View {
     @State var CardUserList: [UserModel] = []
@@ -27,7 +28,7 @@ struct CardSwipeView: View {
                         ForEach(CardUserList) { model in
                             if model.Status == ""{
                                 ZStack{
-                                    Image("Person1").resizable().scaledToFit().frame(height: geo.size.height - 200).cornerRadius(20).padding(.horizontal, 15)
+                                    Image(uiImage: model.UserImage).resizable().frame(height: geo.size.height - 200).cornerRadius(20).padding(.horizontal, 15)
                                     VStack{
                                         Spacer()
                                         HStack{
@@ -155,13 +156,30 @@ struct CardSwipeView: View {
             for document in documents {
                 // 各ドキュメントから複数のフィールドの値を取得
                 let data = document.data()
-                if let field1 = data["Username"] as? String,
-                   let field2 = data["EnrollmentCampus"] as? String,
-                   let field3 = data["Tastes"] as? [String] {
-                    CardUserList.append(UserModel(Username: field1, EnrollmentCampus: field2, Tastes: field3, Status: "", Swipe: 0, degrees: 0))
+                if let username = data["Username"] as? String,
+                   let enrollmentcampus = data["EnrollmentCampus"] as? String,
+                   let tastes = data["Tastes"] as? [String] {
+                    fetchCardUserImage(username: username) { image in
+                        CardUserList.append(UserModel(UserImage: (image ?? UIImage(named: "Person1"))! ,Username: username, EnrollmentCampus: enrollmentcampus, Tastes: tastes, Status: "", Swipe: 0, degrees: 0))
+                    }
                 }
             }
+            
             isLoading = false
+        }
+    }
+    private func fetchCardUserImage(username: String, completion: @escaping (UIImage?) -> Void) {
+        let storageRef = Storage.storage().reference(forURL: "gs://n-friends.appspot.com").child(username)
+        
+        storageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
+            if let error = error {
+                print("Error downloading image: \(error.localizedDescription)")
+                completion(nil)
+            } else if let data = data, let uiImage = UIImage(data: data) {
+                completion(uiImage)
+            } else {
+                completion(nil)
+            }
         }
     }
 }
