@@ -169,7 +169,7 @@ struct CardSwipeView: View {
                 // 各ドキュメントから複数のフィールドの値を取得
                 let data = document.data()
                 if let username = data["Username"] as? String,
-                   let useruid = data["UserUID"] as? String,
+                   let useruid = data["UID"] as? String,
                    let enrollmentcampus = data["EnrollmentCampus"] as? String,
                    let tastes = data["Tastes"] as? [String] {
                     FetchCardUserImage(username: username) { image in
