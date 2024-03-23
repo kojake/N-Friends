@@ -8,19 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
-    var Realname: String
+    var UserUID: String
     
     var body: some View {
         TabView {
-            CardSwipeView()
+            CardSwipeView(UserUID: UserUID)
                 .tabItem {
                     Image(systemName: "magazine.fill")
                 }
-            LikedView()
+            LikedView(UserUID: UserUID)
                 .tabItem {
                     Image(systemName: "heart.fill")
                 }
-            ProfileView(Realname: Realname)
+            ProfileView(UserUID: UserUID)
                 .tabItem {
                     Image(systemName: "person")
                 }

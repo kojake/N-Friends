@@ -13,7 +13,9 @@ import FirebaseAuth
 import GoogleSignIn
 
 struct LoginView: View {
-    @State var Realname: String = ""
+    @State var UserUID: String = ""
+    @ObservedObject private var authState = FirebaseAuthStateObserver()
+    
     @State private var UserImage: UIImage?
     @State private var Showshould_ContentView = false
     @State private var isLoading: Bool = false
@@ -57,7 +59,7 @@ struct LoginView: View {
             if let user = authResult?.user {
                 //ユーザーが既に登録されているかを取得する
                 let isNewUser = authResult?.additionalUserInfo?.isNewUser ?? true
-                Realname = user.displayName!
+                UserUID = user.uid
                 //いない場合はユーザー情報をデータベースにアップロードする
                 if isNewUser {
                     UploadUserData()
@@ -74,7 +76,7 @@ struct LoginView: View {
     var body: some View {
         NavigationStack{
             ZStack{
-                NavigationLink(destination: ContentView(Realname: Realname), isActive: $Showshould_ContentView){
+                NavigationLink(destination: ContentView(UserUID: UserUID), isActive: $Showshould_ContentView){
                     EmptyView()
                 }
                 Color.blue.opacity(0.7).ignoresSafeArea()
@@ -100,21 +102,52 @@ struct LoginView: View {
                     Progressview(Progressmessage: "ログイン中")
                 }
             }
-        }.navigationBarBackButtonHidden(true)
+        }
+        .navigationBarBackButtonHidden(true)
+        .onAppear{
+            if authState.isSignin {
+                Showshould_ContentView = true
+            }
+        }
     }
     private func UploadUserData(){
         let db = Firestore.firestore()
         
-        db.collection("UserList").document(Realname).setData([
-            "Username": Realname,
+        db.collection("UserList").document(UserUID).setData([
+            "Username": UserUID,
+            "UID": UserUID,
             "EnrollmentCampus": "秋葉原",
-            "Tastes": [String]()
+            "Tastes": [String](),
+            "LikeUser": [String](),
+            "DisLikeUser": [String]()
         ]) { err in
             if let err = err {
                 print("Error adding document: \(err)")
             }
         }
     }
+}
+
+class FirebaseAuthStateObserver: ObservableObject {
+    @Published var isSignin: Bool = false
+    private var listener: AuthStateDidChangeListenerHandle!
+
+    init() {
+        listener = Auth.auth().addStateDidChangeListener { (auth, user) in
+            if let _ = user {
+                print("sign-in")
+                self.isSignin = true
+            } else {
+                print("sign-out")
+                self.isSignin = false
+            }
+        }
+    }
+
+    deinit {
+        Auth.auth().removeStateDidChangeListener(listener)
+    }
+
 }
 
 #Preview {

@@ -10,7 +10,11 @@ import FirebaseFirestore
 import FirebaseStorage
 
 struct CardSwipeView: View {
+    var UserUID: String
+    
     @State var CardUserList: [UserModel] = []
+    @State var LikeUser: [String] = []
+    @State var DisLikeUser: [String] = []
     
     @State private var isLoading = false
     
@@ -26,7 +30,7 @@ struct CardSwipeView: View {
                     Spacer()
                     ZStack{
                         ForEach(CardUserList) { model in
-                            if model.Status == ""{
+                            if !LikeUser.contains(model.Username) && !DisLikeUser.contains(model.Username){
                                 ZStack{
                                     Image(uiImage: model.UserImage).resizable().frame(height: geo.size.height - 200).cornerRadius(20).padding(.horizontal, 15)
                                     VStack{
@@ -62,9 +66,11 @@ struct CardSwipeView: View {
                                         if model.Swipe > 0 {
                                             if model.Swipe > geo.size.width / 2 - 80{
                                                 if let cardindex = CardUserList.indices.last{
-                                                    CardUserList[cardindex].Swipe = 500
+                                                    CardUserList[cardindex].Swipe = 700
                                                     CardUserList[cardindex].degrees = 8
                                                     
+                                                    LikeUser.append(CardUserList[cardindex].UserUID)
+                                                    UpdateLikeUser()
                                                     CardUserList.remove(at: cardindex)
                                                 }
                                             } else {
@@ -79,6 +85,8 @@ struct CardSwipeView: View {
                                                     CardUserList[cardindex].Swipe = -700
                                                     CardUserList[cardindex].degrees = 8
                                                     
+                                                    DisLikeUser.append(CardUserList[cardindex].UserUID)
+                                                    UpdateDisLikeUser()
                                                     CardUserList.remove(at: cardindex)
                                                 }
                                             } else {
@@ -99,7 +107,8 @@ struct CardSwipeView: View {
                     HStack{
                         Button(action: {
                             if let cardindex = CardUserList.indices.last{
-                                CardUserList[cardindex].Status = "Liked"
+                                DisLikeUser.append(CardUserList[cardindex].UserUID)
+                                UpdateDisLikeUser()
                                 CardUserList.remove(at: cardindex)
                             }
                         }){
@@ -112,7 +121,8 @@ struct CardSwipeView: View {
                         }.padding()
                         Button(action: {
                             if let cardindex = CardUserList.indices.last{
-                                CardUserList[cardindex].Status = "DisLikeda"
+                                LikeUser.append(CardUserList[cardindex].UserUID)
+                                UpdateLikeUser()
                                 CardUserList.remove(at: cardindex)
                             }
                         }){
@@ -133,6 +143,8 @@ struct CardSwipeView: View {
         .onAppear{
             isLoading = true
             FetchCardUserData()
+            FetchLikeuser()
+            FetchDisLikeuser()
         }
     }
     private func FetchCardUserData(){
@@ -147,20 +159,21 @@ struct CardSwipeView: View {
                 print("Error getting documents: \(error)")
                 return
             }
-
+            
             guard let documents = querySnapshot?.documents else {
                 print("No documents found")
                 return
             }
-
+            
             for document in documents {
                 // 各ドキュメントから複数のフィールドの値を取得
                 let data = document.data()
                 if let username = data["Username"] as? String,
+                   let useruid = data["UserUID"] as? String,
                    let enrollmentcampus = data["EnrollmentCampus"] as? String,
                    let tastes = data["Tastes"] as? [String] {
-                    fetchCardUserImage(username: username) { image in
-                        CardUserList.append(UserModel(UserImage: (image ?? UIImage(named: "Person1"))! ,Username: username, EnrollmentCampus: enrollmentcampus, Tastes: tastes, Status: "", Swipe: 0, degrees: 0))
+                    FetchCardUserImage(username: username) { image in
+                        CardUserList.append(UserModel(UserImage: (image ?? UIImage(named: "Person1"))! ,Username: username, UserUID: useruid, EnrollmentCampus: enrollmentcampus, Tastes: tastes, Swipe: 0, degrees: 0))
                     }
                 }
             }
@@ -168,7 +181,7 @@ struct CardSwipeView: View {
             isLoading = false
         }
     }
-    private func fetchCardUserImage(username: String, completion: @escaping (UIImage?) -> Void) {
+    private func FetchCardUserImage(username: String, completion: @escaping (UIImage?) -> Void) {
         let storageRef = Storage.storage().reference(forURL: "gs://n-friends.appspot.com").child(username)
         
         storageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
@@ -182,8 +195,63 @@ struct CardSwipeView: View {
             }
         }
     }
-}
-
-#Preview {
-    CardSwipeView()
+    
+    //Like DisLike func
+    private func FetchLikeuser(){
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(UserUID).getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let fieldValue = document.data()?["LikeUser"] as? [String] {
+                    LikeUser = fieldValue
+                } else {
+                    print("Field not found or cannot be converted to String.")
+                }
+            } else {
+                print("Document does not exist.")
+            }
+        }
+    }
+    private func FetchDisLikeuser(){
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(UserUID).getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let fieldValue = document.data()?["DisLikeUser"] as? [String] {
+                    DisLikeUser = fieldValue
+                } else {
+                    print("Field not found or cannot be converted to String.")
+                }
+            } else {
+                print("Document does not exist.")
+            }
+        }
+    }
+    
+    private func UpdateLikeUser(){
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(UserUID).updateData([
+            "LikeUser": LikeUser
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
+    private func UpdateDisLikeUser(){
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(UserUID).updateData([
+            "DisLikeUser": DisLikeUser
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
 }

@@ -9,27 +9,32 @@ import SwiftUI
 import FirebaseFirestore
 
 struct LikedView: View {
-    @State var LikedUserList: [String] = []
+    @State var UserUID: String
+    
+    @State var LikeUser: [String] = []
+    @State private var Showshould_UserDetailView = false
     
     var body: some View {
         ZStack{
             ScrollView{
-                ForEach(0..<LikedUserList.count, id: \.self) { index in
-                    Button(action: {
-                        
-                    }) {
-                        VStack {
-                            Image("Person1").resizable().scaledToFit().frame(width: 180, height: 250).cornerRadius(10)
-                            Text(LikedUserList[index]).font(.title).fontWeight(.black).foregroundColor(Color.black)
-                            Spacer()
-                        }.frame(width: 230, height: 300).background(Color.blue.opacity(0.3)).cornerRadius(10)
-                    }
+                ForEach(0..<LikeUser.count, id: \.self) { index in
+                    VStack {
+                        Image("Person1").resizable().scaledToFit().frame(width: 180, height: 250).cornerRadius(10)
+                        Text(LikeUser[index]).font(.title).fontWeight(.black).foregroundColor(Color.black)
+                        Spacer()
+                    }.frame(width: 230, height: 300).background(Color.blue.opacity(0.3)).cornerRadius(10)
+                        .onTapGesture {
+                            Showshould_UserDetailView = true
+                        }
+                        .onLongPressGesture{
+                            
+                        }
                 }
             }
             VStack{
                 HStack{
                     HStack{
-                        Text("\(LikedUserList.count)").font(.title2).fontWeight(.black)
+                        Text("\(LikeUser.count)").font(.title2).fontWeight(.black)
                         Text("「Like!」").font(.title2).fontWeight(.black)
                     }.padding()
                     Spacer()
@@ -40,28 +45,23 @@ struct LikedView: View {
                 FetchLikedUser()
             }
         }
+        .sheet(isPresented: $Showshould_UserDetailView){
+            UserDetailView()
+        }
     }
     private func FetchLikedUser(){
         let db = Firestore.firestore()
         
-        print("1")
-        db.collection("UserList/髙橋海斗/LikedUser").getDocuments { (querySnapshot, error) in
-            print("2")
-            if let error = error {
-                print("Error getting documents: \(error)")
-            } else {
-                print("3")
-                guard let documents = querySnapshot?.documents else {
-                    print("No documents found.")
-                    return
+        db.collection("UserList").document(UserUID).getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let fieldValue = document.data()?["LikeUser"] as? [String] {
+                    LikeUser = fieldValue
+                } else {
+                    print("Field not found or cannot be converted to String.")
                 }
-                print(documents)
-                LikedUserList = documents.map { $0.documentID }
+            } else {
+                print("Document does not exist.")
             }
         }
     }
-}
-
-#Preview {
-    LikedView()
 }

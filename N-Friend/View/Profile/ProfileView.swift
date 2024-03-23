@@ -12,7 +12,7 @@ import FirebaseStorage
 struct ProfileView: View {
     //Profile
     @State var UserImage: UIImage?
-    @State var Realname: String
+    @State var UserUID: String
     @State var Username: String = "???"
     @State var Previousname: String = ""
     @State var CampusSelectionIndexValue: Int = 0
@@ -147,7 +147,7 @@ struct ProfileView: View {
             LoginView()
         }
         .sheet(isPresented: $Showshould_TastesEditView){
-            TastesEditView(Realname: Realname, UserTastesList: $UserTastesList)
+            TastesEditView(Realname: UserUID, UserTastesList: $UserTastesList)
         }
         .sheet(isPresented: $Showshould_ImagePickerView){
             ImagePicker(UserImage: $UserImage, Showshould_ImagePickerView: $Showshould_ImagePickerView)
@@ -213,7 +213,7 @@ struct ProfileView: View {
     private func FetchUsername(){
         let db = Firestore.firestore()
         
-        db.collection("UserList").document(Realname).getDocument { (document, error) in
+        db.collection("UserList").document(UserUID).getDocument { (document, error) in
             if let document = document, document.exists {
                 if let fieldValue = document.data()?["Username"] as? String {
                     Username = fieldValue
@@ -232,7 +232,7 @@ struct ProfileView: View {
     private func UpdateUsername(){
         let db = Firestore.firestore()
         
-        db.collection("UserList").document(Realname).updateData([
+        db.collection("UserList").document(UserUID).updateData([
             "Username": Username
         ]) { err in
             if let err = err {
@@ -246,7 +246,7 @@ struct ProfileView: View {
     private func FetchUserTastes(){
         let db = Firestore.firestore()
         
-        db.collection("UserList").document(Realname).getDocument { (document, error) in
+        db.collection("UserList").document(UserUID).getDocument { (document, error) in
             if let document = document, document.exists {
                 if let fieldValue = document.data()?["Tastes"] as? [String] {
                     UserTastesList = fieldValue
@@ -261,7 +261,7 @@ struct ProfileView: View {
     private func UpdateUserTastes(){
         let db = Firestore.firestore()
         
-        db.collection("UserList").document(Realname).updateData([
+        db.collection("UserList").document(UserUID).updateData([
             "EnrollmentCampus": AllCampus[CampusSelectionIndexValue]
         ]) { err in
             if let err = err {
@@ -275,7 +275,7 @@ struct ProfileView: View {
     private func FetchEnrollmentCampus(){
         let db = Firestore.firestore()
         
-        db.collection("UserList").document(Realname).getDocument { (document, error) in
+        db.collection("UserList").document(UserUID).getDocument { (document, error) in
             if let document = document, document.exists {
                 if let fieldValue = document.data()?["EnrollmentCampus"] as? String{
                     for i in 0..<AllCampus.count{
