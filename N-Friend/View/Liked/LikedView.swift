@@ -15,41 +15,48 @@ struct LikedView: View {
     @State private var Showshould_UserDetailView = false
     
     var body: some View {
-        ZStack{
-            ScrollView{
-                ForEach(0..<LikeUser.count, id: \.self) { index in
-                    VStack {
-                        Image("Person1").resizable().scaledToFit().frame(width: 180, height: 250).cornerRadius(10)
-                        Text(LikeUser[index]).font(.title).fontWeight(.black).foregroundColor(Color.black)
-                        Spacer()
-                    }.frame(width: 230, height: 300).background(Color.blue.opacity(0.3)).cornerRadius(10)
-                        .onTapGesture {
-                            Showshould_UserDetailView = true
-                        }
-                        .onLongPressGesture{
-                            
-                        }
+        NavigationView{
+            ZStack{
+                ScrollView{
+                    ForEach(0..<LikeUser.count, id: \.self) { index in
+                        VStack {
+                            Image("Person1").resizable().scaledToFit().frame(width: 180, height: 250).cornerRadius(10)
+                            Text(LikeUser[index]).font(.title3).fontWeight(.black).foregroundColor(Color.black)
+                            Spacer()
+                        }.frame(width: 230, height: 300).background(Color.blue.opacity(0.3)).cornerRadius(10)
+                            .onTapGesture {
+                                Showshould_UserDetailView = true
+                            }
+                            .contextMenu {
+                                Button(action: {
+                                    Showshould_UserDetailView = true
+                                }){
+                                    Text("アカウント表示")
+                                }
+                                Button(action: {
+                                    LikeUser.remove(at: index)
+                                    UpdateLikeUser()
+                                }){
+                                    Text("削除")
+                                }
+                            }
+                    }
                 }
             }
-            VStack{
-                HStack{
-                    HStack{
-                        Text("\(LikeUser.count)").font(.title2).fontWeight(.black)
-                        Text("「Like!」").font(.title2).fontWeight(.black)
-                    }.padding()
-                    Spacer()
-                }.frame(maxWidth: .infinity, maxHeight: 50).background(Color.gray.opacity(0.5))
-                Spacer()
-            }
-            .onAppear{
-                FetchLikedUser()
+            .navigationTitle(Text("\(LikeUser.count) 「👍Like!」"))
+            .navigationBarTitleDisplayMode(.large)
+        }
+        .onAppear{
+            FetchLikeUser()
+            for i in 0..<LikeUser.count{
+                FetchLikeUsername(UID: LikeUser[i], index: i)
             }
         }
         .sheet(isPresented: $Showshould_UserDetailView){
             UserDetailView()
         }
     }
-    private func FetchLikedUser(){
+    private func FetchLikeUser(){
         let db = Firestore.firestore()
         
         db.collection("UserList").document(UserUID).getDocument { (document, error) in
@@ -61,6 +68,34 @@ struct LikedView: View {
                 }
             } else {
                 print("Document does not exist.")
+            }
+        }
+    }
+    private func FetchLikeUsername(UID: String, index: Int){
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(UID).getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let fieldValue = document.data()?["Username"] as? String {
+                    LikeUser[index] = fieldValue
+                } else {
+                    print("Field not found or cannot be converted to String.")
+                }
+            } else {
+                print("Document does not exist.")
+            }
+        }
+    }
+    private func UpdateLikeUser(){
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(UserUID).updateData([
+            "LikeUser": LikeUser
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
             }
         }
     }

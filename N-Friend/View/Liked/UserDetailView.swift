@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct UserDetailView: View {
-    
+    @State var TapUserUID: String = ""
     
     var body: some View {
         VStack{
             
         }
     }
+    
 }
 
 #Preview {
