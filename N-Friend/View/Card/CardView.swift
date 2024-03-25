@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CardView: View {
-    var UserList: [UserModel]
+    var UserList: [CardUserModel]
     
     var body: some View {
         GeometryReader{ geo in

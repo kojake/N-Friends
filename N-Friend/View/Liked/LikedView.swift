@@ -48,6 +48,7 @@ struct LikedView: View {
         }
         .onAppear{
             FetchLikeUser()
+            //存在するLikeUser分UIDを関数に渡す
             for i in 0..<LikeUser.count{
                 FetchLikeUsername(UID: LikeUser[i], index: i)
             }

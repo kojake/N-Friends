@@ -2,19 +2,17 @@
 //  UserModel.swift
 //  N-Friend
 //
-//  Created by kaito on 2024/02/25.
+//  Created by kaito on 2024/03/25.
 //
 
 import Foundation
-import SwiftUI
+import UIKit
 
-struct UserModel: Identifiable{
+struct UserModel: Identifiable {
     var id = UUID()
-    var UserImage: UIImage
+    var UID: String
+    //var UserImage: UIImage
     var Username: String
-    var UserUID: String
     var EnrollmentCampus: String
     var Tastes: [String]
-    var Swipe: CGFloat
-    var degrees: Double
 }

@@ -12,7 +12,7 @@ import FirebaseStorage
 struct CardSwipeView: View {
     var UserUID: String
     
-    @State var CardUserList: [UserModel] = []
+    @State var CardUserList: [CardUserModel] = []
     @State var LikeUser: [String] = []
     @State var DisLikeUser: [String] = []
     
@@ -173,7 +173,7 @@ struct CardSwipeView: View {
                    let enrollmentcampus = data["EnrollmentCampus"] as? String,
                    let tastes = data["Tastes"] as? [String] {
                     FetchCardUserImage(username: username) { image in
-                        CardUserList.append(UserModel(UserImage: (image ?? UIImage(named: "Person1"))! ,Username: username, UserUID: useruid, EnrollmentCampus: enrollmentcampus, Tastes: tastes, Swipe: 0, degrees: 0))
+                        CardUserList.append(CardUserModel(UserUID: useruid, UserImage: (image ?? UIImage(named: "Person1"))! ,Username: username, EnrollmentCampus: enrollmentcampus, Tastes: tastes, Swipe: 0, degrees: 0))
                     }
                 }
             }
