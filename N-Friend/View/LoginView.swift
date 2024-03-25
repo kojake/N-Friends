@@ -14,8 +14,7 @@ import GoogleSignIn
 
 struct LoginView: View {
     @State var UserUID: String = ""
-    @ObservedObject private var authState = FirebaseAuthStateObserver()
-    
+
     @State private var UserImage: UIImage?
     @State private var Showshould_ContentView = false
     @State private var isLoading: Bool = false
@@ -105,9 +104,6 @@ struct LoginView: View {
         }
         .navigationBarBackButtonHidden(true)
         .onAppear{
-            if authState.isSignin {
-                Showshould_ContentView = true
-            }
         }
     }
     private func UploadUserData(){
@@ -126,28 +122,6 @@ struct LoginView: View {
             }
         }
     }
-}
-
-class FirebaseAuthStateObserver: ObservableObject {
-    @Published var isSignin: Bool = false
-    private var listener: AuthStateDidChangeListenerHandle!
-
-    init() {
-        listener = Auth.auth().addStateDidChangeListener { (auth, user) in
-            if let _ = user {
-                print("sign-in")
-                self.isSignin = true
-            } else {
-                print("sign-out")
-                self.isSignin = false
-            }
-        }
-    }
-
-    deinit {
-        Auth.auth().removeStateDidChangeListener(listener)
-    }
-
 }
 
 #Preview {

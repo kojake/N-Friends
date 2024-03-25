@@ -142,6 +142,7 @@ struct CardSwipeView: View {
         }
         .onAppear{
             isLoading = true
+            CardUserList.removeAll()
             FetchCardUserData()
             FetchLikeuser()
             FetchDisLikeuser()

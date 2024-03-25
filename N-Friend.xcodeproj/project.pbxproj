@@ -51,6 +51,7 @@
 		976934262B9BFC380017BE97 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 976934252B9BFC380017BE97 /* FirebaseStorageCombine-Community */; };
 		979273EF2BAE75170040D2B5 /* UserDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979273EE2BAE75170040D2B5 /* UserDetailView.swift */; };
 		979273F12BB10B1A0040D2B5 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979273F02BB10B1A0040D2B5 /* UserModel.swift */; };
+		979273F32BB1B5D00040D2B5 /* LikeCardUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979273F22BB1B5D00040D2B5 /* LikeCardUserModel.swift */; };
 		97BE23372B96E19100027B05 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BE23362B96E19100027B05 /* ImagePickerView.swift */; };
 		97ED582D2B99F80A00E8BD3E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 97ED582C2B99F80A00E8BD3E /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
@@ -73,6 +74,7 @@
 		9753302D2B8CC62100BA04F9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		979273EE2BAE75170040D2B5 /* UserDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailView.swift; sourceTree = "<group>"; };
 		979273F02BB10B1A0040D2B5 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		979273F22BB1B5D00040D2B5 /* LikeCardUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeCardUserModel.swift; sourceTree = "<group>"; };
 		97BE23362B96E19100027B05 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		97ED582C2B99F80A00E8BD3E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		97ED58692B9BED9A00E8BD3E /* libapp_launch_measurement.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libapp_launch_measurement.tbd; path = usr/lib/libapp_launch_measurement.tbd; sourceTree = SDKROOT; };
@@ -175,6 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				97532FE92B8ADC4300BA04F9 /* CardUserModel.swift */,
+				979273F22BB1B5D00040D2B5 /* LikeCardUserModel.swift */,
 				979273F02BB10B1A0040D2B5 /* UserModel.swift */,
 			);
 			path = Model;
@@ -324,6 +327,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				979273F32BB1B5D00040D2B5 /* LikeCardUserModel.swift in Sources */,
 				97532FDD2B89BC8B00BA04F9 /* CardSwipeView.swift in Sources */,
 				97532FDB2B89896E00BA04F9 /* TastesSelectionView.swift in Sources */,
 				97532FD92B89867A00BA04F9 /* LoginView.swift in Sources */,

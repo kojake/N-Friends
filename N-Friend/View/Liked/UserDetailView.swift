@@ -6,14 +6,17 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
+import FirebaseStorage
 
 struct UserDetailView: View {
-    var UserProfile: UserModel = UserModel(UID: "ARFS8MLPbwOPUYsVmpz8ZRxkEoj2", Username: "aaa", EnrollmentCampus: "秋葉原", Tastes: ["サッカー"])
+    var UserUID: String
+    @State var UserProfile: UserModel = UserModel(UID: "???", UserImage: UIImage(named: "Person1")!, Username: "???", EnrollmentCampus: "???", Tastes: ["???"])
     
     var body: some View {
         VStack{
             HStack{
-                Image("Person1").resizable().frame(width: 100, height: 100).cornerRadius(75).overlay(RoundedRectangle(cornerRadius: 75).stroke(Color.black, lineWidth: 2)).padding()
+                Image(uiImage: UserProfile.UserImage).resizable().frame(width: 100, height: 100).cornerRadius(75).overlay(RoundedRectangle(cornerRadius: 75).stroke(Color.black, lineWidth: 2)).padding()
                 VStack(alignment: .leading ){
                     Text(UserProfile.Username).font(.title).fontWeight(.semibold)
                     Text("@\(UserProfile.UID)").font(.system(size: 13))
@@ -26,9 +29,9 @@ struct UserDetailView: View {
                     Section{
                         HStack {
                             VStack{
-                                Image(systemName: "person.text.rectangle").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.blue)
+                                Image(systemName: "person.text.rectangle").resizable().frame(width: 35, height: 35).foregroundColor(Color.blue)
                             }.frame(width: 50, height: 50).background(Color.gray.opacity(0.3)).cornerRadius(50)
-                            Text(UserProfile.Username).fontWeight(.semibold)
+                            Text(UserProfile.Username).font(.system(size: 15)).fontWeight(.semibold)
                         }
                         HStack{
                             VStack{
@@ -54,10 +57,41 @@ struct UserDetailView: View {
                 }
             }
         }
+        .onAppear{
+            FetchUserProfile()
+        }
     }
-    
-}
-
-#Preview {
-    UserDetailView()
+    private func FetchUserProfile(){
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(UserUID).getDocument { (document, error) in
+            if let document = document, document.exists {
+                let data = document.data()
+                if let username = data!["Username"] as? String,
+                   let useruid = data!["UID"] as? String,
+                   let enrollmentcampus = data!["EnrollmentCampus"] as? String,
+                   let tastes = data!["Tastes"] as? [String] {
+                    FetchUserImage(username: username) { image in
+                        UserProfile = UserModel(UID: useruid, UserImage: (image ?? UIImage(named: "Person1"))!, Username: username, EnrollmentCampus: enrollmentcampus, Tastes: tastes)
+                    }
+                }
+            } else {
+                print("Document does not exist.")
+            }
+        }
+    }
+    private func FetchUserImage(username: String, completion: @escaping (UIImage?) -> Void) {
+        let storageRef = Storage.storage().reference(forURL: "gs://n-friends.appspot.com").child(username)
+        
+        storageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
+            if let error = error {
+                print("Error downloading image: \(error.localizedDescription)")
+                completion(nil)
+            } else if let data = data, let uiImage = UIImage(data: data) {
+                completion(uiImage)
+            } else {
+                completion(nil)
+            }
+        }
+    }
 }
