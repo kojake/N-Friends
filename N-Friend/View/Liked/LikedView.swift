@@ -12,6 +12,7 @@ import FirebaseStorage
 struct LikedView: View {
     @State private var isLoading = false
     
+    @State var TapUserUID: String = ""
     @State var UserUID: String
     
     @State var LikeUserUIDList: [String] = []
@@ -31,6 +32,7 @@ struct LikedView: View {
                             }
                         }.frame(width: 230, height: 300).cornerRadius(10)
                             .onTapGesture {
+                                TapUserUID = LikeUser[index].UID
                                 Showshould_UserDetailView = true
                             }
                             .contextMenu {
@@ -61,7 +63,7 @@ struct LikedView: View {
             }
         }
         .sheet(isPresented: $Showshould_UserDetailView){
-            UserDetailView(UserUID: UserUID)
+            UserDetailView(UserUID: $TapUserUID)
         }
     }
     private func FetchLikeUser(){
@@ -85,9 +87,10 @@ struct LikedView: View {
         db.collection("UserList").document(UID).getDocument { (document, error) in
             if let document = document, document.exists {
                 let data = document.data()
-                if let username = data!["Username"] as? String{
+                if let username = data!["Username"] as? String,
+                   let useruid = data!["UID"] as? String {
                     FetchUserImage(username: username) { image in
-                        LikeUser.append(LikeCardUserModel(Username: username, UserImage: (image ?? UIImage(named: "Person1"))!))
+                        LikeUser.append(LikeCardUserModel(UID: useruid, Username: username, UserImage: (image ?? UIImage(named: "Person1"))!))
                     }
                 }
                 else {

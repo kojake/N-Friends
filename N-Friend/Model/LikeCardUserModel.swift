@@ -10,6 +10,7 @@ import UIKit
 
 struct LikeCardUserModel: Identifiable {
     var id = UUID()
+    var UID: String
     var Username: String
     var UserImage: UIImage
 }

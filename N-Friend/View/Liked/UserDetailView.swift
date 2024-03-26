@@ -12,7 +12,7 @@ import FirebaseStorage
 struct UserDetailView: View {
     @State private var isLoading = false
     
-    var UserUID: String
+    @Binding var UserUID: String
     @State var UserProfile: UserModel = UserModel(UID: "???", UserImage: UIImage(named: "Person1")!, Username: "???", EnrollmentCampus: "???", Tastes: ["???"])
     
     var body: some View {
