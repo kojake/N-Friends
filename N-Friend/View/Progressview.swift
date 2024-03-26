@@ -8,19 +8,22 @@
 import SwiftUI
 
 struct Progressview: View {
-    var Progressmessage: String
-    
     var body: some View {
         ZStack{
             Color.black.opacity(0.3).ignoresSafeArea()
             VStack{
-                ProgressView(Progressmessage)
+                ProgressView("しばらくお待ちください")
                     .frame(width: 210, height: 100)
-                    .background(Color.blue.opacity(0.9))
+                    .background(Color.black.opacity(0.9))
                     .foregroundColor(Color.white)
                     .tint(Color.white)
-                    .cornerRadius(14)
+                    .font(.custom("KohinoorTelugu-Medium", size: 16))
+                    .cornerRadius(4)
             }
         }
     }
+}
+
+#Preview {
+    Progressview()
 }

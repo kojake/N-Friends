@@ -137,7 +137,7 @@ struct CardSwipeView: View {
                 }
             }
             if isLoading{
-                Progressview(Progressmessage: "読み込み中")
+                Progressview()
             }
         }
         .onAppear{

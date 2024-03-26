@@ -23,11 +23,13 @@ struct LikedView: View {
             ZStack{
                 ScrollView{
                     ForEach(0..<LikeUser.count, id: \.self) { index in
-                        VStack {
-                            Image(uiImage: LikeUser[index].UserImage).resizable().scaledToFit().frame(width: 180, height: 250).cornerRadius(10)
-                            Text(LikeUser[index].Username).font(.title3).fontWeight(.black).foregroundColor(Color.black)
-                            Spacer()
-                        }.frame(width: 230, height: 300).background(Color.blue.opacity(0.3)).cornerRadius(10)
+                        ZStack {
+                            Image(uiImage: LikeUser[index].UserImage).resizable().frame(width: 230, height: 300).cornerRadius(10)
+                            VStack{
+                                Spacer()
+                                Text(LikeUser[index].Username).frame(width: 230, height: 50).background(Color.white.opacity(0.6)).font(.title).fontWeight(.black).foregroundColor(Color.black)
+                            }
+                        }.frame(width: 230, height: 300).cornerRadius(10)
                             .onTapGesture {
                                 Showshould_UserDetailView = true
                             }

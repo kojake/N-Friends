@@ -119,7 +119,7 @@ struct ProfileView: View {
                     }
                 }
                 if isLoading{
-                    Progressview(Progressmessage: "ユーザー情報を取得中")
+                    Progressview()
                 }
             }
         }

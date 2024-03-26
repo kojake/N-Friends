@@ -98,7 +98,7 @@ struct LoginView: View {
                     }
                 }
                 if isLoading{
-                    Progressview(Progressmessage: "ログイン中")
+                    Progressview()
                 }
             }
         }
