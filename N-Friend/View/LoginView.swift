@@ -17,6 +17,7 @@ struct LoginView: View {
 
     @State private var UserImage: UIImage?
     @State private var Showshould_ContentView = false
+    
     @State private var isLoading: Bool = false
     
     //GoogleAuthを使ってログインする
@@ -63,7 +64,7 @@ struct LoginView: View {
                 if isNewUser {
                     UploadUserData()
                     isLoading = false
-                    Showshould_ContentView = true
+                    
                 } else {
                     isLoading = false
                     Showshould_ContentView = true
@@ -78,6 +79,7 @@ struct LoginView: View {
                 NavigationLink(destination: ContentView(UserUID: UserUID), isActive: $Showshould_ContentView){
                     EmptyView()
                 }
+
                 Color.blue.opacity(0.7).ignoresSafeArea()
                 VStack{
                     Text("N-Friends").font(.largeTitle).fontWeight(.black).padding()

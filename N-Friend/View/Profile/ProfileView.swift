@@ -153,7 +153,7 @@ struct ProfileView: View {
             LoginView()
         }
         .sheet(isPresented: $Showshould_TastesEditView){
-            TastesEditView(Realname: UserUID, UserTastesList: $UserTastesList)
+            TastesEditView(UserUID: UserUID, UserTastesList: $UserTastesList)
         }
         .sheet(isPresented: $Showshould_ImagePickerView){
             ImagePicker(UserImage: $UserImage, Showshould_ImagePickerView: $Showshould_ImagePickerView)

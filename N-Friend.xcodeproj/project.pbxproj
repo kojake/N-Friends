@@ -19,9 +19,7 @@
 		97532FCD2B8985B700BA04F9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97532FCC2B8985B700BA04F9 /* Assets.xcassets */; };
 		97532FD02B8985B700BA04F9 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97532FCF2B8985B700BA04F9 /* Preview Assets.xcassets */; };
 		97532FD92B89867A00BA04F9 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FD82B89867A00BA04F9 /* LoginView.swift */; };
-		97532FDB2B89896E00BA04F9 /* TastesSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FDA2B89896E00BA04F9 /* TastesSelectionView.swift */; };
 		97532FDD2B89BC8B00BA04F9 /* CardSwipeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FDC2B89BC8B00BA04F9 /* CardSwipeView.swift */; };
-		97532FDF2B89CDD500BA04F9 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FDE2B89CDD500BA04F9 /* CardView.swift */; };
 		97532FE22B89D2EB00BA04F9 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FE12B89D2EB00BA04F9 /* ProfileView.swift */; };
 		97532FE62B8A2DD700BA04F9 /* LikedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FE52B8A2DD700BA04F9 /* LikedView.swift */; };
 		97532FEA2B8ADC4300BA04F9 /* CardUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97532FE92B8ADC4300BA04F9 /* CardUserModel.swift */; };
@@ -52,6 +50,7 @@
 		979273EF2BAE75170040D2B5 /* UserDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979273EE2BAE75170040D2B5 /* UserDetailView.swift */; };
 		979273F12BB10B1A0040D2B5 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979273F02BB10B1A0040D2B5 /* UserModel.swift */; };
 		979273F32BB1B5D00040D2B5 /* LikeCardUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979273F22BB1B5D00040D2B5 /* LikeCardUserModel.swift */; };
+		979273F52BB314EF0040D2B5 /* CreatedAccountDetailsEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979273F42BB314EF0040D2B5 /* CreatedAccountDetailsEditView.swift */; };
 		97BE23372B96E19100027B05 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BE23362B96E19100027B05 /* ImagePickerView.swift */; };
 		97ED582D2B99F80A00E8BD3E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 97ED582C2B99F80A00E8BD3E /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
@@ -65,9 +64,7 @@
 		97532FCC2B8985B700BA04F9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97532FCF2B8985B700BA04F9 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		97532FD82B89867A00BA04F9 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		97532FDA2B89896E00BA04F9 /* TastesSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TastesSelectionView.swift; sourceTree = "<group>"; };
 		97532FDC2B89BC8B00BA04F9 /* CardSwipeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSwipeView.swift; sourceTree = "<group>"; };
-		97532FDE2B89CDD500BA04F9 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		97532FE12B89D2EB00BA04F9 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		97532FE52B8A2DD700BA04F9 /* LikedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedView.swift; sourceTree = "<group>"; };
 		97532FE92B8ADC4300BA04F9 /* CardUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardUserModel.swift; sourceTree = "<group>"; };
@@ -75,6 +72,7 @@
 		979273EE2BAE75170040D2B5 /* UserDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailView.swift; sourceTree = "<group>"; };
 		979273F02BB10B1A0040D2B5 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		979273F22BB1B5D00040D2B5 /* LikeCardUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeCardUserModel.swift; sourceTree = "<group>"; };
+		979273F42BB314EF0040D2B5 /* CreatedAccountDetailsEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatedAccountDetailsEditView.swift; sourceTree = "<group>"; };
 		97BE23362B96E19100027B05 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		97ED582C2B99F80A00E8BD3E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		97ED58692B9BED9A00E8BD3E /* libapp_launch_measurement.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libapp_launch_measurement.tbd; path = usr/lib/libapp_launch_measurement.tbd; sourceTree = SDKROOT; };
@@ -163,7 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				97532FD82B89867A00BA04F9 /* LoginView.swift */,
-				97532FDA2B89896E00BA04F9 /* TastesSelectionView.swift */,
+				979273F42BB314EF0040D2B5 /* CreatedAccountDetailsEditView.swift */,
 				97532FCA2B8985B200BA04F9 /* ContentView.swift */,
 				974B17E22B9C4CF20012351D /* Progressview.swift */,
 				97532FE02B89D0EF00BA04F9 /* Card */,
@@ -186,7 +184,6 @@
 		97532FE02B89D0EF00BA04F9 /* Card */ = {
 			isa = PBXGroup;
 			children = (
-				97532FDE2B89CDD500BA04F9 /* CardView.swift */,
 				97532FDC2B89BC8B00BA04F9 /* CardSwipeView.swift */,
 			);
 			path = Card;
@@ -327,9 +324,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				979273F52BB314EF0040D2B5 /* CreatedAccountDetailsEditView.swift in Sources */,
 				979273F32BB1B5D00040D2B5 /* LikeCardUserModel.swift in Sources */,
 				97532FDD2B89BC8B00BA04F9 /* CardSwipeView.swift in Sources */,
-				97532FDB2B89896E00BA04F9 /* TastesSelectionView.swift in Sources */,
 				97532FD92B89867A00BA04F9 /* LoginView.swift in Sources */,
 				97BE23372B96E19100027B05 /* ImagePickerView.swift in Sources */,
 				979273EF2BAE75170040D2B5 /* UserDetailView.swift in Sources */,
@@ -337,7 +334,6 @@
 				974B17E32B9C4CF20012351D /* Progressview.swift in Sources */,
 				970A152B2B92C5C8000CDE36 /* TastesEditView.swift in Sources */,
 				979273F12BB10B1A0040D2B5 /* UserModel.swift in Sources */,
-				97532FDF2B89CDD500BA04F9 /* CardView.swift in Sources */,
 				97532FE22B89D2EB00BA04F9 /* ProfileView.swift in Sources */,
 				97532FE62B8A2DD700BA04F9 /* LikedView.swift in Sources */,
 				97532FEA2B8ADC4300BA04F9 /* CardUserModel.swift in Sources */,

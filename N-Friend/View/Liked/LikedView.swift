@@ -57,7 +57,6 @@ struct LikedView: View {
         .onAppear{
             LikeUser.removeAll()
             FetchLikeUser()
-            //存在するLikeUser分UIDを関数に渡す
             for i in 0..<LikeUserUIDList.count{
                 FetchLikeUsername_Image(UID: LikeUserUIDList[i], index: i)
             }
@@ -81,6 +80,7 @@ struct LikedView: View {
             }
         }
     }
+    
     private func FetchLikeUsername_Image(UID: String, index: Int){
         let db = Firestore.firestore()
         
@@ -115,6 +115,7 @@ struct LikedView: View {
             }
         }
     }
+    
     private func UpdateLikeUser(){
         let db = Firestore.firestore()
         

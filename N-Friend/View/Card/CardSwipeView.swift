@@ -151,11 +151,7 @@ struct CardSwipeView: View {
     private func FetchCardUserData(){
         let db = Firestore.firestore()
         
-        // 指定したコレクションの参照を取得
-        let collectionRef = db.collection("UserList")
-        
-        // コレクション内のすべてのドキュメントを取得
-        collectionRef.getDocuments { (querySnapshot, error) in
+        db.collection("UserList").getDocuments { (querySnapshot, error) in
             if let error = error {
                 print("Error getting documents: \(error)")
                 return
@@ -167,7 +163,6 @@ struct CardSwipeView: View {
             }
             
             for document in documents {
-                // 各ドキュメントから複数のフィールドの値を取得
                 let data = document.data()
                 if let username = data["Username"] as? String,
                    let useruid = data["UID"] as? String,

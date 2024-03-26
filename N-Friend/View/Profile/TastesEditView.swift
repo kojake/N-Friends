@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseFirestore
 
 struct TastesEditView: View {
-    var Realname: String
+    var UserUID: String
     
     @State var TastesList: [[String]] = [
         ["読書", "映画鑑賞", "英会話"],
@@ -78,7 +78,7 @@ struct TastesEditView: View {
     private func UpdateUserTastes(){
         let db = Firestore.firestore()
         
-        db.collection("UserList").document(Realname).updateData([
+        db.collection("UserList").document(UserUID).updateData([
             "Tastes": UserTastesList
         ]) { err in
             if let err = err {
