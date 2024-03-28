@@ -11,7 +11,7 @@ import UIKit
 struct UserModel: Identifiable {
     var id = UUID()
     var UID: String
-    var UserImage: UIImage
+    var UserImage: UIImage?
     var Username: String
     var EnrollmentCampus: String
     var Tastes: [String]

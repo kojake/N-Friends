@@ -11,24 +11,17 @@ import FirebaseStorage
 
 struct ProfileView: View {
     //Profile
-    @State var UserImage: UIImage?
     @State var UserUID: String
-    @State var Username: String = "???"
-    @State var Previousname: String = ""
+    @State var UserProfile: UserModel = UserModel(UID: "???", UserImage: UIImage(named: "Person1")!, Username: "???", EnrollmentCampus: "???", Tastes: ["???"])
     @State var CampusSelectionIndexValue: Int = 0
+    @State var Previousname: String = ""
     
     //Progressview
     @State private var isLoading: Bool = false
-    
-    @State var UserTastesList: [String] = ["サッカー", "バスケ", "プログラミング"]
     @State private var Showshould_TastesEditView = false
     
     //Picker
     @State var AllCampus: [String] = ["秋葉原", "代々木", "新宿"]
-    
-    //Signout
-    @State private var Signoutalert = false
-    @State private var Showshould_LoginView = false
     
     //ImagePickerView
     @State private var Showshould_ImagePickerView = false
@@ -39,7 +32,7 @@ struct ProfileView: View {
                 VStack{
                     HStack{
                         ZStack{
-                            if let userimage = UserImage {
+                            if let userimage = UserProfile.UserImage {
                                 Image(uiImage: userimage)
                                     .resizable()
                                     .frame(width: 100, height: 100)
@@ -67,8 +60,8 @@ struct ProfileView: View {
                             }
                         }
                         VStack(alignment: .leading ){
-                            Text(Username).font(.title).fontWeight(.semibold)
-                            Text("@\(UserUID)").font(.system(size: 13))
+                            Text(UserProfile.Username).font(.title).fontWeight(.semibold)
+                            Text("@\(UserProfile.UID)").font(.system(size: 13))
                         }
                     }
                     NavigationView{
@@ -80,9 +73,9 @@ struct ProfileView: View {
                                     }.frame(width: 50, height: 50).background(Color.gray.opacity(0.3)).cornerRadius(50)
                                     Text("ユーザーネーム")
                                         .fontWeight(.semibold)
-                                    TextField(Username, text: $Username)
-                                        .onChange(of: Username) { _ in
-                                            UpdateUsername()
+                                    TextField(UserProfile.Username, text: $UserProfile.Username)
+                                        .onChange(of: UserProfile.Username) { _ in
+                                            UpdateUserProfile()
                                         }
                                 }
                                 HStack{
@@ -95,7 +88,7 @@ struct ProfileView: View {
                                         }
                                     }.fontWeight(.semibold)
                                         .onChange(of: CampusSelectionIndexValue) { NewValue in
-                                            UpdateUserTastes()
+                                            UpdateUserProfile()
                                         }
                                 }
                                 HStack {
@@ -106,8 +99,8 @@ struct ProfileView: View {
                                         .fontWeight(.semibold)
                                     ScrollView(.horizontal){
                                         HStack{
-                                            ForEach(0..<UserTastesList.count, id: \.self) { index in
-                                                Text(UserTastesList[index]).fontWeight(.semibold).frame(width: 130, height: 30).background(Color.blue).foregroundColor(Color.white).cornerRadius(5)
+                                            ForEach(0..<UserProfile.Tastes.count, id: \.self) { index in
+                                                Text(UserProfile.Tastes[index]).fontWeight(.semibold).frame(width: 130, height: 30).background(Color.blue).foregroundColor(Color.white).cornerRadius(5)
                                             }
                                         }
                                     }
@@ -132,62 +125,82 @@ struct ProfileView: View {
         }
         .onAppear{
             isLoading = true
-            FetchUsername()
-            FetchEnrollmentCampus()
-            FetchUserTastes()
+            FetchUserProfile()
         }
         .onDisappear{
             DeleteUserImage()
             UpdateUserImage()
         }
-        .alert(isPresented: $Signoutalert) {
-            Alert(title: Text("確認"),
-                  message: Text("本当にサインアウトしますか？"),
-                  primaryButton: .cancel(Text("キャンセル")),
-                  secondaryButton: .default(Text("サインアウト"),
-                                            action: {
-                Showshould_LoginView = true
-            }))
-        }
-        .navigationDestination(isPresented: $Showshould_LoginView) {
-            LoginView()
-        }
         .sheet(isPresented: $Showshould_TastesEditView){
-            TastesEditView(UserUID: UserUID, UserTastesList: $UserTastesList)
+            TastesEditView(UserUID: UserProfile.UID, UserTastesList: $UserProfile.Tastes)
+            
         }
-        .sheet(isPresented: $Showshould_ImagePickerView){
-            ImagePicker(UserImage: $UserImage, Showshould_ImagePickerView: $Showshould_ImagePickerView)
-                .onDisappear{
+        .sheet(isPresented: $Showshould_ImagePickerView) {
+            ImagePicker(UserImage: $UserProfile.UserImage, Showshould_ImagePickerView: $Showshould_ImagePickerView)
+                .onDisappear {
                     DeleteUserImage()
                     UpdateUserImage()
                 }
         }
     }
-    //UserImage
-    private func FetchUserImage(){
-        let storageref = Storage.storage().reference(forURL: "gs://n-friends.appspot.com").child(Username)
+    // Profile
+    private func FetchUserProfile(){
+        let db = Firestore.firestore()
         
-        storageref.getData(maxSize: 10 * 1024 * 1024) { data, error in
-            if let error = error{
+        db.collection("UserList").document(UserUID).getDocument { (document, error) in
+            if let document = document, document.exists {
+                let data = document.data()
+                if let username = data!["Username"] as? String,
+                   let useruid = data!["UID"] as? String,
+                   let enrollmentcampus = data!["EnrollmentCampus"] as? String,
+                   let tastes = data!["Tastes"] as? [String] {
+                    FetchUserImage(username: username) { image in
+                        UserProfile = UserModel(UID: useruid, UserImage: (image ?? UIImage(named: "Person1"))!, Username: username, EnrollmentCampus: enrollmentcampus, Tastes: tastes)
+                        isLoading = false
+                    }
+                }
+            } else {
+                print("Document does not exist.")
+            }
+        }
+    }
+    private func UpdateUserProfile(){
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(UserProfile.UID).updateData([
+            "Username": UserProfile.Username,
+            "EnrollmentCampus": AllCampus[CampusSelectionIndexValue]
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
+    
+    //UserImage
+    private func FetchUserImage(username: String, completion: @escaping (UIImage?) -> Void) {
+        let storageRef = Storage.storage().reference(forURL: "gs://n-friends.appspot.com").child(username)
+        
+        storageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
+            if let error = error {
                 print("Error downloading image: \(error.localizedDescription)")
-                isLoading = false
-            } else if let data = data {
-                UserImage = UIImage(data: data)
-                //画像取得の関数が最後に実行されるので画像が取得できたらローディング画面を解除する
-                isLoading = false
+                completion(nil)
+            } else if let data = data, let uiImage = UIImage(data: data) {
+                completion(uiImage)
+            } else {
+                completion(nil)
             }
         }
     }
     private func UpdateUserImage() {
-        guard let image = UserImage else {
-            print("No image to update.")
-            return
-        }
+        let image = UserProfile.UserImage
 
-        let storageref = Storage.storage().reference(forURL: "gs://n-friends.appspot.com").child(Username)
+        let storageref = Storage.storage().reference(forURL: "gs://n-friends.appspot.com").child(UserProfile.Username)
         
         //UserImageがnilの状態をチェックし、nilでない場合にデータ変換をする処理を実装
-        guard let data = image.jpegData(compressionQuality: 1.0) else {
+        guard let data = image!.jpegData(compressionQuality: 1.0) else {
             print("Could not get JPEG representation of UIImage")
             return
         }
@@ -210,91 +223,7 @@ struct ProfileView: View {
                 print("Error \(error.localizedDescription)")
             } else {
                 print("Image success deleted")
-                Previousname = Username
-            }
-        }
-    }
-    
-    //Username
-    private func FetchUsername(){
-        let db = Firestore.firestore()
-        
-        db.collection("UserList").document(UserUID).getDocument { (document, error) in
-            if let document = document, document.exists {
-                if let fieldValue = document.data()?["Username"] as? String {
-                    Username = fieldValue
-                    Previousname = fieldValue
-                    //同時に名前の取得と画像取得の関数を実行するとバグるので
-                    //名前を取得できたことを確認してから画像を取得します。
-                    FetchUserImage()
-                } else {
-                    print("Field not found or cannot be converted to String.")
-                }
-            } else {
-                print("Document does not exist.")
-            }
-        }
-    }
-    private func UpdateUsername(){
-        let db = Firestore.firestore()
-        
-        db.collection("UserList").document(UserUID).updateData([
-            "Username": Username
-        ]) { err in
-            if let err = err {
-                print("Error updating document: \(err)")
-            } else {
-                print("Document successfully updated")
-            }
-        }
-    }
-    //Tastes
-    private func FetchUserTastes(){
-        let db = Firestore.firestore()
-        
-        db.collection("UserList").document(UserUID).getDocument { (document, error) in
-            if let document = document, document.exists {
-                if let fieldValue = document.data()?["Tastes"] as? [String] {
-                    UserTastesList = fieldValue
-                } else {
-                    print("Field not found or cannot be converted to String.")
-                }
-            } else {
-                print("Document does not exist.")
-            }
-        }
-    }
-    private func UpdateUserTastes(){
-        let db = Firestore.firestore()
-        
-        db.collection("UserList").document(UserUID).updateData([
-            "EnrollmentCampus": AllCampus[CampusSelectionIndexValue]
-        ]) { err in
-            if let err = err {
-                print("Error updating document: \(err)")
-            } else {
-                print("Document successfully updated")
-            }
-        }
-    }
-    //EnrollmentCampus
-    private func FetchEnrollmentCampus(){
-        let db = Firestore.firestore()
-        
-        db.collection("UserList").document(UserUID).getDocument { (document, error) in
-            if let document = document, document.exists {
-                if let fieldValue = document.data()?["EnrollmentCampus"] as? String{
-                    for i in 0..<AllCampus.count{
-                        if fieldValue == AllCampus[i]{
-                            CampusSelectionIndexValue = i
-                            break
-                        }
-                    }
-                } else {
-                    print("Field not found or cannot be converted to String.")
-                }
-            } else {
-                print("Document does not exits.")
+                Previousname = UserProfile.Username
             }
         }
     }

@@ -16,6 +16,7 @@ struct CreatedAccountDetailsEditView: View {
                 Spacer()
                 Image(systemName: "pencil").resizable().scaledToFit().frame(width: 50, height:500).padding()
             }
+            
             Spacer()
         }
     }
