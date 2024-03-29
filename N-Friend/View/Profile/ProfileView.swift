@@ -16,104 +16,100 @@ struct ProfileView: View {
     @State var CampusSelectionIndexValue: Int = 0
     @State var Previousname: String = ""
     
-    //Progressview
     @State private var isLoading: Bool = false
+    
     @State private var Showshould_TastesEditView = false
     
     //Picker
     @State var AllCampus: [String] = ["秋葉原", "代々木", "新宿"]
     
-    //ImagePickerView
     @State private var Showshould_ImagePickerView = false
     
     var body: some View {
-        NavigationView{
-            ZStack{
-                VStack{
-                    HStack{
-                        ZStack{
-                            if let userimage = UserProfile.UserImage {
-                                Image(uiImage: userimage)
-                                    .resizable()
-                                    .frame(width: 100, height: 100)
-                                    .cornerRadius(75)
-                                    .overlay(RoundedRectangle(cornerRadius: 75).stroke(Color.black, lineWidth: 2))
-                            } else {
-                                Image(systemName: "person.fill")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 80, height: 80)
-                                    .foregroundColor(Color.blue)
-                            }
-                            HStack{
-                                Rectangle().frame(width: 50, height: 1).foregroundColor(.clear)
-                                VStack{
-                                    Rectangle().frame(width: 1, height: 50).foregroundColor(.clear)
-                                    Button(action: {
-                                        Showshould_ImagePickerView = true
-                                    }){
-                                        ZStack{
-                                            Image(systemName: "plus").foregroundColor(Color.white)
-                                        }.frame(width: 30, height: 30).background(Color.blue).cornerRadius(50)
-                                    }
+        ZStack{
+            VStack{
+                HStack{
+                    ZStack{
+                        if let userimage = UserProfile.UserImage {
+                            Image(uiImage: userimage)
+                                .resizable()
+                                .frame(width: 100, height: 100)
+                                .cornerRadius(75)
+                                .overlay(RoundedRectangle(cornerRadius: 75).stroke(Color.black, lineWidth: 2))
+                        } else {
+                            Image(systemName: "person.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 80, height: 80)
+                                .foregroundColor(Color.blue)
+                        }
+                        HStack{
+                            Rectangle().frame(width: 50, height: 1).foregroundColor(.clear)
+                            VStack{
+                                Rectangle().frame(width: 1, height: 50).foregroundColor(.clear)
+                                Button(action: {
+                                    Showshould_ImagePickerView = true
+                                }){
+                                    ZStack{
+                                        Image(systemName: "plus").foregroundColor(Color.white)
+                                    }.frame(width: 30, height: 30).background(Color.blue).cornerRadius(50)
                                 }
                             }
-                        }
-                        VStack(alignment: .leading ){
-                            Text(UserProfile.Username).font(.title).fontWeight(.semibold)
-                            Text("@\(UserProfile.UID)").font(.system(size: 13))
                         }
                     }
-                    NavigationView{
-                        Form{
-                            Section{
-                                HStack {
-                                    VStack{
-                                        Image(systemName: "person.text.rectangle").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.blue)
-                                    }.frame(width: 50, height: 50).background(Color.gray.opacity(0.3)).cornerRadius(50)
-                                    Text("ユーザーネーム")
-                                        .fontWeight(.semibold)
-                                    TextField(UserProfile.Username, text: $UserProfile.Username)
-                                        .onChange(of: UserProfile.Username) { _ in
-                                            UpdateUserProfile()
-                                        }
+                    VStack(alignment: .leading ){
+                        Text(UserProfile.Username).font(.title).fontWeight(.semibold)
+                        Text("@\(UserProfile.UID)").font(.system(size: 13))
+                    }
+                }
+                
+                Form{
+                    Section{
+                        HStack {
+                            VStack{
+                                Image(systemName: "person.text.rectangle").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.blue)
+                            }.frame(width: 50, height: 50).background(Color.gray.opacity(0.3)).cornerRadius(50)
+                            Text("名前")
+                                .fontWeight(.semibold)
+                            TextField(UserProfile.Username, text: $UserProfile.Username)
+                                .onChange(of: UserProfile.Username) { _ in
+                                    UpdateUserProfile()
                                 }
+                        }
+                        HStack{
+                            VStack{
+                                Image(systemName: "mappin.and.ellipse").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.green)
+                            }.frame(width: 50, height: 50).background(Color.gray.opacity(0.3)).cornerRadius(50)
+                            Picker("所属キャンパス", selection: $CampusSelectionIndexValue) {
+                                ForEach(0..<AllCampus.count, id: \.self){ index in
+                                    Text(AllCampus[index]).tag(index)
+                                }
+                            }.fontWeight(.semibold)
+                                .onChange(of: CampusSelectionIndexValue) { NewValue in
+                                    UpdateUserProfile()
+                                }
+                        }
+                        HStack {
+                            VStack{
+                                Image(systemName: "gamecontroller").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.pink)
+                            }.frame(width: 50, height: 50).background(Color.gray.opacity(0.3)).cornerRadius(50)
+                            Text("趣味")
+                                .fontWeight(.semibold)
+                            ScrollView(.horizontal){
                                 HStack{
-                                    VStack{
-                                        Image(systemName: "mappin.and.ellipse").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.green)
-                                    }.frame(width: 50, height: 50).background(Color.gray.opacity(0.3)).cornerRadius(50)
-                                    Picker("所属キャンパス", selection: $CampusSelectionIndexValue) {
-                                        ForEach(0..<AllCampus.count, id: \.self){ index in
-                                            Text(AllCampus[index]).tag(index)
-                                        }
-                                    }.fontWeight(.semibold)
-                                        .onChange(of: CampusSelectionIndexValue) { NewValue in
-                                            UpdateUserProfile()
-                                        }
-                                }
-                                HStack {
-                                    VStack{
-                                        Image(systemName: "gamecontroller").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.pink)
-                                    }.frame(width: 50, height: 50).background(Color.gray.opacity(0.3)).cornerRadius(50)
-                                    Text("趣味")
-                                        .fontWeight(.semibold)
-                                    ScrollView(.horizontal){
-                                        HStack{
-                                            ForEach(0..<UserProfile.Tastes.count, id: \.self) { index in
-                                                Text(UserProfile.Tastes[index]).fontWeight(.semibold).frame(width: 130, height: 30).background(Color.blue).foregroundColor(Color.white).cornerRadius(5)
-                                            }
-                                        }
+                                    ForEach(0..<UserProfile.Tastes.count, id: \.self) { index in
+                                        Text(UserProfile.Tastes[index]).fontWeight(.semibold).frame(width: 130, height: 30).background(Color.blue).foregroundColor(Color.white).cornerRadius(5)
                                     }
-                                }.onTapGesture {
-                                    Showshould_TastesEditView = true
                                 }
                             }
+                        }.onTapGesture {
+                            Showshould_TastesEditView = true
                         }
                     }
                 }
-                if isLoading{
-                    Progressview()
-                }
+            }
+            if isLoading{
+                Progressview()
             }
         }
         .toolbar{
@@ -196,7 +192,7 @@ struct ProfileView: View {
     }
     private func UpdateUserImage() {
         let image = UserProfile.UserImage
-
+        
         let storageref = Storage.storage().reference(forURL: "gs://n-friends.appspot.com").child(UserProfile.Username)
         
         //UserImageがnilの状態をチェックし、nilでない場合にデータ変換をする処理を実装
@@ -215,9 +211,9 @@ struct ProfileView: View {
     }
     private func DeleteUserImage(){
         let storage = Storage.storage()
-
+        
         let desertRef = storage.reference(forURL: "gs://n-friends.appspot.com").child(Previousname)
-
+        
         desertRef.delete { error in
             if let error = error {
                 print("Error \(error.localizedDescription)")
@@ -227,4 +223,8 @@ struct ProfileView: View {
             }
         }
     }
+}
+
+#Preview {
+    ProfileView(UserUID: "")
 }

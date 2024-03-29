@@ -62,7 +62,7 @@ struct LikedView: View {
             }
         }
         .sheet(isPresented: $Showshould_UserDetailView){
-            UserDetailView(UserUID: $TapUserUID)
+            UserDetailView(UserUID: TapUserUID)
         }
     }
     private func FetchLikeUser(){
@@ -129,4 +129,8 @@ struct LikedView: View {
             }
         }
     }
+}
+
+#Preview{
+    LikedView(UserUID: "")
 }

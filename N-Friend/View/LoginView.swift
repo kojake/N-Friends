@@ -17,6 +17,7 @@ struct LoginView: View {
 
     @State private var UserImage: UIImage?
     @State private var Showshould_ContentView = false
+    @State private var Showshould_CreatedAccountDetailsEditView = false
     
     @State private var isLoading: Bool = false
     
@@ -64,7 +65,7 @@ struct LoginView: View {
                 if isNewUser {
                     UploadUserData()
                     isLoading = false
-                    
+                    Showshould_CreatedAccountDetailsEditView = true
                 } else {
                     isLoading = false
                     Showshould_ContentView = true
@@ -77,6 +78,9 @@ struct LoginView: View {
         NavigationStack{
             ZStack{
                 NavigationLink(destination: ContentView(UserUID: UserUID), isActive: $Showshould_ContentView){
+                    EmptyView()
+                }
+                NavigationLink(destination: CreatedAccountDetailsEditView(UserUID: UserUID), isActive: $Showshould_CreatedAccountDetailsEditView){
                     EmptyView()
                 }
 
@@ -105,8 +109,6 @@ struct LoginView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .onAppear{
-        }
     }
     private func UploadUserData(){
         let db = Firestore.firestore()

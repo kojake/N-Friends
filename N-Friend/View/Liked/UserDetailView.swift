@@ -12,7 +12,7 @@ import FirebaseStorage
 struct UserDetailView: View {
     @State private var isLoading = false
     
-    @Binding var UserUID: String
+    var UserUID: String
     @State var UserProfile: UserModel = UserModel(UID: "???", UserImage: UIImage(named: "Person1")!, Username: "???", EnrollmentCampus: "???", Tastes: ["???"])
     
     var body: some View {
@@ -103,4 +103,8 @@ struct UserDetailView: View {
             }
         }
     }
+}
+
+#Preview {
+    UserDetailView(UserUID: "")
 }

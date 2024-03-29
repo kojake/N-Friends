@@ -27,3 +27,7 @@ struct ContentView: View {
         }.navigationBarBackButtonHidden(true)
     }
 }
+
+#Preview {
+    ContentView(UserUID: "")
+}
