@@ -21,6 +21,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct N_FriendApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
+    init(){
+        UITabBar.appearance().backgroundColor = UIColor.brown.withAlphaComponent(0.6)
+        UITabBar.appearance().unselectedItemTintColor = UIColor.white
+    }
 
     var body: some Scene {
         WindowGroup {

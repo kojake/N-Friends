@@ -29,38 +29,41 @@ struct ProfileView: View {
         ZStack{
             VStack{
                 HStack{
-                    ZStack{
-                        if let userimage = UserProfile.UserImage {
-                            Image(uiImage: userimage)
-                                .resizable()
-                                .frame(width: 100, height: 100)
-                                .cornerRadius(75)
-                                .overlay(RoundedRectangle(cornerRadius: 75).stroke(Color.black, lineWidth: 2))
-                        } else {
-                            Image(systemName: "person.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 80, height: 80)
-                                .foregroundColor(Color.blue)
-                        }
-                        HStack{
-                            Rectangle().frame(width: 50, height: 1).foregroundColor(.clear)
-                            VStack{
-                                Rectangle().frame(width: 1, height: 50).foregroundColor(.clear)
-                                Button(action: {
-                                    Showshould_ImagePickerView = true
-                                }){
-                                    ZStack{
-                                        Image(systemName: "plus").foregroundColor(Color.white)
-                                    }.frame(width: 30, height: 30).background(Color.blue).cornerRadius(50)
+                    HStack{
+                        ZStack{
+                            if let userimage = UserProfile.UserImage {
+                                Image(uiImage: userimage)
+                                    .resizable()
+                                    .frame(width: 100, height: 100)
+                                    .cornerRadius(75)
+                                    .overlay(RoundedRectangle(cornerRadius: 75).stroke(Color.black, lineWidth: 2))
+                            } else {
+                                Image(systemName: "person.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 80, height: 80)
+                                    .foregroundColor(Color.blue)
+                            }
+                            HStack{
+                                Rectangle().frame(width: 50, height: 1).foregroundColor(.clear)
+                                VStack{
+                                    Rectangle().frame(width: 1, height: 50).foregroundColor(.clear)
+                                    Button(action: {
+                                        Showshould_ImagePickerView = true
+                                    }){
+                                        ZStack{
+                                            Image(systemName: "plus").foregroundColor(Color.white)
+                                        }.frame(width: 30, height: 30).background(Color.blue).cornerRadius(50)
+                                    }
                                 }
                             }
                         }
-                    }
-                    VStack(alignment: .leading ){
-                        Text(UserProfile.Username).font(.title).fontWeight(.semibold)
-                        Text("@\(UserProfile.UID)").font(.system(size: 13))
-                    }
+                        VStack(alignment: .leading ){
+                            Text(UserProfile.Username).font(.title).fontWeight(.semibold)
+                            Text("@\(UserProfile.UID)").font(.system(size: 13))
+                        }
+                    }.padding()
+                    Spacer()
                 }
                 
                 Form{
