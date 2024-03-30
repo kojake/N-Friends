@@ -24,7 +24,7 @@ struct ContentView: View {
                 .tabItem {
                     Image(systemName: "person")
                 }
-        }.navigationBarBackButtonHidden(true)
+        }.accentColor(.mint).navigationBarBackButtonHidden(true)
     }
 }
 
