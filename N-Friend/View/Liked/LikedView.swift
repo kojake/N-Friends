@@ -58,10 +58,10 @@ struct LikedView: View {
             LikeUser.removeAll()
             FetchLikeUser()
             for i in 0..<LikeUserUIDList.count{
-                FetchLikeUsername_Image(UID: LikeUserUIDList[i], index: i)
+                FetchLikeUsername_Image(UID: LikeUserUIDList[i])
             }
         }
-        .sheet(isPresented: $Showshould_UserDetailView){
+        .sheet(isPresented: $Showshould_UserDetailView) { [TapUserUID] in
             UserDetailView(UserUID: TapUserUID)
         }
     }
@@ -81,7 +81,7 @@ struct LikedView: View {
         }
     }
     
-    private func FetchLikeUsername_Image(UID: String, index: Int){
+    private func FetchLikeUsername_Image(UID: String){
         let db = Firestore.firestore()
         
         db.collection("UserList").document(UID).getDocument { (document, error) in
