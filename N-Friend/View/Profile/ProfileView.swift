@@ -8,6 +8,7 @@
 import SwiftUI
 import FirebaseFirestore
 import FirebaseStorage
+import FirebaseAuth
 
 struct ProfileView: View {
     //Profile
@@ -19,14 +20,19 @@ struct ProfileView: View {
     @State private var isLoading: Bool = false
     
     @State private var Showshould_TastesEditView = false
+    @State private var Showshould_LoginView = false
+    @State private var Showshould_ImagePickerView = false
     
     //Picker
     @State var AllCampus: [String] = ["秋葉原", "代々木", "新宿"]
     
-    @State private var Showshould_ImagePickerView = false
+    @State private var AccountDeleteConfirmationalert = false
     
     var body: some View {
         ZStack{
+            NavigationLink(destination: LoginView(), isActive: $Showshould_LoginView) {
+                EmptyView()
+            }
             VStack{
                 HStack{
                     HStack{
@@ -65,7 +71,6 @@ struct ProfileView: View {
                     }.padding()
                     Spacer()
                 }
-                
                 Form{
                     Section{
                         HStack {
@@ -108,6 +113,18 @@ struct ProfileView: View {
                         }.onTapGesture {
                             Showshould_TastesEditView = true
                         }
+                    } header: {
+                        Text("プロフィール")
+                    }
+                    Section{
+                        Text("ログアウト").foregroundColor(Color.red).onTapGesture {
+                            Logout()
+                        }
+                        Text("アカウント削除").foregroundColor(Color.red).onTapGesture {
+                            AccountDeleteConfirmationalert = true
+                        }
+                    } header: {
+                        Text("アカウント管理")
                     }
                 }
             }
@@ -115,6 +132,18 @@ struct ProfileView: View {
                 Progressview()
             }
         }
+        //アカウント削除の確認アラート
+        .alert(isPresented: $AccountDeleteConfirmationalert) {
+            Alert(title: Text("警告"),
+                  message: Text("アカウントを削除するとあなたの保存したプロフィールと自分がLikeした人の情報がデータベースから削除されます。\nアカウントを本当に削除しますか？"),
+                  primaryButton: .cancel(Text("キャンセル")),
+                  secondaryButton: .default(Text("削除"),
+                                            action: {
+                isLoading = true
+                AccountDelete()
+            }))
+        }
+        //キーボードの閉じるボタン
         .toolbar{
             ToolbarItem(placement: .keyboard) {
                 Button("閉じる") {
@@ -122,6 +151,7 @@ struct ProfileView: View {
                 }
             }
         }
+        
         .onAppear{
             isLoading = true
             FetchUserProfile()
@@ -223,6 +253,36 @@ struct ProfileView: View {
             } else {
                 print("Image success deleted")
                 Previousname = UserProfile.Username
+            }
+        }
+    }
+    
+    //Account Management
+    private func Logout() {
+        do {
+            try Auth.auth().signOut()
+            Showshould_LoginView = true
+        }
+        catch let error as NSError {
+            print(error)
+        }
+    }
+    
+    private func AccountDelete() {
+        Auth.auth().currentUser?.delete() { error in
+            if let error = error {
+                print("Error deleting user: \(error.localizedDescription)")
+            } else {
+                let db = Firestore.firestore()
+                
+                db.collection("UserList").document(UserUID).delete { error in
+                    if let error = error {
+                        print("Error removing document: \(error)")
+                    } else {
+                        isLoading = false
+                        Showshould_LoginView = true
+                    }
+                }
             }
         }
     }
