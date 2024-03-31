@@ -10,6 +10,8 @@ import FirebaseFirestore
 import FirebaseStorage
 
 struct UserDetailView: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
     @State private var isLoading = false
     
     var UserUID: String
@@ -33,19 +35,19 @@ struct UserDetailView: View {
                             HStack {
                                 VStack{
                                     Image(systemName: "person.text.rectangle").resizable().frame(width: 35, height: 35).foregroundColor(Color.blue)
-                                }.frame(width: 50, height: 50).background(Color.gray.opacity(0.3)).cornerRadius(50)
+                                }.frame(width: 50, height: 50).background(colorScheme == .dark ? Color.white.opacity(0.3) : Color.gray.opacity(0.3)).cornerRadius(50)
                                 Text(UserProfile.Username).font(.system(size: 15)).fontWeight(.semibold)
                             }
                             HStack{
                                 VStack{
                                     Image(systemName: "mappin.and.ellipse").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.green)
-                                }.frame(width: 50, height: 50).background(Color.gray.opacity(0.3)).cornerRadius(50)
+                                }.frame(width: 50, height: 50).background(colorScheme == .dark ? Color.white.opacity(0.3) : Color.gray.opacity(0.3)).cornerRadius(50)
                                 Text("\(UserProfile.EnrollmentCampus)キャンパス").fontWeight(.semibold)
                             }
                             HStack {
                                 VStack{
                                     Image(systemName: "gamecontroller").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.pink)
-                                }.frame(width: 50, height: 50).background(Color.gray.opacity(0.3)).cornerRadius(50)
+                                }.frame(width: 50, height: 50).background(colorScheme == .dark ? Color.white.opacity(0.3) : Color.gray.opacity(0.3)).cornerRadius(50)
                                 Text("趣味")
                                     .fontWeight(.semibold)
                                 ScrollView(.horizontal){

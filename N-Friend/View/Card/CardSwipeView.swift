@@ -30,7 +30,7 @@ struct CardSwipeView: View {
                     Spacer()
                     ZStack{
                         ForEach(CardUserList) { model in
-                            if !LikeUser.contains(model.UserUID) && !DisLikeUser.contains(model.UserUID){
+                            if !LikeUser.contains(model.UserUID) && !DisLikeUser.contains(model.UserUID) && UserUID != model.UserUID{
                                 ZStack{
                                     Image(uiImage: model.UserImage).resizable().frame(height: geo.size.height - 200).cornerRadius(20).padding(.horizontal, 15)
                                     VStack{

@@ -11,6 +11,8 @@ import FirebaseStorage
 import FirebaseAuth
 
 struct ProfileView: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
     //Profile
     @State var UserUID: String
     @State var UserProfile: UserModel = UserModel(UID: "???", UserImage: UIImage(named: "Person1")!, Username: "???", EnrollmentCampus: "???", Tastes: ["???"])
@@ -70,13 +72,13 @@ struct ProfileView: View {
                         }
                     }.padding()
                     Spacer()
-                }
+                }.background(colorScheme == .dark ? Color.gray.opacity(0.3) : Color.gray.opacity(0.3))
                 Form{
                     Section{
                         HStack {
                             VStack{
                                 Image(systemName: "person.text.rectangle").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.blue)
-                            }.frame(width: 50, height: 50).background(Color.gray.opacity(0.3)).cornerRadius(50)
+                            }.frame(width: 50, height: 50).background(colorScheme == .dark ? Color.white.opacity(0.3) : Color.gray.opacity(0.3)).cornerRadius(50)
                             Text("名前")
                                 .fontWeight(.semibold)
                             TextField(UserProfile.Username, text: $UserProfile.Username)
@@ -87,7 +89,7 @@ struct ProfileView: View {
                         HStack{
                             VStack{
                                 Image(systemName: "mappin.and.ellipse").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.green)
-                            }.frame(width: 50, height: 50).background(Color.gray.opacity(0.3)).cornerRadius(50)
+                            }.frame(width: 50, height: 50).background(colorScheme == .dark ? Color.white.opacity(0.3) : Color.gray.opacity(0.3)).cornerRadius(50)
                             Picker("所属キャンパス", selection: $CampusSelectionIndexValue) {
                                 ForEach(0..<AllCampus.count, id: \.self){ index in
                                     Text(AllCampus[index]).tag(index)
@@ -100,7 +102,7 @@ struct ProfileView: View {
                         HStack {
                             VStack{
                                 Image(systemName: "gamecontroller").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.pink)
-                            }.frame(width: 50, height: 50).background(Color.gray.opacity(0.3)).cornerRadius(50)
+                            }.frame(width: 50, height: 50).background(colorScheme == .dark ? Color.white.opacity(0.3) : Color.gray.opacity(0.3)).cornerRadius(50)
                             Text("趣味")
                                 .fontWeight(.semibold)
                             ScrollView(.horizontal){

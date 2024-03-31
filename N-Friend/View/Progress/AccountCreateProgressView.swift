@@ -8,9 +8,15 @@
 import SwiftUI
 
 struct AccountCreateProgressView: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
     var body: some View {
         ZStack{
-            Color.black.opacity(0.3).ignoresSafeArea()
+            if colorScheme == .dark {
+                Color.white.opacity(0.5).ignoresSafeArea()
+            } else {
+                Color.black.opacity(0.3).ignoresSafeArea()
+            }
             VStack{
                 ProgressView("作成中")
                     .frame(width: 100, height: 100)

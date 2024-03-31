@@ -23,7 +23,7 @@ struct N_FriendApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     init(){
-        UITabBar.appearance().backgroundColor = UIColor.black.withAlphaComponent(0.1)
+        UITabBar.appearance().backgroundColor = UIColor.gray.withAlphaComponent(0.1)
     }
 
     var body: some Scene {
