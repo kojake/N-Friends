@@ -8,6 +8,7 @@
 import SwiftUI
 import FirebaseCore
 import FirebaseAuth
+import GoogleSignIn
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
@@ -15,6 +16,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         FirebaseApp.configure()
         
         return true
+    }
+    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
+        return GIDSignIn.sharedInstance.handle(url)
     }
 }
 
@@ -25,10 +29,19 @@ struct N_FriendApp: App {
     init(){
         UITabBar.appearance().backgroundColor = UIColor.gray.withAlphaComponent(0.1)
     }
-
+    
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            //ユーザーがログインしているか
+            if let useruid = UserDefaults.standard.object(forKey: "UserUID_Key") as? String{
+                if Auth.auth().currentUser != nil {
+                    ContentView(UserUID: useruid)
+                } else {
+                    LoginView()
+                }
+            } else {
+                LoginView()
+            }
         }
     }
 }

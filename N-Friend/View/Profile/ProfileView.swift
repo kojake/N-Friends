@@ -121,6 +121,7 @@ struct ProfileView: View {
                     Section{
                         Text("ログアウト").foregroundColor(Color.red).onTapGesture {
                             Logout()
+                            Showshould_LoginView = true
                         }
                         Text("アカウント削除").foregroundColor(Color.red).onTapGesture {
                             AccountDeleteConfirmationalert = true

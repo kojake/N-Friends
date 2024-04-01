@@ -63,6 +63,7 @@ struct LoginView: View {
                 UserUID = user.uid
                 //いない場合はユーザー情報をデータベースにアップロードする
                 if isNewUser {
+                    UserDefaults.standard.set(UserUID, forKey: "UserUID_Key")
                     UploadUserData()
                     isLoading = false
                     Showshould_CreatedAccountDetailsEditView = true
