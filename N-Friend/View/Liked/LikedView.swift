@@ -57,9 +57,6 @@ struct LikedView: View {
         .onAppear{
             LikeUser.removeAll()
             FetchLikeUser()
-            for i in 0..<LikeUserUIDList.count{
-                FetchLikeUsername_Image(UID: LikeUserUIDList[i])
-            }
         }
         .sheet(isPresented: $Showshould_UserDetailView) { [TapUserUID] in
             UserDetailView(UserUID: TapUserUID)
@@ -72,6 +69,9 @@ struct LikedView: View {
             if let document = document, document.exists {
                 if let fieldValue = document.data()?["LikeUser"] as? [String] {
                     LikeUserUIDList = fieldValue
+                    for i in 0..<fieldValue.count{
+                        FetchLikeUsername_Image(UID: LikeUserUIDList[i])
+                    }
                 } else {
                     print("Field not found or cannot be converted to String.")
                 }

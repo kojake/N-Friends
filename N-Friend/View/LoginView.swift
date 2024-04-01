@@ -86,7 +86,7 @@ struct LoginView: View {
 
                 Color.blue.opacity(0.7).ignoresSafeArea()
                 VStack{
-                    Text("N-Friends").font(.largeTitle).fontWeight(.black).padding()
+                    Text("N-Friends").font(.largeTitle).fontWeight(.black).foregroundColor(Color.white).padding()
                     Spacer()
                     Button(action: {
                         googleAuth()
@@ -97,11 +97,6 @@ struct LoginView: View {
                         }.frame(width: 280, height: 60).background(Color.white).cornerRadius(10)
                     }
                     Spacer()
-                    Button(action: {
-                        
-                    }){
-                        Text("ログインできませんか？").font(.title2).foregroundColor(Color.white)
-                    }
                 }
                 if isLoading{
                     Progressview()
