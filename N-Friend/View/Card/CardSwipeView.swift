@@ -30,78 +30,76 @@ struct CardSwipeView: View {
                     Spacer()
                     ZStack{
                         ForEach(CardUserList) { model in
-                            if !LikeUser.contains(model.UserUID) && !DisLikeUser.contains(model.UserUID) && UserUID != model.UserUID{
-                                ZStack{
-                                    Image(uiImage: model.UserImage).resizable().frame(height: geo.size.height - 200).cornerRadius(20).padding(.horizontal, 15)
-                                    VStack{
-                                        Spacer()
-                                        HStack{
-                                            VStack(alignment: .leading){
-                                                Text(model.Username).font(.system(size: 40)).fontWeight(.bold)
-                                                Text("趣味").font(.title2)
-                                                ScrollView(.horizontal){
-                                                    HStack{
-                                                        ForEach(0..<model.Tastes.count, id: \.self) { index in
-                                                            Text(model.Tastes[index]).frame(width: 150, height: 50).background(Color.blue.opacity(0.5)).foregroundColor(Color.white).cornerRadius(7)
-                                                        }
+                            ZStack{
+                                Image(uiImage: model.UserImage).resizable().frame(height: geo.size.height - 200).cornerRadius(20).padding(.horizontal, 15)
+                                VStack{
+                                    Spacer()
+                                    HStack{
+                                        VStack(alignment: .leading){
+                                            Text(model.Username).font(.system(size: 40)).fontWeight(.bold)
+                                            Text("趣味").font(.title2)
+                                            ScrollView(.horizontal){
+                                                HStack{
+                                                    ForEach(0..<model.Tastes.count, id: \.self) { index in
+                                                        Text(model.Tastes[index]).frame(width: 150, height: 50).background(Color.blue.opacity(0.5)).foregroundColor(Color.white).cornerRadius(7)
                                                     }
                                                 }
-                                            }.padding()
+                                            }
+                                        }.padding()
+                                    }
+                                }.frame(width: geo.size.width - 32, height: geo.size.height - 250).background(Color.black.opacity(0.2)).foregroundColor(Color.white)
+                            }.gesture(DragGesture()
+                                .onChanged({ (value) in
+                                    if value.translation.width > 0 {
+                                        if let cardindex = CardUserList.indices.last{
+                                            CardUserList[cardindex].Swipe = value.translation.width
+                                            CardUserList[cardindex].degrees = 8
                                         }
-                                    }.frame(width: geo.size.width - 32, height: geo.size.height - 250).background(Color.black.opacity(0.2)).foregroundColor(Color.white)
-                                }.gesture(DragGesture()
-                                    .onChanged({ (value) in
-                                        if value.translation.width > 0 {
+                                    } else {
+                                        if let cardindex = CardUserList.indices.last{
+                                            CardUserList[cardindex].Swipe = value.translation.width
+                                            CardUserList[cardindex].degrees = -8
+                                        }
+                                    }
+                                }).onEnded({ (value) in
+                                    if model.Swipe > 0 {
+                                        if model.Swipe > geo.size.width / 2 - 80{
                                             if let cardindex = CardUserList.indices.last{
-                                                CardUserList[cardindex].Swipe = value.translation.width
+                                                CardUserList[cardindex].Swipe = 700
                                                 CardUserList[cardindex].degrees = 8
+                                                
+                                                LikeUser.append(CardUserList[cardindex].UserUID)
+                                                UpdateLikeUser()
+                                                LikeUserMatchconfirmation(LikedUserUID: CardUserList[cardindex].UserUID)
+                                                CardUserList.remove(at: cardindex)
                                             }
                                         } else {
                                             if let cardindex = CardUserList.indices.last{
-                                                CardUserList[cardindex].Swipe = value.translation.width
-                                                CardUserList[cardindex].degrees = -8
+                                                CardUserList[cardindex].Swipe = 0
+                                                CardUserList[cardindex].degrees = 0
                                             }
                                         }
-                                    }).onEnded({ (value) in
-                                        if model.Swipe > 0 {
-                                            if model.Swipe > geo.size.width / 2 - 80{
-                                                if let cardindex = CardUserList.indices.last{
-                                                    CardUserList[cardindex].Swipe = 700
-                                                    CardUserList[cardindex].degrees = 8
-                                                    
-                                                    LikeUser.append(CardUserList[cardindex].UserUID)
-                                                    UpdateLikeUser()
-                                                    LikeUserMatchconfirmation(LikedUserUID: CardUserList[cardindex].UserUID)
-                                                    CardUserList.remove(at: cardindex)
-                                                }
-                                            } else {
-                                                if let cardindex = CardUserList.indices.last{
-                                                    CardUserList[cardindex].Swipe = 0
-                                                    CardUserList[cardindex].degrees = 0
-                                                }
+                                    } else {
+                                        if -model.Swipe > geo.size.width / 2 - 80{
+                                            if let cardindex = CardUserList.indices.last{
+                                                CardUserList[cardindex].Swipe = -700
+                                                CardUserList[cardindex].degrees = 8
+                                                
+                                                DisLikeUser.append(CardUserList[cardindex].UserUID)
+                                                UpdateDisLikeUser()
+                                                CardUserList.remove(at: cardindex)
                                             }
                                         } else {
-                                            if -model.Swipe > geo.size.width / 2 - 80{
-                                                if let cardindex = CardUserList.indices.last{
-                                                    CardUserList[cardindex].Swipe = -700
-                                                    CardUserList[cardindex].degrees = 8
-                                                    
-                                                    DisLikeUser.append(CardUserList[cardindex].UserUID)
-                                                    UpdateDisLikeUser()
-                                                    CardUserList.remove(at: cardindex)
-                                                }
-                                            } else {
-                                                if let cardindex = CardUserList.indices.last{
-                                                    CardUserList[cardindex].Swipe = 0
-                                                    CardUserList[cardindex].degrees = 0
-                                                }
+                                            if let cardindex = CardUserList.indices.last{
+                                                CardUserList[cardindex].Swipe = 0
+                                                CardUserList[cardindex].degrees = 0
                                             }
                                         }
-                                    })
-                                ).offset(x: model.Swipe)
-                                    .rotationEffect(.init(degrees: model.degrees))
-                                    .animation(.spring())
-                            }
+                                    }
+                                })
+                            ).offset(x: model.Swipe)
+                                .rotationEffect(.init(degrees: model.degrees))
+                                .animation(.spring())
                         }
                     }
                     Spacer()
@@ -171,7 +169,9 @@ struct CardSwipeView: View {
                    let enrollmentcampus = data["EnrollmentCampus"] as? String,
                    let tastes = data["Tastes"] as? [String] {
                     FetchCardUserImage(username: username) { image in
-                        CardUserList.append(CardUserModel(UserUID: useruid, UserImage: (image ?? UIImage(named: "Person1"))! ,Username: username, EnrollmentCampus: enrollmentcampus, Tastes: tastes, Swipe: 0, degrees: 0))
+                        if !LikeUser.contains(useruid) && !DisLikeUser.contains(useruid) && UserUID != useruid{
+                            CardUserList.append(CardUserModel(UserUID: useruid, UserImage: (image ?? UIImage(named: "Person1"))! ,Username: username, EnrollmentCampus: enrollmentcampus, Tastes: tastes, Swipe: 0, degrees: 0))
+                        }
                     }
                 }
             }
