@@ -71,6 +71,7 @@ struct CardSwipeView: View {
                                                     
                                                     LikeUser.append(CardUserList[cardindex].UserUID)
                                                     UpdateLikeUser()
+                                                    LikeUserMatchconfirmation(LikedUserUID: CardUserList[cardindex].UserUID)
                                                     CardUserList.remove(at: cardindex)
                                                 }
                                             } else {
@@ -123,6 +124,7 @@ struct CardSwipeView: View {
                             if let cardindex = CardUserList.indices.last{
                                 LikeUser.append(CardUserList[cardindex].UserUID)
                                 UpdateLikeUser()
+                                LikeUserMatchconfirmation(LikedUserUID: CardUserList[cardindex].UserUID)
                                 CardUserList.remove(at: cardindex)
                             }
                         }){
@@ -247,6 +249,26 @@ struct CardSwipeView: View {
                 print("Error updating document: \(err)")
             } else {
                 print("Document successfully updated")
+            }
+        }
+    }
+    
+    //Match
+    private func LikeUserMatchconfirmation(LikedUserUID: String){
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(LikedUserUID).getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let LikedUser_LikeList = document.data()?["LikeUser"] as? [String] {
+                    //ライクしたユーザーが自分をライクしているかを確認
+                    if LikedUser_LikeList.contains(LikedUserUID) {
+                        print("Match!!")
+                    }
+                } else {
+                    print("Field not found or cannot be converted to String.")
+                }
+            } else {
+                print("Document does not exist.")
             }
         }
     }
