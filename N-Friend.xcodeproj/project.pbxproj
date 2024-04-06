@@ -58,6 +58,7 @@
 
 /* Begin PBXFileReference section */
 		970A152A2B92C5C8000CDE36 /* TastesEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TastesEditView.swift; sourceTree = "<group>"; };
+		9746D6A22BC0DACC00D0E304 /* N-Friend.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "N-Friend.entitlements"; sourceTree = "<group>"; };
 		974B17E22B9C4CF20012351D /* Progressview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Progressview.swift; sourceTree = "<group>"; };
 		97532FC52B8985B200BA04F9 /* N-Friend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "N-Friend.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		97532FC82B8985B200BA04F9 /* N_FriendApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = N_FriendApp.swift; sourceTree = "<group>"; };
@@ -140,6 +141,7 @@
 		97532FC72B8985B200BA04F9 /* N-Friend */ = {
 			isa = PBXGroup;
 			children = (
+				9746D6A22BC0DACC00D0E304 /* N-Friend.entitlements */,
 				97532FC82B8985B200BA04F9 /* N_FriendApp.swift */,
 				97532FD72B89862A00BA04F9 /* Model */,
 				97532FD62B89862500BA04F9 /* View */,
@@ -480,10 +482,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "N-Friend/N-Friend.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"N-Friend/Preview Content\"";
-				DEVELOPMENT_TEAM = PQ42DZZXUS;
+				DEVELOPMENT_TEAM = 5J3QQSZVVN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "N-Friend/Info.plist";
@@ -498,7 +501,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "kaito.N-Friend20240309";
+				PRODUCT_BUNDLE_IDENTIFIER = "kaito.N-Friend20240405";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -511,10 +514,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "N-Friend/N-Friend.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"N-Friend/Preview Content\"";
-				DEVELOPMENT_TEAM = PQ42DZZXUS;
+				DEVELOPMENT_TEAM = 5J3QQSZVVN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "N-Friend/Info.plist";
@@ -529,7 +533,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "kaito.N-Friend20240309";
+				PRODUCT_BUNDLE_IDENTIFIER = "kaito.N-Friend20240405";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

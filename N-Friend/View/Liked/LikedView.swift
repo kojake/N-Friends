@@ -19,40 +19,57 @@ struct LikedView: View {
     @State var LikeUser: [LikeCardUserModel] = []
     @State private var Showshould_UserDetailView = false
     
+    @State private var SelectedIndex: Int = 0
+    
     var body: some View {
         NavigationView{
-            ZStack{
-                ScrollView{
-                    ForEach(0..<LikeUser.count, id: \.self) { index in
-                        ZStack {
-                            Image(uiImage: LikeUser[index].UserImage).resizable().frame(width: 230, height: 300).cornerRadius(10)
-                            VStack{
-                                Spacer()
-                                Text(LikeUser[index].Username).frame(width: 230, height: 50).background(Color.white.opacity(0.6)).font(.title).fontWeight(.black).foregroundColor(Color.black)
+            VStack{
+                Picker("", selection: $SelectedIndex) {
+                    Text("Like")
+                        .tag(0)
+                    Text("Match")
+                        .tag(1)
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                Spacer()
+                ZStack{
+                    ScrollView{
+                        if SelectedIndex == 0 {
+                            ForEach(0..<LikeUser.count, id: \.self) { index in
+                                ZStack {
+                                    Image(uiImage: LikeUser[index].UserImage).resizable().frame(width: 230, height: 300).cornerRadius(10)
+                                    VStack{
+                                        Spacer()
+                                        Text(LikeUser[index].Username).frame(width: 230, height: 50).background(Color.white.opacity(0.6)).font(.title).fontWeight(.black).foregroundColor(Color.black)
+                                    }
+                                }.frame(width: 230, height: 300).cornerRadius(10)
+                                    .onTapGesture {
+                                        TapUserUID = LikeUser[index].UID
+                                        Showshould_UserDetailView = true
+                                    }
+                                    .contextMenu {
+                                        Button(action: {
+                                            Showshould_UserDetailView = true
+                                        }){
+                                            Text("アカウント表示")
+                                        }
+                                        Button(action: {
+                                            LikeUser.remove(at: index)
+                                            UpdateLikeUser()
+                                        }){
+                                            Text("削除")
+                                        }
+                                    }
                             }
-                        }.frame(width: 230, height: 300).cornerRadius(10)
-                            .onTapGesture {
-                                TapUserUID = LikeUser[index].UID
-                                Showshould_UserDetailView = true
-                            }
-                            .contextMenu {
-                                Button(action: {
-                                    Showshould_UserDetailView = true
-                                }){
-                                    Text("アカウント表示")
-                                }
-                                Button(action: {
-                                    LikeUser.remove(at: index)
-                                    UpdateLikeUser()
-                                }){
-                                    Text("削除")
-                                }
-                            }
+                        } else {
+                            
+                        }
                     }
                 }
+                .navigationTitle(Text(SelectedIndex == 0 ? "\(LikeUser.count)「👍Like!」" : "「❤️Match!」"))
+                .navigationBarTitleDisplayMode(.large)
+                Spacer()
             }
-            .navigationTitle(Text("\(LikeUser.count) 「👍Like!」"))
-            .navigationBarTitleDisplayMode(.large)
         }
         .onAppear{
             LikeUser.removeAll()
