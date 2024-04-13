@@ -15,7 +15,7 @@ struct ProfileView: View {
     
     //Profile
     @State var UserUID: String
-    @State var UserProfile: UserModel = UserModel(UID: "???", UserImage: UIImage(named: "Person1")!, Username: "???", EnrollmentCampus: "???", Tastes: ["???"])
+    @State var UserProfile: UserModel = UserModel(UID: "???", UserImage: UIImage(systemName: "photo")!, Username: "???", EnrollmentCampus: "???", Tastes: ["???"])
     @State var CampusSelectionIndexValue: Int = 0
     @State var Previousname: String = ""
     
@@ -187,7 +187,7 @@ struct ProfileView: View {
                    let enrollmentcampus = data!["EnrollmentCampus"] as? String,
                    let tastes = data!["Tastes"] as? [String] {
                     FetchUserImage(username: username) { image in
-                        UserProfile = UserModel(UID: useruid, UserImage: (image ?? UIImage(named: "Person1"))!, Username: username, EnrollmentCampus: enrollmentcampus, Tastes: tastes)
+                        UserProfile = UserModel(UID: useruid, UserImage: (image ?? UIImage(systemName: "photo"))!, Username: username, EnrollmentCampus: enrollmentcampus, Tastes: tastes)
                         isLoading = false
                     }
                 }

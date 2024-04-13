@@ -12,7 +12,7 @@ import FirebaseStorage
 struct CreatedAccountDetailsEditView: View {
     //Profile
     @State var UserUID: String
-    @State var UserProfile: UserModel = UserModel(UID: "", UserImage: UIImage(named: "Person1")!, Username: "", EnrollmentCampus: "", Tastes: [String]())
+    @State var UserProfile: UserModel = UserModel(UID: "", UserImage: UIImage(systemName: "photo")!, Username: "", EnrollmentCampus: "", Tastes: [String]())
     @State var CampusSelectionIndexValue: Int = 0
     @State var Previousname: String = ""
     
@@ -143,7 +143,7 @@ struct CreatedAccountDetailsEditView: View {
             }
         }
         .onAppear{
-            UserProfile =  UserModel(UID: UserUID, UserImage: UIImage(named: "Person1")!, Username: "", EnrollmentCampus: "", Tastes: [String]())
+            UserProfile =  UserModel(UID: UserUID, UserImage: UIImage(systemName: "photo")!, Username: "", EnrollmentCampus: "", Tastes: [String]())
         }
         .navigationBarBackButtonHidden(true)
         .alert(isPresented: $Erroralert) {

@@ -16,7 +16,7 @@ struct ContentView: View {
                 .tabItem {
                     Image(systemName: "magazine.fill")
                 }
-            LikedView(UserUID: UserUID)
+            LikedMatchedView(UserUID: UserUID)
                 .tabItem {
                     Image(systemName: "heart.fill")
                 }

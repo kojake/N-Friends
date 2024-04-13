@@ -115,6 +115,7 @@ struct LoginView: View {
             "EnrollmentCampus": "秋葉原",
             "Tastes": [String](),
             "LikeUser": [String](),
+            "MatchUser": [String](),
             "DisLikeUser": [String]()
         ]) { err in
             if let err = err {

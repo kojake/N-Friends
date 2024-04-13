@@ -15,6 +15,7 @@ struct CardSwipeView: View {
     @State var CardUserList: [CardUserModel] = []
     @State var LikeUser: [String] = []
     @State var DisLikeUser: [String] = []
+    @State var MatchUser: [String] = []
     
     @State private var isLoading = false
     
@@ -67,10 +68,9 @@ struct CardSwipeView: View {
                                             if let cardindex = CardUserList.indices.last{
                                                 CardUserList[cardindex].Swipe = 700
                                                 CardUserList[cardindex].degrees = 8
-                                                
+                                                LikeUserMatchconfirmation(LikedUserUID: CardUserList[cardindex].UserUID)
                                                 LikeUser.append(CardUserList[cardindex].UserUID)
                                                 UpdateLikeUser()
-                                                LikeUserMatchconfirmation(LikedUserUID: CardUserList[cardindex].UserUID)
                                                 CardUserList.remove(at: cardindex)
                                             }
                                         } else {
@@ -146,6 +146,7 @@ struct CardSwipeView: View {
             FetchCardUserData()
             FetchLikeuser()
             FetchDisLikeuser()
+            FetchMatchUser()
         }
     }
     private func FetchCardUserData(){
@@ -170,7 +171,7 @@ struct CardSwipeView: View {
                    let tastes = data["Tastes"] as? [String] {
                     FetchCardUserImage(username: username) { image in
                         if !LikeUser.contains(useruid) && !DisLikeUser.contains(useruid) && UserUID != useruid{
-                            CardUserList.append(CardUserModel(UserUID: useruid, UserImage: (image ?? UIImage(named: "Person1"))! ,Username: username, EnrollmentCampus: enrollmentcampus, Tastes: tastes, Swipe: 0, degrees: 0))
+                            CardUserList.append(CardUserModel(UserUID: useruid, UserImage: (image ?? UIImage(systemName: "photo"))! ,Username: username, EnrollmentCampus: enrollmentcampus, Tastes: tastes, Swipe: 0, degrees: 0))
                         }
                     }
                 }
@@ -262,13 +263,45 @@ struct CardSwipeView: View {
                 if let LikedUser_LikeList = document.data()?["LikeUser"] as? [String] {
                     //ライクしたユーザーが自分をライクしているかを確認
                     if LikedUser_LikeList.contains(LikedUserUID) {
-                        print("Match!!")
+                        MatchUser.append(LikedUserUID)
+                        UpdateMatchUser()
+                        makeNotification()
                     }
                 } else {
                     print("Field not found or cannot be converted to String.")
                 }
             } else {
                 print("Document does not exist.")
+            }
+        }
+    }
+
+    private func FetchMatchUser() {
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(UserUID).getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let MatchUserList = document.data()?["MatchUser"] as? [String] {
+                    MatchUser = MatchUserList
+                } else {
+                    print("Field not found or cannot be converted to String.")
+                }
+            } else {
+                print("Document does not exist.")
+            }
+        }
+    }
+    
+    private func UpdateMatchUser() {
+        let db = Firestore.firestore()
+        
+        db.collection("UserLIst").document(UserUID).updateData([
+            "MatchUser": MatchUser
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
             }
         }
     }
