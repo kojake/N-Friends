@@ -39,19 +39,11 @@ struct ProfileView: View {
                 HStack{
                     HStack{
                         ZStack{
-                            if let userimage = UserProfile.UserImage {
-                                Image(uiImage: userimage)
-                                    .resizable()
-                                    .frame(width: 100, height: 100)
-                                    .cornerRadius(75)
-                                    .overlay(RoundedRectangle(cornerRadius: 75).stroke(Color.black, lineWidth: 2))
-                            } else {
-                                Image(systemName: "person.fill")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 80, height: 80)
-                                    .foregroundColor(Color.blue)
-                            }
+                            Image(uiImage: UserProfile.UserImage!)
+                                .resizable()
+                                .frame(width: 100, height: 100)
+                                .cornerRadius(75)
+                                .overlay(RoundedRectangle(cornerRadius: 75).stroke(Color.black, lineWidth: 2))
                             HStack{
                                 Rectangle().frame(width: 50, height: 1).foregroundColor(.clear)
                                 VStack{

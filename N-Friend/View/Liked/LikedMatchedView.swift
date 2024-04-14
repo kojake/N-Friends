@@ -57,6 +57,7 @@ struct LikedMatchedView: View {
                                         }
                                         Button(action: {
                                             LikeUser.remove(at: index)
+                                            LikeUserUIDList.remove(at: index)
                                             UpdateLikeUser()
                                         }){
                                             Text("削除")
@@ -84,7 +85,8 @@ struct LikedMatchedView: View {
                                         }
                                         Button(action: {
                                             MatchUser.remove(at: index)
-
+                                            MatchUserUIDList.remove(at: index)
+                                            UpdateMatchUser()
                                         }){
                                             Text("削除")
                                         }
@@ -154,7 +156,7 @@ struct LikedMatchedView: View {
         let db = Firestore.firestore()
         
         db.collection("UserList").document(UserUID).updateData([
-            "LikeUser": LikeUser
+            "LikeUser": LikeUserUIDList
         ]) { err in
             if let err = err {
                 print("Error updating document: \(err)")
@@ -209,7 +211,7 @@ struct LikedMatchedView: View {
         let db = Firestore.firestore()
         
         db.collection("UserList").document(UserUID).updateData([
-            "MatchUser": MatchUser
+            "MatchUser": MatchUserUIDList
         ]) { err in
             if let err = err {
                 print("Error updating document: \(err)")

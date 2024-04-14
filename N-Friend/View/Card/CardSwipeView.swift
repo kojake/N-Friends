@@ -68,7 +68,7 @@ struct CardSwipeView: View {
                                             if let cardindex = CardUserList.indices.last{
                                                 CardUserList[cardindex].Swipe = 700
                                                 CardUserList[cardindex].degrees = 8
-                                                LikeUserMatchconfirmation(LikedUserUID: CardUserList[cardindex].UserUID)
+                                                LikeUserMatchconfirmation(LikedUserUID: CardUserList[cardindex].UserUID, LikedUsername: CardUserList[cardindex].Username)
                                                 LikeUser.append(CardUserList[cardindex].UserUID)
                                                 UpdateLikeUser()
                                                 CardUserList.remove(at: cardindex)
@@ -122,7 +122,7 @@ struct CardSwipeView: View {
                             if let cardindex = CardUserList.indices.last{
                                 LikeUser.append(CardUserList[cardindex].UserUID)
                                 UpdateLikeUser()
-                                LikeUserMatchconfirmation(LikedUserUID: CardUserList[cardindex].UserUID)
+                                LikeUserMatchconfirmation(LikedUserUID: CardUserList[cardindex].UserUID, LikedUsername: CardUserList[cardindex].Username)
                                 CardUserList.remove(at: cardindex)
                             }
                         }){
@@ -255,7 +255,7 @@ struct CardSwipeView: View {
     }
     
     //Match
-    private func LikeUserMatchconfirmation(LikedUserUID: String){
+    private func LikeUserMatchconfirmation(LikedUserUID: String, LikedUsername: String){
         let db = Firestore.firestore()
         
         db.collection("UserList").document(LikedUserUID).getDocument { (document, error) in
@@ -265,7 +265,7 @@ struct CardSwipeView: View {
                     if LikedUser_LikeList.contains(LikedUserUID) {
                         MatchUser.append(LikedUserUID)
                         UpdateMatchUser()
-                        makeNotification()
+                        makeNotification(MatchedUsername: LikedUsername)
                     }
                 } else {
                     print("Field not found or cannot be converted to String.")
