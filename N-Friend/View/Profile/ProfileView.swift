@@ -28,7 +28,8 @@ struct ProfileView: View {
     //Picker
     @State var AllCampus: [String] = ["秋葉原", "代々木", "新宿"]
     
-    @State private var AccountDeleteConfirmationalert = false
+    @State var Alertitem: AlertItem = AlertItem(Title: "", Message: "", Buttontext: "")
+    @State private var Checkalert = false
     
     var body: some View {
         ZStack{
@@ -111,12 +112,17 @@ struct ProfileView: View {
                         Text("プロフィール")
                     }
                     Section{
+                        Text("ログイン保持UID再保存").foregroundColor(Color.red).onTapGesture {
+                            Alertitem = AlertItem(Title: "確認", Message: "UIDを再保存しますか？\nアプリ起動時に自動でログインされない際にはUIDがうまく保存されていない場合があるので、その時に使用してください。", Buttontext: "再保存")
+                            Checkalert = true
+                        }
                         Text("ログアウト").foregroundColor(Color.red).onTapGesture {
                             Logout()
                             Showshould_LoginView = true
                         }
                         Text("アカウント削除").foregroundColor(Color.red).onTapGesture {
-                            AccountDeleteConfirmationalert = true
+                            Alertitem = AlertItem(Title: "警告", Message: "アカウントを削除するとあなたの保存したプロフィールと自分がLikeした人の情報がデータベースから削除されます。\nアカウントを本当に削除しますか？", Buttontext: "削除")
+                            Checkalert = true
                         }
                     } header: {
                         Text("アカウント管理")
@@ -128,16 +134,23 @@ struct ProfileView: View {
             }
         }
         //アカウント削除の確認アラート
-        .alert(isPresented: $AccountDeleteConfirmationalert) {
-            Alert(title: Text("警告"),
-                  message: Text("アカウントを削除するとあなたの保存したプロフィールと自分がLikeした人の情報がデータベースから削除されます。\nアカウントを本当に削除しますか？"),
+        .alert(isPresented: $Checkalert) {
+            Alert(title: Text(Alertitem.Title),
+                  message: Text(Alertitem.Message),
                   primaryButton: .cancel(Text("キャンセル")),
-                  secondaryButton: .default(Text("削除"),
+                  secondaryButton: .default(Text(Alertitem.Buttontext),
                                             action: {
-                isLoading = true
-                AccountDelete()
+                if Alertitem.Buttontext == "再保存" {
+                    UserDefaults.standard.set(UserUID, forKey: "UserUID_Key")
+                }
+                else if Alertitem.Buttontext == "削除"{
+                    isLoading = true
+                    DeleteUserImage()
+                    AccountDelete()
+                }
             }))
         }
+        
         //キーボードの閉じるボタン
         .toolbar{
             ToolbarItem(placement: .keyboard) {
@@ -285,4 +298,11 @@ struct ProfileView: View {
 
 #Preview {
     ProfileView(UserUID: "")
+}
+
+struct AlertItem: Identifiable{
+    var id = UUID()
+    var Title: String
+    var Message: String
+    var Buttontext: String
 }

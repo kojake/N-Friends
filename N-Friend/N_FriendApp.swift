@@ -32,10 +32,11 @@ class MyAppDelegate: NSObject, UIApplicationDelegate, ObservableObject, UNUserNo
             }
         }
         
-        
-        
-        
         return true
+    }
+    
+    func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any]) -> Bool {
+        return GIDSignIn.sharedInstance.handle(url)
     }
     
     func application(
@@ -89,15 +90,11 @@ class MyAppDelegate: NSObject, UIApplicationDelegate, ObservableObject, UNUserNo
     
 }
 
-
-
 extension MyAppDelegate: MessagingDelegate {
     @objc func messaging(_: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         print("Firebase token: \(String(describing: fcmToken))")
     }
 }
-
-
 
 class MySceneDelegate: NSObject, UIWindowSceneDelegate, ObservableObject {
     var windowScene: UIWindowScene?
