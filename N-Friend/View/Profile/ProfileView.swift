@@ -277,7 +277,7 @@ struct ProfileView: View {
     }
     
     private func AccountDelete() {
-        Auth.auth().currentUser?.delete() { error in
+        Auth.auth().currentUser?.delete { error in
             if let error = error {
                 print("Error deleting user: \(error.localizedDescription)")
             } else {

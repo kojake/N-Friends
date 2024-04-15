@@ -32,7 +32,7 @@ struct CardSwipeView: View {
                     ZStack{
                         ForEach(CardUserList) { model in
                             ZStack{
-                                Image(uiImage: model.UserImage).resizable().frame(height: geo.size.height - 200).cornerRadius(20).padding(.horizontal, 15)
+                                Image(uiImage: model.UserImage).resizable().frame(height: geo.size.height - 200).background(Color.white).cornerRadius(20).padding(.horizontal, 15)
                                 VStack{
                                     Spacer()
                                     HStack{
