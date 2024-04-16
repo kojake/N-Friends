@@ -10,6 +10,8 @@ import FirebaseFirestore
 import FirebaseStorage
 
 struct CreatedAccountDetailsEditView: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
     //Profile
     @State var UserUID: String
     @State var UserProfile: UserModel = UserModel(UID: "", UserImage: UIImage(systemName: "photo")!, Username: "", EnrollmentCampus: "", Tastes: [String]())
@@ -48,7 +50,7 @@ struct CreatedAccountDetailsEditView: View {
                                     .resizable()
                                     .frame(width: 100, height: 100)
                                     .cornerRadius(75)
-                                    .overlay(RoundedRectangle(cornerRadius: 75).stroke(Color.black, lineWidth: 2))
+                                    .overlay(RoundedRectangle(cornerRadius: 75).stroke(colorScheme == .dark ? Color.white : Color.black, lineWidth: 2))
                             } else {
                                 Image(systemName: "person.fill")
                                     .resizable()
@@ -71,8 +73,8 @@ struct CreatedAccountDetailsEditView: View {
                             }
                         }
                         VStack(alignment: .leading ){
-                            Text(UserProfile.Username).font(.title).fontWeight(.semibold)
-                            Text("@\(UserProfile.UID)").font(.system(size: 13))
+                            Text(UserProfile.Username).font(.title).fontWeight(.semibold).foregroundColor(colorScheme == .dark ? Color.white : Color.black)
+                            Text("@\(UserProfile.UID)").font(.system(size: 13)).foregroundColor(colorScheme == .dark ? Color.white : Color.black)
                         }
                     }.padding()
                     Spacer()

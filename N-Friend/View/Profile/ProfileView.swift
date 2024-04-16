@@ -23,17 +23,20 @@ struct ProfileView: View {
     
     @State private var Showshould_TastesEditView = false
     @State private var Showshould_LoginView = false
+    @State private var Showshould_AccountDeleteCheckView = false
     @State private var Showshould_ImagePickerView = false
     
     //Picker
     @State var AllCampus: [String] = ["秋葉原", "代々木", "新宿"]
     
-    @State var Alertitem: AlertItem = AlertItem(Title: "", Message: "", Buttontext: "")
-    @State private var Checkalert = false
+    @State private var UIDResavealert = false
     
     var body: some View {
         ZStack{
             NavigationLink(destination: LoginView(), isActive: $Showshould_LoginView) {
+                EmptyView()
+            }
+            NavigationLink(destination: AccountDeleteCheckView(Username: UserProfile.Username, UserUID: UserUID), isActive: $Showshould_AccountDeleteCheckView) {
                 EmptyView()
             }
             VStack{
@@ -113,16 +116,14 @@ struct ProfileView: View {
                     }
                     Section{
                         Text("ログイン保持UID再保存").foregroundColor(Color.red).onTapGesture {
-                            Alertitem = AlertItem(Title: "確認", Message: "UIDを再保存しますか？\nアプリ起動時に自動でログインされない際にはUIDがうまく保存されていない場合があるので、その時に使用してください。", Buttontext: "再保存")
-                            Checkalert = true
+                            UIDResavealert = true
                         }
                         Text("ログアウト").foregroundColor(Color.red).onTapGesture {
                             Logout()
                             Showshould_LoginView = true
                         }
                         Text("アカウント削除").foregroundColor(Color.red).onTapGesture {
-                            Alertitem = AlertItem(Title: "警告", Message: "アカウントを削除するとあなたの保存したプロフィールと自分がLikeした人の情報がデータベースから削除されます。\nアカウントを本当に削除しますか？", Buttontext: "削除")
-                            Checkalert = true
+                            Showshould_AccountDeleteCheckView = true
                         }
                     } header: {
                         Text("アカウント管理")
@@ -134,20 +135,13 @@ struct ProfileView: View {
             }
         }
         //アカウント削除の確認アラート
-        .alert(isPresented: $Checkalert) {
-            Alert(title: Text(Alertitem.Title),
-                  message: Text(Alertitem.Message),
+        .alert(isPresented: $UIDResavealert) {
+            Alert(title: Text("確認"),
+                  message: Text("UIDを再保存しますか？"),
                   primaryButton: .cancel(Text("キャンセル")),
-                  secondaryButton: .default(Text(Alertitem.Buttontext),
+                  secondaryButton: .default(Text("再保存"),
                                             action: {
-                if Alertitem.Buttontext == "再保存" {
-                    UserDefaults.standard.set(UserUID, forKey: "UserUID_Key")
-                }
-                else if Alertitem.Buttontext == "削除"{
-                    isLoading = true
-                    DeleteUserImage()
-                    AccountDelete()
-                }
+                UserDefaults.standard.set(UserUID, forKey: "UserUID_Key")
             }))
         }
         
@@ -275,34 +269,8 @@ struct ProfileView: View {
             print(error)
         }
     }
-    
-    private func AccountDelete() {
-        Auth.auth().currentUser?.delete { error in
-            if let error = error {
-                print("Error deleting user: \(error.localizedDescription)")
-            } else {
-                let db = Firestore.firestore()
-                
-                db.collection("UserList").document(UserUID).delete { error in
-                    if let error = error {
-                        print("Error removing document: \(error)")
-                    } else {
-                        isLoading = false
-                        Showshould_LoginView = true
-                    }
-                }
-            }
-        }
-    }
 }
 
 #Preview {
     ProfileView(UserUID: "")
-}
-
-struct AlertItem: Identifiable{
-    var id = UUID()
-    var Title: String
-    var Message: String
-    var Buttontext: String
 }
