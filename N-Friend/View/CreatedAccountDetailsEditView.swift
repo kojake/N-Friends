@@ -130,6 +130,7 @@ struct CreatedAccountDetailsEditView: View {
                             } else {
                                 AccountCreationLoading = true
                                 UpdateUserProfile()
+                                UpdateUserImage()
                             }
                         }){
                             HStack{
@@ -164,10 +165,6 @@ struct CreatedAccountDetailsEditView: View {
         }
         .sheet(isPresented: $Showshould_ImagePickerView) {
             ImagePicker(UserImage: $UserProfile.UserImage, Showshould_ImagePickerView: $Showshould_ImagePickerView)
-                .onDisappear {
-                    DeleteUserImage()
-                    UpdateUserImage()
-                }
         }
     }
     // Profile
@@ -193,7 +190,7 @@ struct CreatedAccountDetailsEditView: View {
         let image = UserProfile.UserImage
         
         let storageref = Storage.storage().reference(forURL: "gs://n-friends.appspot.com").child(UserProfile.Username)
-        
+
         //UserImageがnilの状態をチェックし、nilでない場合にデータ変換をする処理を実装
         guard let data = image!.jpegData(compressionQuality: 1.0) else {
             print("Could not get JPEG representation of UIImage")
@@ -205,20 +202,6 @@ struct CreatedAccountDetailsEditView: View {
                 print("Error uploading image: \(error.localizedDescription)")
             } else {
                 print("Image successfully updated")
-            }
-        }
-    }
-    private func DeleteUserImage(){
-        let storage = Storage.storage()
-        
-        let desertRef = storage.reference(forURL: "gs://n-friends.appspot.com").child(Previousname)
-        
-        desertRef.delete { error in
-            if let error = error {
-                print("Error \(error.localizedDescription)")
-            } else {
-                print("Image success deleted")
-                Previousname = UserProfile.Username
             }
         }
     }

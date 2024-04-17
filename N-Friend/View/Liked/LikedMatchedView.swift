@@ -101,8 +101,6 @@ struct LikedMatchedView: View {
             }
         }
         .onAppear{
-            LikeUser.removeAll()
-            MatchUser.removeAll()
             FetchLikeUser()
             FetchMatchUser()
         }

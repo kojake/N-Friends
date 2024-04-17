@@ -262,10 +262,15 @@ struct CardSwipeView: View {
             if let document = document, document.exists {
                 if let LikedUser_LikeList = document.data()?["LikeUser"] as? [String] {
                     //ライクしたユーザーが自分をライクしているかを確認
-                    if LikedUser_LikeList.contains(LikedUserUID) {
+                    if LikedUser_LikeList.contains(UserUID) {
                         MatchUser.append(LikedUserUID)
                         UpdateMatchUser()
+                        
+                        //マッチしたことを通知(自身)
                         makeNotification(MatchedUsername: LikedUsername)
+                        
+                        //マッチしたユーザーのマッチリストに自分のUIDを追加する
+                        UpdateMatchUserMatchList(LikedUserUID: LikedUserUID)
                     }
                 } else {
                     print("Field not found or cannot be converted to String.")
@@ -295,8 +300,45 @@ struct CardSwipeView: View {
     private func UpdateMatchUser() {
         let db = Firestore.firestore()
         
-        db.collection("UserLIst").document(UserUID).updateData([
+        db.collection("UserList").document(UserUID).updateData([
             "MatchUser": MatchUser
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
+    
+    private func FetchMatchUserMatchList(LikedUserUID: String, completion: @escaping ([String]?) -> Void) {
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(LikedUserUID).getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let MatchedUser_MatchList = document.data()?["MatchUser"] as? [String] {
+                    completion(MatchedUser_MatchList)
+                } else {
+                    completion(nil)
+                }
+            } else {
+                completion(nil)
+            }
+        }
+    }
+    
+    private func UpdateMatchUserMatchList(LikedUserUID: String) {
+        let db = Firestore.firestore()
+        
+        var MatchedUser_MatchList = [String]()
+        
+        FetchMatchUserMatchList(LikedUserUID: LikedUserUID) { matcheduser_matchlist   in
+            MatchedUser_MatchList = matcheduser_matchlist!
+        }
+        MatchedUser_MatchList.append(UserUID)
+        
+        db.collection("UserList").document(LikedUserUID).updateData([
+            "MatchUser": MatchedUser_MatchList
         ]) { err in
             if let err = err {
                 print("Error updating document: \(err)")
