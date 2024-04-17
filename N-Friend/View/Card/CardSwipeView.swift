@@ -143,6 +143,7 @@ struct CardSwipeView: View {
         .onAppear{
             isLoading = true
             CardUserList.removeAll()
+            RealtimeCheckMatch()
             FetchCardUserData()
             FetchLikeuser()
             FetchDisLikeuser()
@@ -344,6 +345,30 @@ struct CardSwipeView: View {
                 print("Error updating document: \(err)")
             } else {
                 print("Document successfully updated")
+            }
+        }
+    }
+    
+    //Realtime
+    private func RealtimeCheckMatch() {
+        let db = Firestore.firestore()
+
+        db.collection("UserList").document(UserUID).addSnapshotListener { documentSnapshot, error in
+            guard let document = documentSnapshot else {
+                print("Error fetching document: \(error!)")
+                return
+            }
+            guard let data = document.data() else {
+                print("Document data was empty.")
+                return
+            }
+            
+            if MatchUser != data["MatchUser"] as? [String] {
+                let value = data["MatchUser"] as? [String]
+                let matchusername = MatchUser.filter{ value!.contains($0) }
+                
+                makeNotification(MatchedUsername: "\(matchusername)")
+                MatchUser = data["MatchUser"] as! [String]
             }
         }
     }
