@@ -11,11 +11,15 @@ import FirebaseStorage
 
 struct CardSwipeView: View {
     var UserUID: String
+    @State var Username: String = ""
     
     @State var CardUserList: [CardUserModel] = []
+    
     @State var LikeUser: [String] = []
     @State var DisLikeUser: [String] = []
+    
     @State var MatchUser: [String] = []
+    @State var LastMatchUsername: String = ""
     
     @State private var isLoading = false
     
@@ -143,13 +147,33 @@ struct CardSwipeView: View {
         .onAppear{
             isLoading = true
             CardUserList.removeAll()
-            RealtimeCheckMatch()
+            
+            FetchUsername()
+            FetchLastMatchUsername()
             FetchCardUserData()
             FetchLikeuser()
             FetchDisLikeuser()
             FetchMatchUser()
+            
+            RealtimeCheckMatch()
         }
     }
+    private func FetchUsername() {
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(UserUID).getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let username = document.data()?["Username"] as? String {
+                    Username = username
+                } else {
+                    print("Field not found or cannot be converted to String.")
+                }
+            } else {
+                print("Document does not exist.")
+            }
+        }
+    }
+    
     private func FetchCardUserData(){
         let db = Firestore.firestore()
         
@@ -270,6 +294,7 @@ struct CardSwipeView: View {
                         //マッチしたことを通知(自身)
                         makeNotification(MatchedUsername: LikedUsername)
                         
+                        
                         //マッチしたユーザーのマッチリストに自分のUIDを追加する
                         UpdateMatchUserMatchList(LikedUserUID: LikedUserUID)
                     }
@@ -339,7 +364,8 @@ struct CardSwipeView: View {
         MatchedUser_MatchList.append(UserUID)
         
         db.collection("UserList").document(LikedUserUID).updateData([
-            "MatchUser": MatchedUser_MatchList
+            "MatchUser": MatchedUser_MatchList,
+            "LastMatchUsername": Username
         ]) { err in
             if let err = err {
                 print("Error updating document: \(err)")
@@ -350,6 +376,37 @@ struct CardSwipeView: View {
     }
     
     //Realtime
+    private func FetchLastMatchUsername() {
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(UserUID).getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let lastmatchusername = document.data()?["LastMatchUsername"] as? String {
+                    LastMatchUsername = lastmatchusername
+                } else {
+                    print("Field not found or cannot be converted to String.")
+                }
+            } else {
+                print("Document does not exist.")
+            }
+        }
+    }
+    
+    private func UpdateLastMatchUsername() {
+        let db = Firestore.firestore()
+
+        db.collection("UserList").document(UserUID).updateData([
+            "LastMatchUsername": LastMatchUsername
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
+        }
+    }
+    
+    
     private func RealtimeCheckMatch() {
         let db = Firestore.firestore()
 
@@ -363,12 +420,10 @@ struct CardSwipeView: View {
                 return
             }
             
-            if MatchUser != data["MatchUser"] as? [String] {
-                let value = data["MatchUser"] as? [String]
-                let matchusername = MatchUser.filter{ value!.contains($0) }
-                
-                makeNotification(MatchedUsername: "\(matchusername)")
-                MatchUser = data["MatchUser"] as! [String]
+            if LastMatchUsername != data["LastMatchUsername"] as? String {
+                makeNotification(MatchedUsername: data["LastMatchUsername"] as! String)
+                LastMatchUsername = data["LastMatchUsername"] as! String
+                UpdateLastMatchUsername()
             }
         }
     }
