@@ -420,9 +420,6 @@ struct CardSwipeView: View {
                 return
             }
             
-            print(LastMatchUsername)
-            print(data["LastMatchUsername"] as? String)
-            
             if LastMatchUsername != data["LastMatchUsername"] as? String {
                 makeNotification(MatchedUsername: data["LastMatchUsername"] as! String)
                 LastMatchUsername = data["LastMatchUsername"] as! String
