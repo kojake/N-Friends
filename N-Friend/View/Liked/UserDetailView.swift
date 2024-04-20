@@ -15,7 +15,12 @@ struct UserDetailView: View {
     @State private var isLoading = false
     
     var UserUID: String
-    @State var UserProfile: UserModel = UserModel(UID: "???", UserImage: UIImage(systemName: "photo")!, Username: "???", EnrollmentCampus: "???", Tastes: ["???"])
+    var SelectedIndex: Int
+    
+    @State var UserProfile: UserModel = UserModel(UID: "???", SlackID: "???" ,UserImage: UIImage(systemName: "photo")!, Username: "???", EnrollmentCampus: "???", Tastes: ["???"])
+    
+    @State private var Erroralert = false
+    @State var Errormessage = ""
     
     var body: some View {
         ZStack{
@@ -58,6 +63,28 @@ struct UserDetailView: View {
                                     }
                                 }
                             }
+                            if SelectedIndex == 1 {
+                                Button(action: {
+                                    if let url = URL(string: "https://n-jr.slack.com/team/\(UserProfile.SlackID)") {
+                                        if UIApplication.shared.canOpenURL(url) {
+                                            UIApplication.shared.open(url)
+                                        } else {
+                                            Errormessage = "URLが無効です。"
+                                            Erroralert = true
+                                        }
+                                    }
+                                }){
+                                    HStack {
+                                        VStack{
+                                            Image(systemName: "number").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.black.opacity(0.8))
+                                        }.frame(width: 50, height: 50).background(colorScheme == .dark ? Color.white.opacity(0.3) : Color.gray.opacity(0.3)).cornerRadius(50)
+                                        Text("SlackID")
+                                            .fontWeight(.semibold)
+                                        Text(UserProfile.SlackID)
+                                        
+                                    }
+                                }.foregroundColor(Color.white)
+                            }
                         }
                     }
                 }
@@ -66,6 +93,10 @@ struct UserDetailView: View {
                 Progressview()
             }
         }
+        .alert(isPresented: $Erroralert) {
+            Alert(title: Text(Errormessage))
+        }
+        
         .onAppear{
             isLoading = true
             FetchUserProfile()
@@ -79,10 +110,11 @@ struct UserDetailView: View {
                 let data = document.data()
                 if let username = data!["Username"] as? String,
                    let useruid = data!["UID"] as? String,
+                   let slackid = data!["SlackID"] as? String,
                    let enrollmentcampus = data!["EnrollmentCampus"] as? String,
                    let tastes = data!["Tastes"] as? [String] {
                     FetchUserImage(username: username) { image in
-                        UserProfile = UserModel(UID: useruid, UserImage: (image ?? UIImage(systemName: "photo"))!, Username: username, EnrollmentCampus: enrollmentcampus, Tastes: tastes)
+                        UserProfile = UserModel(UID: useruid, SlackID: slackid, UserImage: (image ?? UIImage(systemName: "photo"))!, Username: username, EnrollmentCampus: enrollmentcampus, Tastes: tastes)
                         isLoading = false
                     }
                 }
@@ -108,5 +140,5 @@ struct UserDetailView: View {
 }
 
 #Preview {
-    UserDetailView(UserUID: "")
+    UserDetailView(UserUID: "", SelectedIndex: 0)
 }

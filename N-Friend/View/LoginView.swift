@@ -105,10 +105,6 @@ struct LoginView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .onAppear{
-            let a = UserDefaults.standard.object(forKey: "UserUID_Key") as? String
-            print(a)
-        }
     }
     private func UploadUserData(){
         let db = Firestore.firestore()

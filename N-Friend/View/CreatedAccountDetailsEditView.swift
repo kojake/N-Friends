@@ -14,7 +14,7 @@ struct CreatedAccountDetailsEditView: View {
     
     //Profile
     @State var UserUID: String
-    @State var UserProfile: UserModel = UserModel(UID: "", UserImage: UIImage(systemName: "photo")!, Username: "", EnrollmentCampus: "", Tastes: [String]())
+    @State var UserProfile: UserModel = UserModel(UID: "", SlackID: "", UserImage: UIImage(systemName: "photo")!, Username: "", EnrollmentCampus: "", Tastes: [String]())
     @State var CampusSelectionIndexValue: Int = 0
     @State var Previousname: String = ""
     
@@ -116,6 +116,17 @@ struct CreatedAccountDetailsEditView: View {
                             }.onTapGesture {
                                 Showshould_TastesEditView = true
                             }
+                            HStack {
+                                VStack{
+                                    Image(systemName: "number").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.black.opacity(0.8))
+                                }.frame(width: 50, height: 50).background(colorScheme == .dark ? Color.white.opacity(0.3) : Color.gray.opacity(0.3)).cornerRadius(50)
+                                Text("SlackID")
+                                    .fontWeight(.semibold)
+                                TextField(UserProfile.SlackID, text: $UserProfile.SlackID)
+                                    .onChange(of: UserProfile.SlackID) { _ in
+                                        UpdateUserProfile()
+                                    }
+                            }
                         }
                     }
                     VStack{
@@ -146,7 +157,7 @@ struct CreatedAccountDetailsEditView: View {
             }
         }
         .onAppear{
-            UserProfile =  UserModel(UID: UserUID, UserImage: UIImage(systemName: "photo")!, Username: "", EnrollmentCampus: "", Tastes: [String]())
+            UserProfile =  UserModel(UID: UserUID, SlackID: "", UserImage: UIImage(systemName: "photo")!, Username: "", EnrollmentCampus: "", Tastes: [String]())
         }
         .navigationBarBackButtonHidden(true)
         .alert(isPresented: $Erroralert) {
@@ -172,6 +183,7 @@ struct CreatedAccountDetailsEditView: View {
         let db = Firestore.firestore()
         
         db.collection("UserList").document(UserProfile.UID).updateData([
+            "SlackID": UserProfile.SlackID,
             "Username": UserProfile.Username,
             "EnrollmentCampus": AllCampus[CampusSelectionIndexValue]
         ]) { err in

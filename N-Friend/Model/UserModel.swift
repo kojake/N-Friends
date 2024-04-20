@@ -11,6 +11,7 @@ import UIKit
 struct UserModel: Identifiable {
     var id = UUID()
     var UID: String
+    var SlackID: String
     var UserImage: UIImage?
     var Username: String
     var EnrollmentCampus: String

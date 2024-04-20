@@ -107,7 +107,7 @@ struct LikedMatchedView: View {
             FetchMatchUser()
         }
         .sheet(isPresented: $Showshould_UserDetailView) { [TapUserUID] in
-            UserDetailView(UserUID: TapUserUID)
+            UserDetailView(UserUID: TapUserUID, SelectedIndex: SelectedIndex)
         }
     }
     //LikeUser

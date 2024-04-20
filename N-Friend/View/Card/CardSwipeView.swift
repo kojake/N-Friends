@@ -154,8 +154,6 @@ struct CardSwipeView: View {
             FetchLikeuser()
             FetchDisLikeuser()
             FetchMatchUser()
-            
-            RealtimeCheckMatch()
         }
     }
     private func FetchUsername() {
@@ -314,6 +312,7 @@ struct CardSwipeView: View {
             if let document = document, document.exists {
                 if let MatchUserList = document.data()?["MatchUser"] as? [String] {
                     MatchUser = MatchUserList
+                    RealtimeCheckMatch()
                 } else {
                     print("Field not found or cannot be converted to String.")
                 }
@@ -382,6 +381,7 @@ struct CardSwipeView: View {
         db.collection("UserList").document(UserUID).getDocument { (document, error) in
             if let document = document, document.exists {
                 if let lastmatchusername = document.data()?["LastMatchUsername"] as? String {
+                    print(LastMatchUsername)
                     LastMatchUsername = lastmatchusername
                 } else {
                     print("Field not found or cannot be converted to String.")
@@ -419,6 +419,9 @@ struct CardSwipeView: View {
                 print("Document data was empty.")
                 return
             }
+            
+            print(LastMatchUsername)
+            print(data["LastMatchUsername"] as? String)
             
             if LastMatchUsername != data["LastMatchUsername"] as? String {
                 makeNotification(MatchedUsername: data["LastMatchUsername"] as! String)

@@ -15,7 +15,7 @@ struct ProfileView: View {
     
     //Profile
     @State var UserUID: String
-    @State var UserProfile: UserModel = UserModel(UID: "???", UserImage: UIImage(systemName: "photo")!, Username: "???", EnrollmentCampus: "???", Tastes: ["???"])
+    @State var UserProfile: UserModel = UserModel(UID: "???", SlackID: "", UserImage: UIImage(systemName: "photo")!, Username: "???", EnrollmentCampus: "???", Tastes: ["???"])
     @State var CampusSelectionIndexValue: Int = 0
     @State var Previousname: String = ""
     
@@ -111,6 +111,17 @@ struct ProfileView: View {
                         }.onTapGesture {
                             Showshould_TastesEditView = true
                         }
+                        HStack {
+                            VStack{
+                                Image(systemName: "number").resizable().scaledToFit().frame(width: 35, height: 35).foregroundColor(Color.black.opacity(0.8))
+                            }.frame(width: 50, height: 50).background(colorScheme == .dark ? Color.white.opacity(0.3) : Color.gray.opacity(0.3)).cornerRadius(50)
+                            Text("SlackID")
+                                .fontWeight(.semibold)
+                            TextField(UserProfile.SlackID, text: $UserProfile.SlackID)
+                                .onChange(of: UserProfile.SlackID) { _ in
+                                    UpdateUserProfile()
+                                }
+                        }
                     } header: {
                         Text("プロフィール")
                     }
@@ -183,10 +194,11 @@ struct ProfileView: View {
                 let data = document.data()
                 if let username = data!["Username"] as? String,
                    let useruid = data!["UID"] as? String,
+                   let slackid = data!["SlackID"] as? String,
                    let enrollmentcampus = data!["EnrollmentCampus"] as? String,
                    let tastes = data!["Tastes"] as? [String] {
                     FetchUserImage(username: username) { image in
-                        UserProfile = UserModel(UID: useruid, UserImage: (image ?? UIImage(systemName: "photo"))!, Username: username, EnrollmentCampus: enrollmentcampus, Tastes: tastes)
+                        UserProfile = UserModel(UID: useruid, SlackID: slackid, UserImage: (image ?? UIImage(systemName: "photo"))!, Username: username, EnrollmentCampus: enrollmentcampus, Tastes: tastes)
                         isLoading = false
                     }
                 }
@@ -199,6 +211,7 @@ struct ProfileView: View {
         let db = Firestore.firestore()
         
         db.collection("UserList").document(UserProfile.UID).updateData([
+            "SlackID": UserProfile.SlackID,
             "Username": UserProfile.Username,
             "EnrollmentCampus": AllCampus[CampusSelectionIndexValue]
         ]) { err in
