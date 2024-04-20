@@ -179,10 +179,6 @@ struct ProfileView: View {
         }
         .sheet(isPresented: $Showshould_ImagePickerView) {
             ImagePicker(UserImage: $UserProfile.UserImage, Showshould_ImagePickerView: $Showshould_ImagePickerView)
-                .onDisappear {
-                    DeleteUserImage()
-                    UpdateUserImage()
-                }
         }
     }
     // Profile
