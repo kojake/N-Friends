@@ -58,6 +58,7 @@
 		97BE23372B96E19100027B05 /* ImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BE23362B96E19100027B05 /* ImagePickerView.swift */; };
 		97ED44722BCE484400AF0FBD /* AccountDeleteCheckView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97ED44712BCE484400AF0FBD /* AccountDeleteCheckView.swift */; };
 		97ED44742BCE515900AF0FBD /* LoginToDeleteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97ED44732BCE515900AF0FBD /* LoginToDeleteView.swift */; };
+		97ED44962BD3E1F200AF0FBD /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97ED44952BD3E1F200AF0FBD /* NotificationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +87,7 @@
 		97BE23362B96E19100027B05 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
 		97ED44712BCE484400AF0FBD /* AccountDeleteCheckView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDeleteCheckView.swift; sourceTree = "<group>"; };
 		97ED44732BCE515900AF0FBD /* LoginToDeleteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginToDeleteView.swift; sourceTree = "<group>"; };
+		97ED44952BD3E1F200AF0FBD /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		97ED58692B9BED9A00E8BD3E /* libapp_launch_measurement.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libapp_launch_measurement.tbd; path = usr/lib/libapp_launch_measurement.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -175,7 +177,7 @@
 				97532FD82B89867A00BA04F9 /* LoginView.swift */,
 				979273F42BB314EF0040D2B5 /* CreatedAccountDetailsEditView.swift */,
 				97532FCA2B8985B200BA04F9 /* ContentView.swift */,
-				9792AEF52BCA99FE00BF3993 /* Notification.swift */,
+				97ED44952BD3E1F200AF0FBD /* NotificationView.swift */,
 				979274182BB653720040D2B5 /* Progress */,
 				97532FE02B89D0EF00BA04F9 /* Card */,
 				97532FE42B8A2DB600BA04F9 /* Liked */,
@@ -191,6 +193,7 @@
 				979273F22BB1B5D00040D2B5 /* LikeCardUserModel.swift */,
 				9792AEF72BCAB10900BF3993 /* MatchCardUserModel.swift */,
 				979273F02BB10B1A0040D2B5 /* UserModel.swift */,
+				9792AEF52BCA99FE00BF3993 /* Notification.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -377,6 +380,7 @@
 				97532FEA2B8ADC4300BA04F9 /* CardUserModel.swift in Sources */,
 				97ED44722BCE484400AF0FBD /* AccountDeleteCheckView.swift in Sources */,
 				97532FC92B8985B200BA04F9 /* N_FriendApp.swift in Sources */,
+				97ED44962BD3E1F200AF0FBD /* NotificationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

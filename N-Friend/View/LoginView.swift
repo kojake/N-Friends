@@ -112,11 +112,13 @@ struct LoginView: View {
         db.collection("UserList").document(UserUID).setData([
             "Username": UserUID,
             "UID": UserUID,
+            "SlackID": "",
             "EnrollmentCampus": "秋葉原",
             "Tastes": [String](),
             "LikeUser": [String](),
+            "DisLikeUser": [String](),
             "MatchUser": [String](),
-            "DisLikeUser": [String]()
+            "Notification": [String]()
         ]) { err in
             if let err = err {
                 print("Error adding document: \(err)")
