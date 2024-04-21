@@ -15,6 +15,7 @@ struct CardSwipeView: View {
     @State var Username: String = ""
     
     @State var CardUserList: [CardUserModel] = []
+    @State var CardState: String = ""
     
     @State var LikeUser: [String] = []
     @State var DisLikeUser: [String] = []
@@ -51,6 +52,15 @@ struct CardSwipeView: View {
                                 ZStack{
                                     Image(uiImage: model.UserImage).resizable().frame(height: geo.size.height - 200).background(Color.white).cornerRadius(20).padding(.horizontal, 15)
                                     VStack{
+                                        HStack{
+                                            if CardState == "Like" {
+                                                Text("LIKE").font(.system(size: 45)).fontWeight(.black).foregroundColor(Color.green).padding()
+                                                Spacer()
+                                            } else if CardState == "DisLike" {
+                                                Spacer()
+                                                Text("DISLIKE").font(.system(size: 45)).fontWeight(.black).foregroundColor(Color.red).padding()
+                                            }
+                                        }
                                         Spacer()
                                         HStack{
                                             VStack(alignment: .leading){
@@ -72,11 +82,13 @@ struct CardSwipeView: View {
                                             if let cardindex = CardUserList.indices.last{
                                                 CardUserList[cardindex].Swipe = value.translation.width
                                                 CardUserList[cardindex].degrees = 8
+                                                CardState = "Like"
                                             }
                                         } else {
                                             if let cardindex = CardUserList.indices.last{
                                                 CardUserList[cardindex].Swipe = value.translation.width
                                                 CardUserList[cardindex].degrees = -8
+                                                CardState = "DisLike"
                                             }
                                         }
                                     }).onEnded({ (value) in
@@ -90,11 +102,13 @@ struct CardSwipeView: View {
                                                     LikeUser.append(CardUserList[cardindex].UserUID)
                                                     UpdateLikeUser()
                                                     CardUserList.remove(at: cardindex)
+                                                    CardState = ""
                                                 }
                                             } else {
                                                 if let cardindex = CardUserList.indices.last{
                                                     CardUserList[cardindex].Swipe = 0
                                                     CardUserList[cardindex].degrees = 0
+                                                    CardState = ""
                                                 }
                                             }
                                         } else {
@@ -106,11 +120,13 @@ struct CardSwipeView: View {
                                                     DisLikeUser.append(CardUserList[cardindex].UserUID)
                                                     UpdateDisLikeUser()
                                                     CardUserList.remove(at: cardindex)
+                                                    CardState = ""
                                                 }
                                             } else {
                                                 if let cardindex = CardUserList.indices.last{
                                                     CardUserList[cardindex].Swipe = 0
                                                     CardUserList[cardindex].degrees = 0
+                                                    CardState = ""
                                                 }
                                             }
                                         }
