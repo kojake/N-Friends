@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AudioToolbox
 import FirebaseFirestore
 import FirebaseStorage
 
@@ -84,6 +85,7 @@ struct CardSwipeView: View {
                                                 if let cardindex = CardUserList.indices.last{
                                                     CardUserList[cardindex].Swipe = 700
                                                     CardUserList[cardindex].degrees = 8
+                                                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                                                     LikeUserMatchCheck(LikedUserUID: CardUserList[cardindex].UserUID, LikedUsername: CardUserList[cardindex].Username)
                                                     LikeUser.append(CardUserList[cardindex].UserUID)
                                                     UpdateLikeUser()
@@ -100,7 +102,7 @@ struct CardSwipeView: View {
                                                 if let cardindex = CardUserList.indices.last{
                                                     CardUserList[cardindex].Swipe = -700
                                                     CardUserList[cardindex].degrees = 8
-                                                    
+                                                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                                                     DisLikeUser.append(CardUserList[cardindex].UserUID)
                                                     UpdateDisLikeUser()
                                                     CardUserList.remove(at: cardindex)

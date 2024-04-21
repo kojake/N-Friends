@@ -17,6 +17,7 @@ struct LikedMatchedView: View {
     
     @State var LikeUserUIDList: [String] = []
     @State var LikeUser: [LikeCardUserModel] = []
+    @State var DisLikeUserUIDList: [String] = []
     @State var MatchUserUIDList: [String] = []
     @State var MatchUser: [MatchCardUserModel] = []
     @State private var Showshould_UserDetailView = false
@@ -56,9 +57,10 @@ struct LikedMatchedView: View {
                                             Text("アカウント表示")
                                         }
                                         Button(action: {
+                                            DisLikeUserUIDList.append(LikeUserUIDList[index])
+                                            LikeUserUIDList.removeAll { $0 == LikeUser[index].UID }
                                             LikeUser.remove(at: index)
-                                            LikeUserUIDList.remove(at: index)
-                                            UpdateLikeUser()
+                                            UpdateLikeDisLikeUser()
                                         }){
                                             Text("削除")
                                         }
@@ -83,13 +85,6 @@ struct LikedMatchedView: View {
                                         }){
                                             Text("アカウント表示")
                                         }
-                                        Button(action: {
-                                            MatchUser.remove(at: index)
-                                            MatchUserUIDList.remove(at: index)
-                                            UpdateMatchUser()
-                                        }){
-                                            Text("削除")
-                                        }
                                     }
                             }
                         }
@@ -104,13 +99,14 @@ struct LikedMatchedView: View {
             LikeUser.removeAll()
             MatchUser.removeAll()
             FetchLikeUser()
+            FetchDisLikeUser()
             FetchMatchUser()
         }
         .sheet(isPresented: $Showshould_UserDetailView) { [TapUserUID] in
             UserDetailView(UserUID: TapUserUID, SelectedIndex: SelectedIndex)
         }
     }
-    //LikeUser
+    //LikeUser DisLikeUser
     private func FetchLikeUser(){
         let db = Firestore.firestore()
         
@@ -130,6 +126,22 @@ struct LikedMatchedView: View {
         }
     }
     
+    private func FetchDisLikeUser(){
+        let db = Firestore.firestore()
+        
+        db.collection("UserList").document(UserUID).getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let fieldValue = document.data()?["DisLikeUser"] as? [String] {
+                    DisLikeUserUIDList = fieldValue
+                } else {
+                    print("Field not found or cannot be converted to String.")
+                }
+            } else {
+                print("Document does not exist.")
+            }
+        }
+    }
+    
     private func FetchLikeUsername_Image(UID: String){
         let db = Firestore.firestore()
         
@@ -140,6 +152,13 @@ struct LikedMatchedView: View {
                    let useruid = data!["UID"] as? String {
                     FetchUserImage(username: username) { image in
                         LikeUser.append(LikeCardUserModel(UID: useruid, Username: username, UserImage: (image ?? UIImage(systemName: "photo"))!))
+                        
+                        print()
+                        print("UIDList")
+                        print(LikeUserUIDList)
+                        print()
+                        print("LikeUserList")
+                        print(LikeUser)
                     }
                 }
                 else {
@@ -152,11 +171,12 @@ struct LikedMatchedView: View {
     }
     
     
-    private func UpdateLikeUser(){
+    private func UpdateLikeDisLikeUser(){
         let db = Firestore.firestore()
         
         db.collection("UserList").document(UserUID).updateData([
-            "LikeUser": LikeUserUIDList
+            "LikeUser": LikeUserUIDList,
+            "DisLikeUser": DisLikeUserUIDList
         ]) { err in
             if let err = err {
                 print("Error updating document: \(err)")
