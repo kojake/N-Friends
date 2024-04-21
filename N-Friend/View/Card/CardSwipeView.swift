@@ -140,6 +140,7 @@ struct CardSwipeView: View {
                         HStack{
                             Button(action: {
                                 if let cardindex = CardUserList.indices.last{
+                                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                                     DisLikeUser.append(CardUserList[cardindex].UserUID)
                                     UpdateDisLikeUser()
                                     CardUserList.remove(at: cardindex)
@@ -154,6 +155,7 @@ struct CardSwipeView: View {
                             }.padding()
                             Button(action: {
                                 if let cardindex = CardUserList.indices.last{
+                                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                                     LikeUser.append(CardUserList[cardindex].UserUID)
                                     UpdateLikeUser()
                                     LikeUserMatchCheck(LikedUserUID: CardUserList[cardindex].UserUID, LikedUsername: CardUserList[cardindex].Username)
