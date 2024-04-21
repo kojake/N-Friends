@@ -152,13 +152,6 @@ struct LikedMatchedView: View {
                    let useruid = data!["UID"] as? String {
                     FetchUserImage(username: username) { image in
                         LikeUser.append(LikeCardUserModel(UID: useruid, Username: username, UserImage: (image ?? UIImage(systemName: "photo"))!))
-                        
-                        print()
-                        print("UIDList")
-                        print(LikeUserUIDList)
-                        print()
-                        print("LikeUserList")
-                        print(LikeUser)
                     }
                 }
                 else {
