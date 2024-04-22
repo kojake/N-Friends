@@ -53,10 +53,11 @@ struct CardSwipeView: View {
                                     Image(uiImage: model.UserImage).resizable().frame(height: geo.size.height - 200).background(Color.white).cornerRadius(20).padding(.horizontal, 15)
                                     VStack{
                                         HStack{
-                                            if CardState == "Like" {
+                                            let cardindex = CardUserList.indices.last
+                                            if CardState == "Like" && model.Username == CardUserList[cardindex!].Username {
                                                 Text("LIKE").font(.system(size: 45)).fontWeight(.black).foregroundColor(Color.green).padding()
                                                 Spacer()
-                                            } else if CardState == "DisLike" {
+                                            } else if CardState == "DisLike" && model.Username == CardUserList[cardindex!].Username {
                                                 Spacer()
                                                 Text("DISLIKE").font(.system(size: 45)).fontWeight(.black).foregroundColor(Color.red).padding()
                                             }
