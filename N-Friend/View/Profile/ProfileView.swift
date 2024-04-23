@@ -29,8 +29,6 @@ struct ProfileView: View {
     //Picker
     @State var AllCampus: [String] = ["秋葉原", "代々木", "新宿"]
     
-    @State private var UIDResavealert = false
-    
     var body: some View {
         ZStack{
             NavigationLink(destination: LoginView(), isActive: $Showshould_LoginView) {
@@ -126,9 +124,6 @@ struct ProfileView: View {
                         Text("プロフィール")
                     }
                     Section{
-                        Text("ログイン保持UID再保存").foregroundColor(Color.red).onTapGesture {
-                            UIDResavealert = true
-                        }
                         Text("ログアウト").foregroundColor(Color.red).onTapGesture {
                             Logout()
                             Showshould_LoginView = true
@@ -145,17 +140,6 @@ struct ProfileView: View {
                 Progressview()
             }
         }
-        //アカウント削除の確認アラート
-        .alert(isPresented: $UIDResavealert) {
-            Alert(title: Text("確認"),
-                  message: Text("UIDを再保存しますか？"),
-                  primaryButton: .cancel(Text("キャンセル")),
-                  secondaryButton: .default(Text("再保存"),
-                                            action: {
-                UserDefaults.standard.set(UserUID, forKey: "UserUID_Key")
-            }))
-        }
-        
         //キーボードの閉じるボタン
         .toolbar{
             ToolbarItem(placement: .keyboard) {

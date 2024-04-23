@@ -69,6 +69,7 @@ struct LoginView: View {
                     Showshould_CreatedAccountDetailsEditView = true
                 } else {
                     isLoading = false
+                    UserDefaults.standard.set(UserUID, forKey: "UserUID_Key")
                     Showshould_ContentView = true
                 }
             }
