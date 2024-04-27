@@ -227,7 +227,6 @@ struct CardSwipeView: View {
                 }
             }
         }
-
     }
     
     //ユーザーネームを取得する
@@ -252,7 +251,6 @@ struct CardSwipeView: View {
 
     
     //一枚一枚のカードデータを取得する
-    //一枚一枚のカードデータを取得する
     private func FetchCardUserData(completion: @escaping () -> Void) {
         let db = Firestore.firestore()
 
@@ -274,7 +272,7 @@ struct CardSwipeView: View {
                 if let username = data["Username"] as? String,
                    let useruid = data["UID"] as? String,
                    let tastes = data["Tastes"] as? [String],
-                   let enrollmentcampus = data["EnrollmentCampus"] as? String { // EnrollmentCampusをデータから取得
+                   let enrollmentcampus = data["EnrollmentCampus"] as? String {
                     FetchCardUserImage(username: username) { image in
                         DispatchQueue.main.async {
                             if !LikeUser.contains(useruid) && !DisLikeUser.contains(useruid) && UserUID != useruid {
@@ -306,7 +304,6 @@ struct CardSwipeView: View {
     }
     
     //Like DisLike func
-    
     //ユーザーのLikeしたユーザーリストを取得する
     private func FetchLikeuser(completion: @escaping () -> Void) {
         let db = Firestore.firestore()
@@ -380,7 +377,6 @@ struct CardSwipeView: View {
     }
     
     //Match
-    
     //Liekしたユーザーが自分のことをLikeしているかをチェックする
     private func LikeUserMatchCheck(LikedUserUID: String, LikedUsername: String){
         let db = Firestore.firestore()
@@ -492,7 +488,6 @@ struct CardSwipeView: View {
     }
     
     //Notification
-    
     //ユーザーの通知リストを取得する
     private func FetchNotification(completion: @escaping () -> Void) {
         let db = Firestore.firestore()

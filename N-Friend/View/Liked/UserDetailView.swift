@@ -29,7 +29,6 @@ struct UserDetailView: View {
                     Image(uiImage: UserProfile.UserImage!).resizable().frame(width: 100, height: 100).cornerRadius(75).overlay(RoundedRectangle(cornerRadius: 75).stroke(Color.black, lineWidth: 2)).padding()
                     VStack(alignment: .leading ){
                         Text(UserProfile.Username).font(.title).fontWeight(.semibold)
-                        Text("@\(UserProfile.UID)").font(.system(size: 13))
                     }
                     Spacer()
                 }

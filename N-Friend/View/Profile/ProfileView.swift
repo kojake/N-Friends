@@ -62,7 +62,6 @@ struct ProfileView: View {
                         }
                         VStack(alignment: .leading ){
                             Text(UserProfile.Username).font(.title).fontWeight(.semibold)
-                            Text("@\(UserProfile.UID)").font(.system(size: 13))
                         }
                     }.padding()
                     Spacer()
