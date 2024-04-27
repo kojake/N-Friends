@@ -10,8 +10,6 @@ import FirebaseFirestore
 import FirebaseStorage
 
 struct LikedMatchedView: View {
-    @State private var isLoading = false
-    
     @State var TapUserUID: String = ""
     @State var UserUID: String
     
