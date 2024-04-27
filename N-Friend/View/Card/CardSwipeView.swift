@@ -178,69 +178,116 @@ struct CardSwipeView: View {
                 }
             }
         }
-        .onAppear{
+        .onAppear {
             isLoading = true
             CardUserList.removeAll()
-            
-            FetchUsername()
-            FetchLastMatchUsername()
-            FetchCardUserData()
-            FetchLikeuser()
-            FetchDisLikeuser()
-            FetchNotification()
-            FetchMatchUser()
+
+            // 各データの読み込み処理を非同期で実行
+            DispatchQueue.global(qos: .userInitiated).async {
+                let group = DispatchGroup()
+
+                group.enter()
+                FetchUsername() {
+                    group.leave()
+                }
+
+                group.enter()
+                FetchLastMatchUsername() {
+                    group.leave()
+                }
+
+                group.enter()
+                FetchCardUserData() {
+                    group.leave()
+                }
+
+                group.enter()
+                FetchLikeuser() {
+                    group.leave()
+                }
+
+                group.enter()
+                FetchDisLikeuser() {
+                    group.leave()
+                }
+
+                group.enter()
+                FetchNotification() {
+                    group.leave()
+                }
+
+                group.enter()
+                FetchMatchUser() {
+                    group.leave()
+                }
+
+                // 全ての非同期処理が完了した後でUIを更新
+                group.notify(queue: .main) {
+                    isLoading = false
+                }
+            }
         }
+
     }
     
     //ユーザーネームを取得する
-    private func FetchUsername() {
+    private func FetchUsername(completion: @escaping () -> Void) {
         let db = Firestore.firestore()
-        
+
         db.collection("UserList").document(UserUID).getDocument { (document, error) in
             if let document = document, document.exists {
                 if let username = document.data()?["Username"] as? String {
-                    Username = username
+                    DispatchQueue.main.async {
+                        Username = username
+                    }
                 } else {
                     print("Field not found or cannot be converted to String.")
                 }
             } else {
                 print("Document does not exist.")
             }
+            completion()
         }
     }
+
     
     //一枚一枚のカードデータを取得する
-    private func FetchCardUserData(){
+    //一枚一枚のカードデータを取得する
+    private func FetchCardUserData(completion: @escaping () -> Void) {
         let db = Firestore.firestore()
-        
+
         db.collection("UserList").getDocuments { (querySnapshot, error) in
             if let error = error {
                 print("Error getting documents: \(error)")
+                completion()
                 return
             }
-            
+
             guard let documents = querySnapshot?.documents else {
                 print("No documents found")
+                completion()
                 return
             }
-            
+
             for document in documents {
                 let data = document.data()
                 if let username = data["Username"] as? String,
                    let useruid = data["UID"] as? String,
-                   let enrollmentcampus = data["EnrollmentCampus"] as? String,
-                   let tastes = data["Tastes"] as? [String] {
+                   let tastes = data["Tastes"] as? [String],
+                   let enrollmentcampus = data["EnrollmentCampus"] as? String { // EnrollmentCampusをデータから取得
                     FetchCardUserImage(username: username) { image in
-                        if !LikeUser.contains(useruid) && !DisLikeUser.contains(useruid) && UserUID != useruid{
-                            CardUserList.append(CardUserModel(UserUID: useruid, UserImage: (image ?? UIImage(systemName: "photo"))! ,Username: username, EnrollmentCampus: enrollmentcampus, Tastes: tastes, Swipe: 0, degrees: 0))
+                        DispatchQueue.main.async {
+                            if !LikeUser.contains(useruid) && !DisLikeUser.contains(useruid) && UserUID != useruid {
+                                CardUserList.append(CardUserModel(UserUID: useruid, UserImage: (image ?? UIImage(systemName: "photo"))!, Username: username, EnrollmentCampus: enrollmentcampus, Tastes: tastes, Swipe: 0, degrees: 0)) // EnrollmentCampusをモデルに追加
+                            }
                         }
                     }
                 }
             }
-            
-            isLoading = false
+            completion()
         }
     }
+
     
     //一枚一枚のカードに乗っける画像を取得する
     private func FetchCardUserImage(username: String, completion: @escaping (UIImage?) -> Void) {
@@ -261,38 +308,46 @@ struct CardSwipeView: View {
     //Like DisLike func
     
     //ユーザーのLikeしたユーザーリストを取得する
-    private func FetchLikeuser(){
+    private func FetchLikeuser(completion: @escaping () -> Void) {
         let db = Firestore.firestore()
         
         db.collection("UserList").document(UserUID).getDocument { (document, error) in
             if let document = document, document.exists {
                 if let fieldValue = document.data()?["LikeUser"] as? [String] {
-                    LikeUser = fieldValue
+                    DispatchQueue.main.async {
+                        LikeUser = fieldValue
+                    }
                 } else {
                     print("Field not found or cannot be converted to String.")
                 }
             } else {
                 print("Document does not exist.")
             }
+            completion()
         }
     }
+
     
     //ユーザーのDisLikeしたユーザーのリストを取得する
-    private func FetchDisLikeuser(){
+    private func FetchDisLikeuser(completion: @escaping () -> Void) {
         let db = Firestore.firestore()
         
         db.collection("UserList").document(UserUID).getDocument { (document, error) in
             if let document = document, document.exists {
                 if let fieldValue = document.data()?["DisLikeUser"] as? [String] {
-                    DisLikeUser = fieldValue
+                    DispatchQueue.main.async {
+                        DisLikeUser = fieldValue
+                    }
                 } else {
                     print("Field not found or cannot be converted to String.")
                 }
             } else {
                 print("Document does not exist.")
             }
+            completion()
         }
     }
+
     
     //ユーザーのLikeリストを更新する
     private func UpdateLikeUser(){
@@ -361,22 +416,25 @@ struct CardSwipeView: View {
     }
 
     //ユーザーのマッチリストを取得する
-    private func FetchMatchUser() {
+    private func FetchMatchUser(completion: @escaping () -> Void) {
         let db = Firestore.firestore()
         
         db.collection("UserList").document(UserUID).getDocument { (document, error) in
             if let document = document, document.exists {
                 if let MatchUserList = document.data()?["MatchUser"] as? [String] {
-                    MatchUser = MatchUserList
-                    RealtimeCheckMatch()
+                    DispatchQueue.main.async {
+                        MatchUser = MatchUserList
+                    }
                 } else {
                     print("Field not found or cannot be converted to String.")
                 }
             } else {
                 print("Document does not exist.")
             }
+            completion()
         }
     }
+
     
     //ユーザーのマッチリストを更新する
     private func UpdateMatchUser() {
@@ -436,21 +494,25 @@ struct CardSwipeView: View {
     //Notification
     
     //ユーザーの通知リストを取得する
-    private func FetchNotification() {
+    private func FetchNotification(completion: @escaping () -> Void) {
         let db = Firestore.firestore()
         
         db.collection("UserList").document(UserUID).getDocument { (document, error) in
             if let document = document, document.exists {
                 if let notification = document.data()?["Notification"] as? [String] {
-                    Notification = notification
+                    DispatchQueue.main.async {
+                        Notification = notification
+                    }
                 } else {
                     print("Field not found or cannot be converted to String.")
                 }
             } else {
                 print("Document does not exist.")
             }
+            completion()
         }
     }
+
     
     //ユーザーの通知リストを更新する
     private func UpdateNotification() {
@@ -503,21 +565,25 @@ struct CardSwipeView: View {
     //Realtime
     
     //最後にマッチしたユーザーの名前を取得する
-    private func FetchLastMatchUsername() {
+    private func FetchLastMatchUsername(completion: @escaping () -> Void) {
         let db = Firestore.firestore()
         
         db.collection("UserList").document(UserUID).getDocument { (document, error) in
             if let document = document, document.exists {
                 if let lastmatchusername = document.data()?["LastMatchUsername"] as? String {
-                    LastMatchUsername = lastmatchusername
+                    DispatchQueue.main.async {
+                        LastMatchUsername = lastmatchusername
+                    }
                 } else {
                     print("Field not found or cannot be converted to String.")
                 }
             } else {
                 print("Document does not exist.")
             }
+            completion()
         }
     }
+
     
     //最後にマッチしたユーザーの名前を更新する
     private func UpdateLastMatchUsername() {
