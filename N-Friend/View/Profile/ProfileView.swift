@@ -176,7 +176,8 @@ struct ProfileView: View {
                    let slackid = data!["SlackID"] as? String,
                    let enrollmentcampus = data!["EnrollmentCampus"] as? String,
                    let tastes = data!["Tastes"] as? [String] {
-                    FetchUserImage(username: username) { image in
+                    let fic = FetchImageClass()
+                    fic.FetchUserImage(username: username) { image in
                         UserProfile = UserModel(UID: useruid, SlackID: slackid, UserImage: (image ?? UIImage(systemName: "photo"))!, Username: username, EnrollmentCampus: enrollmentcampus, Tastes: tastes)
                         isLoading = false
                     }
@@ -198,22 +199,6 @@ struct ProfileView: View {
                 print("Error updating document: \(err)")
             } else {
                 print("Document successfully updated")
-            }
-        }
-    }
-    
-    //UserImage
-    private func FetchUserImage(username: String, completion: @escaping (UIImage?) -> Void) {
-        let storageRef = Storage.storage().reference(forURL: "gs://n-friends.appspot.com").child(username)
-        
-        storageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
-            if let error = error {
-                print("Error downloading image: \(error.localizedDescription)")
-                completion(nil)
-            } else if let data = data, let uiImage = UIImage(data: data) {
-                completion(uiImage)
-            } else {
-                completion(nil)
             }
         }
     }

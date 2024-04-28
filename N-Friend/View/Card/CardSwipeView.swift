@@ -273,33 +273,17 @@ struct CardSwipeView: View {
                    let useruid = data["UID"] as? String,
                    let tastes = data["Tastes"] as? [String],
                    let enrollmentcampus = data["EnrollmentCampus"] as? String {
-                    FetchCardUserImage(username: username) { image in
+                    let fic = FetchImageClass()
+                    fic.FetchUserImage(username: username) { image in
                         DispatchQueue.main.async {
                             if !LikeUser.contains(useruid) && !DisLikeUser.contains(useruid) && UserUID != useruid {
-                                CardUserList.append(CardUserModel(UserUID: useruid, UserImage: (image ?? UIImage(systemName: "photo"))!, Username: username, EnrollmentCampus: enrollmentcampus, Tastes: tastes, Swipe: 0, degrees: 0)) // EnrollmentCampusをモデルに追加
+                                CardUserList.append(CardUserModel(UserUID: useruid, UserImage: (image ?? UIImage(systemName: "photo"))!, Username: username, EnrollmentCampus: enrollmentcampus, Tastes: tastes, Swipe: 0, degrees: 0)) 
                             }
                         }
                     }
                 }
             }
             completion()
-        }
-    }
-
-    
-    //一枚一枚のカードに乗っける画像を取得する
-    private func FetchCardUserImage(username: String, completion: @escaping (UIImage?) -> Void) {
-        let storageRef = Storage.storage().reference(forURL: "gs://n-friends.appspot.com").child(username)
-        
-        storageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
-            if let error = error {
-                print("Error downloading image: \(error.localizedDescription)")
-                completion(nil)
-            } else if let data = data, let uiImage = UIImage(data: data) {
-                completion(uiImage)
-            } else {
-                completion(nil)
-            }
         }
     }
     

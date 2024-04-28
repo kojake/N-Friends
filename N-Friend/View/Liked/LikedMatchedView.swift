@@ -148,7 +148,8 @@ struct LikedMatchedView: View {
                 let data = document.data()
                 if let username = data!["Username"] as? String,
                    let useruid = data!["UID"] as? String {
-                    FetchUserImage(username: username) { image in
+                    let fic = FetchImageClass()
+                    fic.FetchUserImage(username: username) { image in
                         LikeUser.append(LikeCardUserModel(UID: useruid, Username: username, UserImage: (image ?? UIImage(systemName: "photo"))!))
                     }
                 }
@@ -205,7 +206,8 @@ struct LikedMatchedView: View {
                 let data = document.data()
                 if let username = data!["Username"] as? String,
                    let useruid = data!["UID"] as? String {
-                    FetchUserImage(username: username) { image in
+                    let fic = FetchImageClass()
+                    fic.FetchUserImage(username: username) { image in
                         MatchUser.append(MatchCardUserModel(UID: useruid, Username: username, UserImage: (image ?? UIImage(systemName: "photo"))!))
                     }
                 }
@@ -228,22 +230,6 @@ struct LikedMatchedView: View {
                 print("Error updating document: \(err)")
             } else {
                 print("Document successfully updated")
-            }
-        }
-    }
-    
-    //Image
-    private func FetchUserImage(username: String, completion: @escaping (UIImage?) -> Void) {
-        let storageRef = Storage.storage().reference(forURL: "gs://n-friends.appspot.com").child(username)
-        
-        storageRef.getData(maxSize: 10 * 1024 * 1024) { data, error in
-            if let error = error {
-                print("Error downloading image: \(error.localizedDescription)")
-                completion(nil)
-            } else if let data = data, let uiImage = UIImage(data: data) {
-                completion(uiImage)
-            } else {
-                completion(nil)
             }
         }
     }
